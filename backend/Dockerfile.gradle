@@ -11,11 +11,11 @@ RUN ls -al
 RUN chmod +x gradlew
 
 # 依存を先取り（キャッシュ用）
-RUN ./gradlew --no-daemon dependencies || true
+RUN gradlew --no-daemon dependencies || true
 
 # ソース投入して本ビルド
 COPY src src
-RUN ./gradlew --no-daemon clean bootJar -x test
+RUN gradlew --no-daemon clean bootJar -x test
 
 # ---- run stage (JRE) ----
 FROM amazoncorretto:21-alpine
