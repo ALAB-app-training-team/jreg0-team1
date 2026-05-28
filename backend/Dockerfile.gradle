@@ -7,7 +7,6 @@ COPY gradlew ./
 COPY gradle gradle
 COPY settings.gradle.kts* settings.gradle*
 COPY build.gradle.kts* build.gradle*
-RUN ls -al
 RUN chmod +x gradlew
 
 # 依存を先取り（キャッシュ用）
