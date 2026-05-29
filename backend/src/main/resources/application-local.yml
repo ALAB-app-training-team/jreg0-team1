@@ -1,0 +1,6 @@
+# src/main/resources/application-local.yml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: appuser
+    password: localpassword
