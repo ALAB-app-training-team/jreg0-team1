@@ -1,19 +1,6 @@
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-    depends_on:
-      - postgres
-
   postgres:
-    image: "postgres:18.4"
+    image: postgres:18.4-alpine
     container_name: postgres
     environment:
       POSTGRES_USER: postgres
@@ -22,7 +9,29 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.gradle
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - postgres
+
+#  flyway:
+#    image: flyway/flyway:9.2.1-alpine
+#    volumes:
+#      - ./src/main/resources/db/migration:/flyway/sql
+#    command: -url=jdbc:postgresql://postgres:5432/postgres -user=postgres -password=postgres migrate
+#    depends_on:
+#      - postgres
 
 volumes:
   pgdata:
