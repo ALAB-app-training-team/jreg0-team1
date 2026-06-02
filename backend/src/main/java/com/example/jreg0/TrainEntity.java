@@ -2,6 +2,7 @@ package com.example.jreg0;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import lombok.Data;
 @Entity
 @Table(name = "train")
 public class TrainEntity {
-
+    @Id
     @Column(name = "id")
     private String id;
 
