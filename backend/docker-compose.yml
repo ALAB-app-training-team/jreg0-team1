@@ -10,7 +10,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql
-#      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d
 
   web:
     build:
@@ -26,13 +25,13 @@ services:
     depends_on:
       - postgres
 
-  flyway:
-    image: flyway/flyway:9.2.1-alpine
-    volumes:
-      - ./src/main/resources/db/migration:/flyway/sql
-    command: -url=jdbc:postgresql://postgres:5432/postgres -user=postgres -password=postgres migrate
-    depends_on:
-      - postgres
+#  flyway:
+#    image: flyway/flyway:9.2.1-alpine
+#    volumes:
+#      - ./src/main/resources/db/migration:/flyway/sql
+#    command: -url=jdbc:postgresql://postgres:5432/postgres -user=postgres -password=postgres migrate
+#    depends_on:
+#      - postgres
 
 volumes:
   pgdata:
