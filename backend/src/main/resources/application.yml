@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://${DB_ENDPOINT}:5432/${DB_NAME}
     username: ${DB_USERNAME:appuser}
-    password: password=${DB_PASSWORD:}
+    password: ${DB_PASSWORD:}
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,5 +16,3 @@ spring:
     schemas: verify_schema
     default-schema: verify_schema
     create-schema: true
-
-
