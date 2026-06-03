@@ -22,6 +22,6 @@ public class Jreg0Application {
 	@GetMapping("/")
 	public String Hello(){
 		List<TrainEntity> trains = _service.getAll();
-		return trains.getFirst().getId() + "やあ！";
+		return trains.getFirst().getId() + trains.getFirst().getTrain_name() + "やあやあ！";
 	}
 }

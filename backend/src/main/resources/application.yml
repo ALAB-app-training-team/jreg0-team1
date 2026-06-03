@@ -5,5 +5,16 @@ spring:
     url: jdbc:postgresql://${DB_ENDPOINT}:5432/${DB_NAME}
     username: ${DB_USERNAME:appuser}
     password: password=${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+#    default-schema: public
+    locations: classpath:db/migration
+    # flyway試験用
+    schemas: verify_schema
+    default-schema: verify_schema
+    create-schema: true
 
 
