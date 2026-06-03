@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #008803;
+  --color-logout: #D4183D;
+  --color-hayabusa: #008803;
+  --color-yamabiko: #27AE60;
+  --color-nasuno: #E67E22;
+  --color-green: #00C950;
+  --color-granclass: #AD46FF;
+  --color-textPrimary: #0A0A0A;
+  --color-textSecondary: #5A6B5A;
+}
