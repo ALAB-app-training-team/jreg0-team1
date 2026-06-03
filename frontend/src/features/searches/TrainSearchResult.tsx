@@ -1,6 +1,6 @@
 import TrainSelectItem from "./TrainSelectItem";
 
-function TrainSearchList(){
+function TrainSearchResult(){
 
     return (
     <div className="p-4">
@@ -17,4 +17,4 @@ function TrainSearchList(){
     );
 };
 
-export default TrainSearchList;
+export default TrainSearchResult;
