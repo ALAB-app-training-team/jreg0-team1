@@ -5,3 +5,4 @@ CREATE TABLE car(
     seat_type  VARCHAR(12),
     FOREIGN KEY (train_id) REFERENCES train (id)
 );
+

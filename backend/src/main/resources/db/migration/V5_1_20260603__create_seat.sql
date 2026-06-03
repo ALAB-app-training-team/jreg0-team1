@@ -4,3 +4,4 @@ CREATE TABLE seat(
     seat_location        VARCHAR(12),
     FOREIGN KEY (car_id) REFERENCES car (id)
 );
+

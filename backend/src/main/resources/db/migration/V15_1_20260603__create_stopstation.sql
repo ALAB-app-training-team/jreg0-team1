@@ -5,3 +5,4 @@ CREATE TABLE stopstation(
     FOREIGN KEY (route_id) REFERENCES route (id),
     FOREIGN KEY (station_id) REFERENCES station (id)
 );
+

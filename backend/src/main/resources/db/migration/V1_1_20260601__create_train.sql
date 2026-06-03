@@ -7,3 +7,4 @@ CREATE TABLE train(
     formation    INT,
     FOREIGN KEY (route_id) REFERENCES route (id)
 );
+
