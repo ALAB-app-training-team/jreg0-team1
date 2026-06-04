@@ -1,4 +1,4 @@
-CREATE TABLE train(
+CREATE TABLE trainTest(
     id VARCHAR(36) PRIMARY KEY,
     train_number VARCHAR(255),
     train_name VARCHAR(255)

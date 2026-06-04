@@ -10,9 +10,5 @@ spring:
       ddl-auto: none
   flyway:
     enabled: true
-#    default-schema: public
+    default-schema: public
     locations: classpath:db/migration
-    # flyway試験用
-    schemas: verify_schema
-    default-schema: verify_schema
-    create-schema: true
