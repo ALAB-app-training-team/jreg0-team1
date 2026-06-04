@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "trainTest")
+@Table(name = "train")
 public class TrainEntity {
     @Id
     @Column(name = "id")
@@ -19,4 +19,13 @@ public class TrainEntity {
 
     @Column(name = "train_name")
     private String train_name;
+
+    @Column(name = "route_id")
+    private String route_id;
+
+    @Column(name = "train_nickname")
+    private String train_nickname;
+
+    @Column(name = "formation")
+    private Integer formation;
 }
