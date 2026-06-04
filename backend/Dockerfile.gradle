@@ -21,9 +21,6 @@ RUN ./gradlew --no-daemon clean bootJar -x test
 FROM amazoncorretto:21-alpine
 WORKDIR /app
 
-# DBsecretパース用のshを動かすためのコマンドinstall
-RUN apk add --no-cache jq
-
 # お好みで起動時のJVM最適化
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0 -XX:+UseSerialGC"
 # Springのデフォルトポート
@@ -31,6 +28,9 @@ EXPOSE 8080
 
 # 生成されたjarを配置（単一jar想定）
 COPY --from=build /workspace/build/libs/*.jar /app/app.jar
+
+# DBsecretパース用のshを動かすためのコマンドinstall
+RUN apk -U upgrade && apk add --no-cache jq
 
 # App Runnerのヘルスチェックはサービス側で行うためHEALTHCHECKは不要
 # ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
