@@ -1,10 +1,10 @@
-package com.example.jreg0;
+package com.example.jreg0.train;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.jreg0.schedule.ScheduleEntity;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -28,4 +28,7 @@ public class TrainEntity {
 
     @Column(name = "formation")
     private Integer formation;
+
+    @OneToMany(mappedBy = "schedule")
+    private List<ScheduleEntity> schedules;
 }
