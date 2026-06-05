@@ -1,4 +1,4 @@
-INSERT INTO schedule(id, train_id, station_id, departure_time, arrival_time,departure_track,date)
+INSERT INTO schedule(id, train_id, station_id, departure_time, arrival_time,departure_track,departure_date)
 values ('00000000', '00000000', '00000000', '15:00:00', '15:10:00',1,'2026-06-03'),
        ('00000001', '00000000', '00000001', '15:20:00', '15:30:00',1,'2026-06-03'),
        ('00000002', '00000001', '00000000', '16:00:00', '16:10:00',1,'2026-06-03'),
