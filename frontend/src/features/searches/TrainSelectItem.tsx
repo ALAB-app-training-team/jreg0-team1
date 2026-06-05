@@ -7,17 +7,17 @@ function TrainSelectItem(){
             <span className="material-symbols-outlined text-white">train</span>
         </div>
         <div className="flex-col">
-            <div className="text-lg text-textPrimary">はやぶさ</div>
-            <div className="text-base text-textSecondary">1号</div>
+            <h3 className="text-lg text-textPrimary">はやぶさ</h3>
+            <h5 className="text-base text-textSecondary">1号</h5>
         </div>
         <div className="flex-col">
-            <div className="text-2xl text-textPrimary font-bold">06:32</div>
-            <div className="text-base text-textSecondary">東京</div>
+            <h2 className="text-2xl text-textPrimary font-bold">06:32</h2>
+            <h5 className="text-base text-textSecondary">東京</h5>
         </div>
         <div className="grow h-1 bg-primary/[20%]"></div>
         <div className="flex-col">
-            <div className="text-2xl text-textPrimary font-bold">06:39</div>
-            <div className="text-base text-textSecondary">上野</div>
+            <h2 className="text-2xl text-textPrimary font-bold">06:39</h2>
+            <h5 className="text-base text-textSecondary">上野</h5>
         </div>
         <button className="bg-primary rounded-lg text-white p-4">席を予約する</button>
     </div>
