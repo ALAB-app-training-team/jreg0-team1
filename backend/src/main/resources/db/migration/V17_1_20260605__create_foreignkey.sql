@@ -27,8 +27,8 @@ ALTER TABLE schedule
             ON DELETE SET NULL;
 
 ALTER TABLE schedule
-    ADD CONSTRAINT fk_schedule_schedule
-        FOREIGN KEY (schedule_id)
+    ADD CONSTRAINT fk_schedule_station
+        FOREIGN KEY (station_id)
             REFERENCES station (id)
             ON UPDATE CASCADE
             ON DELETE SET NULL;
@@ -48,14 +48,14 @@ ALTER TABLE reservation
             ON DELETE SET NULL;
 
 ALTER TABLE reservation
-    ADD CONSTRAINT fk_reservation_station
+    ADD CONSTRAINT fk_reservation_boarding_station
         FOREIGN KEY (boarding_station_id)
             REFERENCES station (id)
             ON UPDATE CASCADE
             ON DELETE SET NULL;
 
 ALTER TABLE reservation
-    ADD CONSTRAINT fk_reservation_station
+    ADD CONSTRAINT fk_reservation_destination_station
         FOREIGN KEY (destination_station_id)
             REFERENCES station (id)
             ON UPDATE CASCADE
