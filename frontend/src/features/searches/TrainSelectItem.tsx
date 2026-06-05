@@ -1,5 +1,12 @@
+import type { Train } from "@/features/searches/types/Train";
 
-function TrainSelectItem(){
+type TrainSelectItemProps = {
+    train: Train
+};
+
+function TrainSelectItem({
+    train
+}:TrainSelectItemProps){
 
     return (
     <div className="flex items-center border border-primary/[20%] rounded-2xl py-8 px-4 gap-4">
@@ -7,7 +14,7 @@ function TrainSelectItem(){
             <span className="material-symbols-outlined text-white">train</span>
         </div>
         <div className="flex-col">
-            <h3>はやぶさ</h3>
+            <h3>{train.trainNickName}</h3>
             <h5>1号</h5>
         </div>
         <div className="flex-col">
