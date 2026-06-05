@@ -4,7 +4,7 @@ CREATE TABLE reservation(
     reservation_date DATE,
     train_id VARCHAR(36),
     boarding_station_id VARCHAR(36),
-    Destination_station_id VARCHAR(36),
+    destination_station_id VARCHAR(36),
     payment_method VARCHAR(36),
     payment_status VARCHAR(24),
     fee INT,
