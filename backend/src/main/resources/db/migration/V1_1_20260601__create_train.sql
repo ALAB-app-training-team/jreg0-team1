@@ -4,7 +4,6 @@ CREATE TABLE train(
     train_name   VARCHAR(255),
     route_id     VARCHAR(12),
     train_nickname VARCHAR(255),
-    formation    INT,
-    FOREIGN KEY (route_id) REFERENCES route (id)
+    formation    INT
 );
 

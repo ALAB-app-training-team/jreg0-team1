@@ -5,8 +5,6 @@ CREATE TABLE schedule(
     departure_time time,
     arrival_time time,
     departure_track INT,
-    departure_date date,
-    FOREIGN KEY (train_id) REFERENCES train (id),
-    FOREIGN KEY (station_id) REFERENCES station (id)
+    departure_date date
 );
 
