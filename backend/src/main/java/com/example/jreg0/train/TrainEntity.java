@@ -3,7 +3,6 @@ package com.example.jreg0.train;
 import com.example.jreg0.schedule.ScheduleEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
