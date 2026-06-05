@@ -17,3 +17,4 @@ public class StopStationEntity {
     @Column(name = "station_id")
     private String stationId;
 }
+

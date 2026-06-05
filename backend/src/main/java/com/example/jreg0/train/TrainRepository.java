@@ -10,3 +10,4 @@ import java.util.List;
 public interface TrainRepository extends JpaRepository <TrainEntity, String> {
     List<TrainEntity> findByRouteId(String routeId);
 }
+

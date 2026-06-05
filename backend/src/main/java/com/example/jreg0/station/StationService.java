@@ -14,7 +14,8 @@ public class StationService {
         this._repository = stationRepository;
     }
 
-    public List<StationEntity> getAll(){
+    public List<StationEntity> getAll() {
         return _repository.findAll();
     }
 }
+
