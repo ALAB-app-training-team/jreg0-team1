@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository <ScheduleEntity, String> {
-    List<ScheduleEntity> findBySchedule (String trainId, Date departure_date);
+//    List<ScheduleEntity> findByTrainIdAndDepartureDate (String trainId, Date departureDate);
 }
 

@@ -12,8 +12,8 @@ import lombok.Data;
 public class StopStationEntity {
     @Id
     @Column(name = "route_id")
-    private String route_id;
+    private String routeId;
 
     @Column(name = "station_id")
-    private String station_id;
+    private String stationId;
 }

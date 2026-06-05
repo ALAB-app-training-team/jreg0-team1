@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface StopStationRepository extends JpaRepository <StopStationEntity, String> {
 
-    List<StopStationEntity> findByStation (String stationId);
+    List<StopStationEntity> findByStationId(String stationId);
 }

@@ -1,12 +1,12 @@
 package com.example.jreg0.schedule;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.jreg0.train.TrainEntity;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -16,9 +16,6 @@ public class ScheduleEntity {
     @Id
     @Column(name = "id")
     private String id;
-
-    @Column(name = "train_id")
-    private String train_id;
 
     @Column(name = "station_id")
     private String station_id;
@@ -32,7 +29,14 @@ public class ScheduleEntity {
     @Column(name = "departure_track")
     private Integer departure_track;
 
-    @Column(name = "departure_date")
+    @Column(name = "departure_date",columnDefinition = "DATE")
     private Date departure_date;
+
+    // ManyToOne, JoinColumnのアノテーションが必要
+    // JoinColumn の name : テーブルを関連付けるカラム名
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "train_id")
+    private TrainEntity train;
 }
 

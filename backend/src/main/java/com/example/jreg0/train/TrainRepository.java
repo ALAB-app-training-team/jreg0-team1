@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TrainRepository extends JpaRepository <TrainEntity, String> {
-    List<TrainEntity> findByRoute(String routeId);
+    List<TrainEntity> findByRouteId(String routeId);
 }
