@@ -1,7 +1,7 @@
-import './App.css'
-import TrainSearchResult from './src/features/searches/TrainSearchResult'
-import 'material-symbols';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import 'material-symbols';
+import './App.css'
+import TrainSearchResult from '@/features/searches/TrainSearchResult'
 
 function App() {
   return (
