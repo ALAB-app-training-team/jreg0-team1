@@ -1,10 +1,11 @@
-package com.example.jreg0;
+package com.example.jreg0.train;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.jreg0.schedule.ScheduleEntity;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -21,11 +22,15 @@ public class TrainEntity {
     private String train_name;
 
     @Column(name = "route_id")
-    private String route_id;
+    private String routeId;
 
     @Column(name = "train_nickname")
     private String train_nickname;
 
     @Column(name = "formation")
     private Integer formation;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "train")
+    private List<ScheduleEntity> schedules;
 }
