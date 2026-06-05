@@ -30,7 +30,7 @@ public class TrainService {
      * @param StationIdB 2つ目の駅
      * @return 2つの駅を含む経路
      * */
-    private List<String> getRouteByStation(String StationIdA, String StationIdB) {
+    private List<String> getRouteIds(String StationIdA, String StationIdB) {
         List<String> routeByStationIdAList = _stopStation_repository.findByStationId(StationIdA).stream().map(stopstation -> stopstation.getRouteId()).toList();
         List<String> routeByStationIdBList = _stopStation_repository.findByStationId(StationIdB).stream().map(stopstation -> stopstation.getRouteId()).toList();
         return routeByStationIdAList.stream().filter(routeByStationIdBList::contains).distinct().toList();
@@ -51,6 +51,24 @@ public class TrainService {
     }
 
     /**
+     * 列車Entity→DTOの変換を行う
+     *
+     * @param train Entityの列車
+     * @return DTOの列車
+     * */
+    private TrainResponseDTO convertToTrainResponseDto(TrainEntity train) {
+        TrainResponseDTO dto = new TrainResponseDTO();
+        dto.setId(train.getId());
+        dto.setTrainNumber(train.getTrainNumber());
+        dto.setTrainName(train.getTrainName());
+        dto.setRouteId(train.getRouteId());
+        dto.setTrainNickname(train.getTrainNickname());
+        dto.setFormation(train.getFormation());
+        dto.setSchedules(train.getSchedules());
+        return dto;
+    }
+
+    /**
      * 出発駅、到着駅、出発日が一致する列車の取得を行う
      *
      * @param boardingStationId 出発駅
@@ -58,12 +76,13 @@ public class TrainService {
      * @param departure_date 出発日
      * @return 出発駅、到着駅、出発日が一致する列車一覧
      * */
-    public List<TrainEntity> getTrainByStation(String boardingStationId, String destinationStationId, Date departure_date) {
-        List<String> routeSet = getRouteByStation(boardingStationId, destinationStationId);
+    public List<TrainResponseDTO> getTrainByStation(String boardingStationId, String destinationStationId, Date departure_date) {
+        List<String> routeSet = getRouteIds(boardingStationId, destinationStationId);
         List<TrainEntity> trainList = routeSet.stream().map(routeId -> _train_repository.findByRouteId(routeId)).flatMap(Collection::stream).collect(Collectors.toList());
         trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> schedule.getDepartureDate() != departure_date).toList()));
         trainList = filterByDepartureStation(boardingStationId,trainList);
-        return trainList;
+
+        return trainList.stream().map(this::convertToTrainResponseDto).collect(Collectors.toList());
     }
 }
 
