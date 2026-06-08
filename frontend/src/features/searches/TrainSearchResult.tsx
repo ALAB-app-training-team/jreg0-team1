@@ -21,9 +21,9 @@ function TrainSearchResult(){
          setSearchDate(nextDateToString);
     }
 
-    // if(error){
-    //     return (<h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>)
-    // }
+    if(error){
+        return (<h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>)
+    }
 
     return (
     <div className="p-4 flex flex-col gap-4">
