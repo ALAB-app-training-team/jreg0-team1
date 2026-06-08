@@ -48,8 +48,8 @@ public class TrainService {
      * @return 2つの駅を含む経路
      * */
     private List<String> getRouteIds(String StationIdA, String StationIdB) {
-        List<String> routeByStationIdAList = _stopStationRepository.findByStationId(StationIdA).stream().map(stopstation -> stopstation.getRouteId()).toList();
-        List<String> routeByStationIdBList = _stopStationRepository.findByStationId(StationIdB).stream().map(stopstation -> stopstation.getRouteId()).toList();
+        List<String> routeByStationIdAList = _stopStationRepository.findByIdStationId(StationIdA).stream().map(stopstation -> stopstation.getId().getRouteId()).toList();
+        List<String> routeByStationIdBList = _stopStationRepository.findByIdStationId(StationIdB).stream().map(stopstation -> stopstation.getId().getRouteId()).toList();
         return routeByStationIdAList.stream().filter(routeByStationIdBList::contains).distinct().toList();
     }
 

@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class ScheduleResponseDto {
-    private String Id;
+    private String id;
     private String stationId;
     private Time departureTime;
     private Time arrivalTime;

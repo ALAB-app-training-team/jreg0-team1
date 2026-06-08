@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class TrainResponseDto {
-    private String Id;
+    private String id;
     private String trainNumber;
     private String trainName;
     private String routeId;
