@@ -1,5 +1,6 @@
 package com.example.jreg0.reservation;
 
+import com.example.jreg0.seat.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,26 +10,24 @@ import java.util.UUID;
 @Service
 public class ReservationService {
 
-    final private ReservationRepository _respository;
+    private ReservationRepository _reservationRepository;
+    private SeatRepository _seatRepository;
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository) {
-        _respository = reservationRepository;
+        _reservationRepository = reservationRepository;
     }
 
+    /**
+     *
+     * @param reservation id以外の予約情報の入った予約Entity
+     * @return UUID 登録された予約の予約ID (UUID)
+     */
     @Transactional
-    public UUID resgistReservation(ReservationDTO reservation) {
-        ReservationEntity entity = new ReservationEntity();
-        entity.setSeatId(reservation.getSeatId());
-        entity.setReservationDate(reservation.getReservationDate());
-        entity.setTrainId(reservation.getTrainId());
-        entity.setBoardingStationId(reservation.getBoardingStationId());
-        entity.setDestinationStationId(reservation.getDestinationStationId());
-        entity.setPaymentMethod(reservation.getPaymentMethod());
-        entity.setPaymentStatus(reservation.getPaymentStatus());
-        entity.setFee(reservation.getFee());
-        entity.setAccountId(reservation.getAccountId());
-        _respository.save(entity);
-        return entity.getId();
+    public UUID resgistReservation(ReservationEntity reservation) {
+        // 今回は,座席を1Aに絞る
+        reservation.setSeatId(_seatRepository.findAll().getFirst().getId());
+        ReservationEntity saved = _reservationRepository.save(reservation);
+        return saved.getId();
     }
 }

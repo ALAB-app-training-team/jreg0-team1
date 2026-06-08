@@ -1,13 +1,12 @@
 package com.example.jreg0.reservation;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class ReservationDTO {
+public class ReservationRequestDto {
     private String seatId;
     private Date reservationDate;
     private String trainId;
