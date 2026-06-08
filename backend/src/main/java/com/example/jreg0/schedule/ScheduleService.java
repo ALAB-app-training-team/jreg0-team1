@@ -7,14 +7,15 @@ import java.util.List;
 
 @Service
 public class ScheduleService {
-    private ScheduleRepository _repository;
+    private ScheduleRepository _scheduleRepository;
 
     @Autowired
     public void ScheduleRepository(ScheduleRepository scheduleRepository) {
-        this._repository = scheduleRepository;
+        this._scheduleRepository = scheduleRepository;
     }
 
     public List<ScheduleEntity> getAll(){
-        return _repository.findAll();
+        return _scheduleRepository.findAll();
     }
 }
+

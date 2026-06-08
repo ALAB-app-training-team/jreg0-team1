@@ -15,5 +15,6 @@ public class RouteEntity {
     private String id;
 
     @Column(name = "route_name")
-    private String route_name;
+    private String routeName;
 }
+

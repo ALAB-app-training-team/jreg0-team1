@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StopStationRepository extends JpaRepository <StopStationEntity, String> {
+public interface StopStationRepository extends JpaRepository<StopStationEntity, StopStationIdEntity> {
 
-    List<StopStationEntity> findByStationId(String stationId);
+    List<StopStationEntity> findByIdStationId(String stationId);
 }
+

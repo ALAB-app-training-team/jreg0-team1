@@ -18,22 +18,20 @@ public class ScheduleEntity {
     private String id;
 
     @Column(name = "station_id")
-    private String station_id;
+    private String stationId;
 
     @Column(name = "departure_time")
-    private Time departure_time;
+    private Time departureTime;
 
     @Column(name = "arrival_time")
-    private Time arrival_time;
+    private Time arrivalTime;
 
     @Column(name = "departure_track")
-    private Integer departure_track;
+    private Integer departureTrack;
 
     @Column(name = "departure_date",columnDefinition = "DATE")
-    private Date departure_date;
+    private Date departureDate;
 
-    // ManyToOne, JoinColumnのアノテーションが必要
-    // JoinColumn の name : テーブルを関連付けるカラム名
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "train_id")

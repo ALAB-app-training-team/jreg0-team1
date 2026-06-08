@@ -3,7 +3,6 @@ package com.example.jreg0.train;
 import com.example.jreg0.schedule.ScheduleEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
@@ -16,21 +15,21 @@ public class TrainEntity {
     private String id;
 
     @Column(name = "train_number")
-    private String train_number;
+    private String trainNumber;
 
     @Column(name = "train_name")
-    private String train_name;
+    private String trainName;
 
     @Column(name = "route_id")
     private String routeId;
 
     @Column(name = "train_nickname")
-    private String train_nickname;
+    private String trainNickname;
 
     @Column(name = "formation")
     private Integer formation;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "train")
     private List<ScheduleEntity> schedules;
 }
+
