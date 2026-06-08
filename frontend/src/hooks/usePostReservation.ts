@@ -1,10 +1,10 @@
 import reservationSender from '@/api/reservationSender';
 import ENDPOINT from '@/constants/Endpoint';
-import type { ArgForSend, Reservation } from '@/features/searches/types/Reservation';
+import type { ReservationForSend } from '@/features/reservations/types/Reservation';
 import useSWRMutation from 'swr/mutation'
 
 const usePostReservation = () => {
-    return useSWRMutation<String, Error, string, ArgForSend>(ENDPOINT.RESERVATIONS, reservationSender)
+    return useSWRMutation<String, Error, string, ReservationForSend>(ENDPOINT.RESERVATIONS, reservationSender)
 }
 
 export default usePostReservation;

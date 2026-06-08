@@ -1,7 +1,8 @@
-import type { Train } from "@/features/searches/types/Train";
-import usePostReservation from "@/hooks/usePostReservation";
-import { httpMethod, type Reservation } from "./types/Reservation";
 import { useNavigate } from "react-router-dom";
+import type { Train } from "@/features/searches/types/Train";
+import { type Reservation } from "@/features/reservations/types/Reservation";
+import usePostReservation from "@/hooks/usePostReservation";
+import { httpMethod } from "@/types/HttpMethod";
 
 type TrainSelectItemProps = {
     train: Train,

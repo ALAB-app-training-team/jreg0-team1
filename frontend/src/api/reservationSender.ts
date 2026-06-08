@@ -1,6 +1,6 @@
-import type { ArgForSend } from "@/features/searches/types/Reservation";
+import type { ReservationForSend } from "@/features/reservations/types/Reservation";
 
-const reservationSender =(url:string, {arg}: {arg: ArgForSend}): Promise<String> => {
+const reservationSender =(url:string, {arg}: {arg: ReservationForSend}): Promise<String> => {
     const data = fetch(url, {
         method: arg.method,
         headers: {
