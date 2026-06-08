@@ -53,9 +53,10 @@ function TrainSearchResult(){
             </h5>
         </div>
         {
-            trains
+            trains && trains.length > 0
             ? trains.map(train => (
                 <TrainSelectItem
+                key={train.id}
                 train={train}
                 departureStationId={TOKYO_STATION_ID}
                 arrivalStationId={UENO_STATION_ID}/>
