@@ -24,7 +24,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<String> ReserveSeat(@RequestBody ReservationRequestDto reservation) throws URISyntaxException {
+    public ResponseEntity<String> ReserveSeat(@RequestBody ReservationRequestDto reservation) {
         try {
             String reservationId = String.valueOf(_reservationService.resgisterReservation(convertToReservationEntity(reservation)));
             URI location = new URI( "/reservations/"+ reservationId);
