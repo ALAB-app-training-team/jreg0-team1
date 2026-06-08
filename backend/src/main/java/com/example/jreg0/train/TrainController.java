@@ -1,11 +1,12 @@
 package com.example.jreg0.train;
+import com.example.jreg0.schedule.ScheduleResponseDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,14 +35,26 @@ public class TrainController {
      * @return DTOの列車
      * */
     private TrainResponseDto convertToTrainResponseDto(TrainEntity train) {
-        TrainResponseDto dto = new TrainResponseDto();
-        dto.setId(train.getId());
-        dto.setTrainNumber(train.getTrainNumber());
-        dto.setTrainName(train.getTrainName());
-        dto.setRouteId(train.getRouteId());
-        dto.setTrainNickname(train.getTrainNickname());
-        dto.setFormation(train.getFormation());
-        dto.setSchedules(train.getSchedules());
+
+        List<ScheduleResponseDto> scheduleResponseDtos = new ArrayList<>(train.getSchedules().stream().map(s ->
+                new ScheduleResponseDto(
+                        s.getId(),
+                        s.getStationId(),
+                        s.getDepartureTime(),
+                        s.getArrivalTime(),
+                        s.getDepartureTrack(),
+                        s.getDepartureDate()
+                )).toList());
+
+        TrainResponseDto dto = new TrainResponseDto(
+                train.getId(),
+                train.getTrainNumber(),
+                train.getTrainName(),
+                train.getRouteId(),
+                train.getTrainNickname(),
+                train.getFormation(),
+                scheduleResponseDtos
+        );
         return dto;
     }
 }
