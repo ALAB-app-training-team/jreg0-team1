@@ -52,16 +52,6 @@ jobs:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Change application.yml
-        working-directory: backend
-        run: |
-          cat >> application.yml <<EOF
-            cors:
-              origin: ${{vars.FRONT_URL}}
-          EOF
-          echo "application.yml changed"
-          cat application.yml
-
       - name: Ensure ECR repo exists
         run: |
           aws ecr describe-repositories --repository-names "$REPO_NAME" >/dev/null 2>&1 || {
