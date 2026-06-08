@@ -60,6 +60,7 @@ jobs:
               origin: ${{vars.FRONT_URL}}
           EOF
           echo "application.yml changed"
+          cat application.yml
 
       - name: Ensure ECR repo exists
         run: |
