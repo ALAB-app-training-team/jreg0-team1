@@ -19,12 +19,13 @@ public class ReservationService {
     }
 
     /**
+     * 予約を登録するメソッド
      *
      * @param reservation id以外の予約情報の入った予約Entity
      * @return UUID 登録された予約の予約ID (UUID)
      */
     @Transactional
-    public UUID resgistReservation(ReservationEntity reservation) {
+    public UUID resgisterReservation(ReservationEntity reservation) {
         // 今回は,座席を1Aに絞る
         reservation.setSeatId(_seatRepository.findAll().getFirst().getId());
         ReservationEntity saved = _reservationRepository.save(reservation);
