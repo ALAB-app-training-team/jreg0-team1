@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 @Data
-public class TrainResponseDTO {
+public class TrainResponseDto {
     private String Id;
     private String trainNumber;
     private String trainName;

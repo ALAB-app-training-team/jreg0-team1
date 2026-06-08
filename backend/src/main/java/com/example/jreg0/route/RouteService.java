@@ -7,15 +7,15 @@ import java.util.List;
 
 @Service
 public class RouteService {
-    private RouteRepository _repository;
+    private RouteRepository _routeRepository;
 
     @Autowired
     public void RouteRepository(RouteRepository routeRepository) {
-        this._repository = routeRepository;
+        this._routeRepository = routeRepository;
     }
 
     public List<RouteEntity> getAll(){
-        return _repository.findAll();
+        return _routeRepository.findAll();
     }
 }
 

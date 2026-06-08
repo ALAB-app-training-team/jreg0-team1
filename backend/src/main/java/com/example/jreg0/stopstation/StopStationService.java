@@ -7,15 +7,15 @@ import java.util.List;
 
 @Service
 public class StopStationService {
-    private StopStationRepository _repository;
+    private StopStationRepository _stopStationRepository;
 
     @Autowired
     public void StopStationRepository(StopStationRepository stopstationRepository) {
-        this._repository = stopstationRepository;
+        this._stopStationRepository = stopstationRepository;
     }
 
     public List<StopStationEntity> getAll(){
-        return _repository.findAll();
+        return _stopStationRepository.findAll();
     }
 }
 
