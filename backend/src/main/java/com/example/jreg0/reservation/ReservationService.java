@@ -14,8 +14,9 @@ public class ReservationService {
     private SeatRepository _seatRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository, SeatRepository seatRepository) {
         _reservationRepository = reservationRepository;
+        _seatRepository = seatRepository;
     }
 
     /**
