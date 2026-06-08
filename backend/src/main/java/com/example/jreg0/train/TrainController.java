@@ -1,4 +1,5 @@
 package com.example.jreg0.train;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,7 @@ public class TrainController {
     public List<TrainResponseDto> getTrains(
             @RequestParam(name="start") String boardingStationId,
             @RequestParam(name="end") String destinationStationId,
-            @RequestParam(name="date") Date departure_date){
+            @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date departure_date){
         List<TrainEntity> trainEntities = this._trainService.getTrainByStation(boardingStationId,destinationStationId,departure_date);
 
         return trainEntities.stream().map(this::convertToTrainResponseDto).collect(Collectors.toList());
