@@ -7,11 +7,11 @@ import TrainSelectItem from "@/features/searches/TrainSelectItem";
 import TrainNoResults from "@/features/searches/TrainNotResults";
 
 function TrainSearchResult(){
-    const tokyoStationId = "00000000";
-    const uenoStationId = "00000001";
+    const TOKYO_STATION_ID = "00000000";
+    const UENO_STATION_ID = "00000001";
     const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
     const [searchDate, setSearchDate] = useState<string>(new Date().toISOString().split("T")[0]);
-    const {data: trains, error} = useSWR<Train[]>(ENDPOINT.TRAINS(tokyoStationId,uenoStationId, searchDate), fetcher);
+    const {data: trains, error} = useSWR<Train[]>(ENDPOINT.TRAINS(TOKYO_STATION_ID,UENO_STATION_ID, searchDate), fetcher);
 
     const handleNextDateSearch = () => {
          const nextDate = new Date(date);
@@ -56,7 +56,9 @@ function TrainSearchResult(){
             trains
             ? trains.map(train => (
                 <TrainSelectItem
-                train={train}/>
+                train={train}
+                departureStationId={TOKYO_STATION_ID}
+                arrivalStationId={UENO_STATION_ID}/>
             ))
             : <TrainNoResults
             handleNextDateSearch={handleNextDateSearch}/>

@@ -1,5 +1,5 @@
 type TrainNoResultsProps = {
-    handleNextDateSearch: React.MouseEventHandler<HTMLButtonElement> | undefined
+    handleNextDateSearch: React.MouseEventHandler<HTMLButtonElement> | undefined,
 }
 
 function TrainNoResults({
