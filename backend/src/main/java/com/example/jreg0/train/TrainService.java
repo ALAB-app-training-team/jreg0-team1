@@ -33,8 +33,8 @@ public class TrainService {
      * */
     public List<TrainEntity> getTrainByStation(String boardingStationId, String destinationStationId, Date departureDate) {
         List<String> routeSet = getRouteIds(boardingStationId, destinationStationId);
-        List<TrainEntity> trainList = routeSet.stream().map(routeId -> _trainRepository.findByRouteId(routeId)).flatMap(Collection::stream).collect(Collectors.toList());
-        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> schedule.getDepartureDate() != departureDate).toList()));
+        List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
+        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().before(departureDate) && !schedule.getDepartureDate().after(departureDate)).toList()));
         trainList = filterByDepartureStation(boardingStationId,trainList);
 
         return trainList;

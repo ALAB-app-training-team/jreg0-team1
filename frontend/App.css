@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #008803;
+  --color-logout: #D4183D;
+  --color-hayabusa: #008803;
+  --color-yamabiko: #27AE60;
+  --color-nasuno: #E67E22;
+  --color-green: #00C950;
+  --color-granclass: #AD46FF;
+  --color-textPrimary: #0A0A0A;
+  --color-textSecondary: #5A6B5A;
+}
+
+@layer base{
+  h1{
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-textPrimary);
+  }
+  h3{
+    font-size: var(--text-lg);
+    color: var(--color-textPrimary);
+  }
+  h5{
+    font-size: var(--text-base);
+    color: var(--color-textSecondary)
+  }
+}
+
+@layer components{
+  .contained_btn{
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+}
