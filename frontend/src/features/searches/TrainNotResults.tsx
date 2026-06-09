@@ -6,8 +6,8 @@ function TrainNoResults({
     handleNextDateSearch
 }:TrainNoResultsProps){
     return (
-    <div className="flex flex-col items-center border border-primary/[20%] rounded-2xl p-8 gap-4">
-        <div className="rounded-full bg-primary/[10%] aspect-square flex items-center justify-center p-4">
+    <div className="flex flex-col items-center border border-primary/20 rounded-2xl p-8 gap-4">
+        <div className="rounded-full bg-primary/10 aspect-square flex items-center justify-center p-4">
             <span className="material-symbols-outlined">error</span>
         </div>
         <h3 className="font-semibold">指定日時の列車はありません</h3>
