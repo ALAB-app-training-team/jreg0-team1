@@ -30,11 +30,11 @@ function TrainSearchResult(){
         <h1>
             東京→上野
         </h1>
-        <div className="rounded-2xl bg-primary/[10%] p-4 flex justify-between">
+        <div className="rounded-2xl bg-primary/10 p-4 flex justify-between">
             <div>
                 <h5>出発日</h5>
                 <input 
-                className="bg-white border border-primary/[20%] rounded-lg px-4 py-2"
+                className="bg-white border border-primary/20 rounded-lg px-4 py-2"
                 type="date"
                 title="日付を選択してください"
                 value={date}
@@ -58,7 +58,7 @@ function TrainSearchResult(){
                 <TrainSelectItem
                 key={train.id}
                 train={train}
-                boardingStationId={TOKYO_STATION_ID}
+                departureStationId={TOKYO_STATION_ID}
                 arrivalStationId={UENO_STATION_ID}/>
             ))
             : <TrainNoResults
