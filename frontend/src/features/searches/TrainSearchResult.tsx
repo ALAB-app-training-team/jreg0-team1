@@ -58,7 +58,7 @@ function TrainSearchResult(){
                 <TrainSelectItem
                 key={train.id}
                 train={train}
-                departureStationId={TOKYO_STATION_ID}
+                boardingStationId={TOKYO_STATION_ID}
                 arrivalStationId={UENO_STATION_ID}/>
             ))
             : <TrainNoResults
