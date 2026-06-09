@@ -5,7 +5,7 @@ export type Train = {
     trainNumber: string,
     trainName: string,
     routeId: string,
-    trainNickName: string,
+    trainNickname: string,
     formation: number,
     schedules: Schedule[],
 };

@@ -13,4 +13,4 @@ spring:
     default-schema: public
     locations: classpath:db/migration
   cors:
-    origin: https://d2uoys1j09m3x1.cloudfront.net
+    origin: ${FRONT_URL}

@@ -26,16 +26,16 @@ public class TrainService {
     /**
      * 出発駅、到着駅、出発日が一致する列車の取得を行う
      *
-     * @param boardingStationId 出発駅
-     * @param destinationStationId 到着駅
+     * @param departureStationId 出発駅
+     * @param arrivalStationId 到着駅
      * @param departureDate 出発日
      * @return 出発駅、到着駅、出発日が一致する列車一覧
      * */
-    public List<TrainEntity> getTrainByStation(String boardingStationId, String destinationStationId, Date departureDate) {
-        List<String> routeSet = getRouteIds(boardingStationId, destinationStationId);
+    public List<TrainEntity> getTrainByStation(String departureStationId, String arrivalStationId, Date departureDate) {
+        List<String> routeSet = getRouteIds(departureStationId, arrivalStationId);
         List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
         trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().before(departureDate) && !schedule.getDepartureDate().after(departureDate)).toList()));
-        trainList = filterByDepartureStation(boardingStationId,trainList);
+        trainList = filterByDepartureStation(departureStationId,trainList);
 
         return trainList;
     }
@@ -56,14 +56,14 @@ public class TrainService {
     /**
      * 出発駅が一致する列車の絞り込みを行う
      *
-     * @param boardingStationId 出発駅
+     * @param departureStationId 出発駅
      * @param trainList 列車一覧
      * @return 出発駅が一致する列車一覧
      * */
-    private List<TrainEntity> filterByDepartureStation(String boardingStationId, List<TrainEntity> trainList) {
+    private List<TrainEntity> filterByDepartureStation(String departureStationId, List<TrainEntity> trainList) {
         return trainList.stream().filter(train -> {
             ScheduleEntity earliestSchedule = train.getSchedules().stream().filter(schedule -> schedule.getDepartureTime() != null).min(Comparator.comparing(ScheduleEntity::getDepartureTime)).orElse(null);
-            return earliestSchedule != null && boardingStationId.equals(earliestSchedule.getStationId());
+            return earliestSchedule != null && departureStationId.equals(earliestSchedule.getStationId());
         }).toList();
     }
 }
