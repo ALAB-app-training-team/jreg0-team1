@@ -6,17 +6,17 @@ import { httpMethod } from "@/types/HttpMethod";
 
 type TrainSelectItemProps = {
     train: Train,
-    boardingStationId: string,
+    departureStationId: string,
     arrivalStationId: string
 };
 
 function TrainSelectItem({
     train,
-    boardingStationId,
+    departureStationId,
     arrivalStationId,
 }:TrainSelectItemProps){
     const trainNumber: string = train.trainName.split("-")[1];
-    const departureTime = train.schedules.find(s => s.stationId === boardingStationId)?.departureTime.slice(0,5);
+    const departureTime = train.schedules.find(s => s.stationId === departureStationId)?.departureTime.slice(0,5);
     const arrivalTime = train.schedules.find(s => s.stationId === arrivalStationId)?.arrivalTime.slice(0,5);
     const {trigger: postTrigger} = usePostReservation();
     const navigate = useNavigate();
@@ -27,8 +27,8 @@ function TrainSelectItem({
             seatId: "",
             reservationDate: new Date().toISOString().split("T")[0],
             trainId: train.id,
-            boardingStationId: boardingStationId,
-            destinationStationId: arrivalStationId,
+            departureStationId: departureStationId,
+            arrivalStationId: arrivalStationId,
             paymentMethod: "",
             paymentStatus: "",
             fee: 2600,

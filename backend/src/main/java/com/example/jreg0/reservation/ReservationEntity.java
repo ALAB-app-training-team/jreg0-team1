@@ -25,14 +25,17 @@ public class ReservationEntity {
     @Column(name = "reservation_date")
     private Date reservationDate;
 
+    @Column(name = "departure_date")
+    private Date departureDate;
+
     @Column(name = "train_id")
     private String trainId;
 
-    @Column(name = "boarding_station_id")
-    private String boardingStationId;
+    @Column(name = "departure_station_id")
+    private String departureStationId;
 
-    @Column(name = "destination_station_id")
-    private String destinationStationId;
+    @Column(name = "arrival_station_id")
+    private String arrivalStationId;
 
     @Column(name = "payment_method")
     private String paymentMethod;

@@ -26,7 +26,7 @@ public class ReservationService {
      * @return UUID 登録された予約の予約ID (UUID)
      */
     @Transactional
-    public UUID resgisterReservation(ReservationEntity reservation) {
+    public UUID registerReservation(ReservationEntity reservation) {
         // 今回は,座席を1Aに絞る
         reservation.setSeatId(_seatRepository.findAll().getFirst().getId());
         ReservationEntity saved = _reservationRepository.save(reservation);

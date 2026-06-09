@@ -20,10 +20,10 @@ public class TrainController {
 
     @GetMapping
     public List<TrainResponseDto> getTrains(
-            @RequestParam(name="start") String boardingStationId,
-            @RequestParam(name="end") String destinationStationId,
-            @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date departure_date){
-        List<TrainEntity> trainEntities = this._trainService.getTrainByStation(boardingStationId,destinationStationId,departure_date);
+            @RequestParam(name="start") String departureStationId,
+            @RequestParam(name="end") String arrivalStationId,
+            @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate){
+        List<TrainEntity> trainEntities = this._trainService.getTrainByStation(departureStationId,arrivalStationId,departureDate);
 
         return trainEntities.stream().map(this::convertToTrainResponseDto).collect(Collectors.toList());
     }

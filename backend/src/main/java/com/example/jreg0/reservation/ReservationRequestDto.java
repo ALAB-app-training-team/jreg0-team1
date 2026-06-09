@@ -9,9 +9,10 @@ import java.util.Date;
 public class ReservationRequestDto {
     private String seatId;
     private Date reservationDate;
+    private Date departureDate;
     private String trainId;
-    private String boardingStationId;
-    private String destinationStationId;
+    private String departureStationId;
+    private String arrivalStationId;
     private String paymentMethod;
     private String paymentStatus;
     private Integer fee;

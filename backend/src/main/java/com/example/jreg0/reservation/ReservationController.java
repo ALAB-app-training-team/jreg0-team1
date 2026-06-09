@@ -1,6 +1,5 @@
 package com.example.jreg0.reservation;
 
-import org.hibernate.annotations.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
 
 @RestController
 @RequestMapping(path = "reservations")
 public class ReservationController {
-    private ReservationService _reservationService;
+    private final ReservationService _reservationService;
 
     @Autowired
     public ReservationController(ReservationService reservationService) {
@@ -26,7 +23,7 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<String> ReserveSeat(@RequestBody ReservationRequestDto reservation) {
         try {
-            String reservationId = String.valueOf(_reservationService.resgisterReservation(convertToReservationEntity(reservation)));
+            String reservationId = String.valueOf(_reservationService.registerReservation(convertToReservationEntity(reservation)));
             URI location = new URI( "/reservations/"+ reservationId);
             return ResponseEntity.created(location).body(reservationId);
         } catch (Exception e) {
@@ -45,8 +42,8 @@ public class ReservationController {
         entity.setSeatId(reservationDto.getSeatId());
         entity.setReservationDate(reservationDto.getReservationDate());
         entity.setTrainId(reservationDto.getTrainId());
-        entity.setBoardingStationId(reservationDto.getBoardingStationId());
-        entity.setDestinationStationId(reservationDto.getDestinationStationId());
+        entity.setDepartureStationId(reservationDto.getDepartureStationId());
+        entity.setArrivalStationId(reservationDto.getArrivalStationId());
         entity.setPaymentMethod(reservationDto.getPaymentMethod());
         entity.setPaymentStatus(reservationDto.getPaymentStatus());
         entity.setFee(reservationDto.getFee());
