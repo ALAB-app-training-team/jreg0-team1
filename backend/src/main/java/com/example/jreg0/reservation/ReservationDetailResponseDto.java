@@ -17,8 +17,8 @@ public class ReservationDetailResponseDto {
     private Integer carNumber;
     private String seatType;
     private String departureStationName;
-    private Time departureTimeByDepartureStation;
+    private Time departureTime;
     private String arrivalStationName;
-    private Time arrivalTimeByArrivalStation;
-    private Integer departureTrackByDepartureStation;
+    private Time arrivalTime;
+    private Integer departureTrack;
 }
