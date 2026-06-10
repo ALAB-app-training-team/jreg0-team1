@@ -1,12 +1,9 @@
 package com.example.jreg0.schedule;
 
-import com.example.jreg0.train.TrainEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -32,9 +29,6 @@ public class ScheduleEntity {
     @Column(name = "departure_date",columnDefinition = "DATE")
     private Date departureDate;
 
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "train_id")
-    private TrainEntity train;
+    @Column(name = "train_id")
+    private String trainId;
 }
-
