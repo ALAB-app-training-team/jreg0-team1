@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface SeatRepository extends JpaRepository<SeatEntity, String > {
     @EntityGraph(attributePaths = {"car"})
-    Optional<SeatEntity> findByIdWithCar(String id);
+    Optional<SeatEntity> findById(String id);
 }

@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TrainRepository extends JpaRepository <TrainEntity, String> {
     @EntityGraph(attributePaths = {"schedules"})
-    List<TrainEntity> findByRouteIdWithSchedules(String routeId);
+    List<TrainEntity> findByRouteId(String routeId);
 }

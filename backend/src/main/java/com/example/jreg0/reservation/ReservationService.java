@@ -1,6 +1,5 @@
 package com.example.jreg0.reservation;
 
-import com.example.jreg0.car.CarEntity;
 import com.example.jreg0.car.CarRepository;
 import com.example.jreg0.schedule.ScheduleEntity;
 import com.example.jreg0.schedule.ScheduleRepository;
@@ -71,7 +70,7 @@ public class ReservationService {
         StationEntity arrivalStation = optionalArrivalStation.orElseThrow(() -> new IllegalArgumentException("列車がないよ"));
 
         // 座席と号車
-        Optional<SeatEntity> optionalSeat = _seatRepository.findByIdWithCar(reservation.getSeatId());
+        Optional<SeatEntity> optionalSeat = _seatRepository.findById(reservation.getSeatId());
         SeatEntity seat = optionalSeat.orElseThrow(() -> new IllegalArgumentException("シートないよ"));
 
         // 出発時間、出発ホーム

@@ -24,7 +24,7 @@ public class CarEntity {
     @Column(name = "seat_type")
     private String seatType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seat")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
     private List<SeatEntity> seats;
 }
 
