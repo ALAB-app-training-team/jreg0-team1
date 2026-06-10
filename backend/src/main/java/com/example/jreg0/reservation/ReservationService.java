@@ -70,12 +70,9 @@ public class ReservationService {
         Optional<StationEntity> optionalArrivalStation = _stationRepository.findById(reservation.getArrivalStationId());
         StationEntity arrivalStation = optionalArrivalStation.orElseThrow(() -> new IllegalArgumentException("列車がないよ"));
 
-        // 座席
-        Optional<SeatEntity> optionalSeat = _seatRepository.findById(reservation.getSeatId());
+        // 座席と号車
+        Optional<SeatEntity> optionalSeat = _seatRepository.findByIdWithCar(reservation.getSeatId());
         SeatEntity seat = optionalSeat.orElseThrow(() -> new IllegalArgumentException("シートないよ"));
-        // 号車
-        Optional<CarEntity> optionalCar = _carRepository.findById(seat.getCarId());
-        CarEntity car = optionalCar.orElseThrow(() -> new IllegalArgumentException("号車がないよ"));
 
         // 出発時間、出発ホーム
         Optional<ScheduleEntity> optionalDepartureSchedule = _scheduleRepository.findByTrainIdAndStationId(reservation.getTrainId(), departureStation.getId());
@@ -89,7 +86,7 @@ public class ReservationService {
                 departureStation,
                 arrivalStation,
                 seat,
-                car,
+                seat.getCar(),
                 departureSchedule,
                 arrivalSchedule
         );

@@ -1,7 +1,11 @@
 package com.example.jreg0.car;
 
+import com.example.jreg0.schedule.ScheduleEntity;
+import com.example.jreg0.seat.SeatEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -20,5 +24,7 @@ public class CarEntity {
     @Column(name = "seat_type")
     private String seatType;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seat")
+    private List<SeatEntity> seats;
 }
 
