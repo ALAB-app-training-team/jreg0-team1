@@ -59,7 +59,8 @@ public class ReservationService {
      * @return ReservationDetailResponse idと一致する予約詳細
      */
     public ReservationDetailResponse checkReservationDetail(String id){
-        Optional<ReservationEntity> optionalReservation = _reservationRepository.findById(UUID.fromString(id));
+        UUID reservationId = UUID.fromString(id);
+        Optional<ReservationEntity> optionalReservation = _reservationRepository.findById(reservationId);
 
         ReservationEntity reservation = optionalReservation.orElseThrow(() -> new IllegalArgumentException("予約ないよ"));
 

@@ -1,7 +1,9 @@
 package com.example.jreg0.schedule;
 
+import com.example.jreg0.train.TrainEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Time;
 import java.util.Date;
@@ -29,6 +31,8 @@ public class ScheduleEntity {
     @Column(name = "departure_date",columnDefinition = "DATE")
     private Date departureDate;
 
-    @Column(name = "train_id")
-    private String trainId;
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "train_id")
+    private TrainEntity train;
 }
