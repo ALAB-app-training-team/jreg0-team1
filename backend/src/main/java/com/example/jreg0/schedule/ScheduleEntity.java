@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -33,8 +32,7 @@ public class ScheduleEntity {
     private Date departureDate;
 
     @ToString.Exclude
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "train_id")
     private TrainEntity train;
 }
-

@@ -3,10 +3,7 @@ package com.example.jreg0.reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -18,6 +15,27 @@ public class ReservationController {
     @Autowired
     public ReservationController(ReservationService reservationService) {
         _reservationService = reservationService;
+    }
+
+    @GetMapping(value = "{id}")
+    public  ResponseEntity<ReservationDetailResponseDto> GetReservationDetailById(@PathVariable("id") String id){
+        ReservationDetailResponse reservationDetailResponse = _reservationService.checkReservationDetail(id);
+        ReservationDetailResponseDto reservationDetailResponseDto = new ReservationDetailResponseDto(
+                reservationDetailResponse.getReservation().getId(),
+                reservationDetailResponse.getReservation().getReservationDate(),
+                reservationDetailResponse.getReservation().getDepartureDate(),
+                reservationDetailResponse.getSeat().getSeatLocation(),
+                reservationDetailResponse.getCar().getCarNumber(),
+                reservationDetailResponse.getCar().getSeatType(),
+                reservationDetailResponse.getDepartureStation().getStationName(),
+                reservationDetailResponse.getScheduleByDepartureStation().getDepartureTime(),
+                reservationDetailResponse.getArrivalStation().getStationName(),
+                reservationDetailResponse.getScheduleByArrivalStation().getArrivalTime(),
+                reservationDetailResponse.getScheduleByDepartureStation().getDepartureTrack(),
+                reservationDetailResponse.getTrain().getTrainName(),
+                reservationDetailResponse.getTrain().getTrainNickname()
+        );
+        return ResponseEntity.ok(reservationDetailResponseDto);
     }
 
     @PostMapping
