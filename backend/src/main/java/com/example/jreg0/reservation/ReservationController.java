@@ -58,6 +58,7 @@ public class ReservationController {
     private ReservationEntity convertToReservationEntity(ReservationRequestDto reservationDto) {
         ReservationEntity entity = new ReservationEntity();
         entity.setSeatId(reservationDto.getSeatId());
+        entity.setDepartureDate(reservationDto.getDepartureDate());
         entity.setReservationDate(reservationDto.getReservationDate());
         entity.setTrainId(reservationDto.getTrainId());
         entity.setDepartureStationId(reservationDto.getDepartureStationId());

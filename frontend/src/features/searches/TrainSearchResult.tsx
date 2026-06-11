@@ -26,7 +26,7 @@ function TrainSearchResult(){
     }
 
     return (
-    <div className="p-4 flex flex-col gap-4">
+    <div className="p-4 flex flex-col gap-4 max-w-4xl mx-auto">
         <h1>
             東京→上野
         </h1>
@@ -59,7 +59,8 @@ function TrainSearchResult(){
                 key={train.id}
                 train={train}
                 departureStationId={TOKYO_STATION_ID}
-                arrivalStationId={UENO_STATION_ID}/>
+                arrivalStationId={UENO_STATION_ID}
+                departureDate={date}/>
             ))
             : <TrainNoResults
             handleNextDateSearch={handleNextDateSearch}/>
