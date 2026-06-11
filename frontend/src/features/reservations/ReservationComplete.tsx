@@ -9,7 +9,7 @@ function ReservationComplete() {
     <div className="flex flex-col items-center">
       <h1>予約が完了しました</h1>
       <h3>予約番号：{state.reservationId}</h3>
-      <button className="contained_btn" onClick={() => navigate("/reservation/${state.reservationId}")}>
+      <button className="contained_btn" onClick={() => navigate(`/details/${state.reservationId}`)}>
          予約情報詳細
       </button>
     </div>
