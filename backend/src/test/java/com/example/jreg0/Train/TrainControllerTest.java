@@ -13,12 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,7 +35,7 @@ public class TrainControllerTest {
     @MockitoBean
     private TrainService trainService;
 
-    private Date departureDate;
+    private LocalDate departureDate;
 
     private TrainEntity trainEntity;
 
@@ -51,20 +49,20 @@ public class TrainControllerTest {
 
     @BeforeEach
     void setup() {
-        departureDate = new Date(2026, 6, 3);
+        departureDate = LocalDate.of(2026, 6, 3);
         //スケジュールのデータセット
         mockSchedule0.setId("00000000");
         mockSchedule0.setStationId("00000000");
         mockSchedule0.setDepartureTime(new Time(15, 00, 00));
         mockSchedule0.setArrivalTime(new Time(15, 10, 00));
         mockSchedule0.setDepartureTrack(1);
-        mockSchedule0.setDepartureDate(new Date(2026, 6, 3));
+        mockSchedule0.setDepartureDate(LocalDate.of(2026, 6, 3));
         mockSchedule1.setId("00000001");
         mockSchedule1.setStationId("00000001");
         mockSchedule1.setDepartureTime(new Time(15, 15, 00));
         mockSchedule1.setArrivalTime(new Time(15, 25, 00));
         mockSchedule1.setDepartureTrack(1);
-        mockSchedule1.setDepartureDate(new Date(2026, 6, 3));
+        mockSchedule1.setDepartureDate(LocalDate.of(2026, 6, 3));
         //列車のデータセット
         mockTrain0.setId("00000000");
         mockTrain0.setTrainNumber("0000");
@@ -84,13 +82,13 @@ public class TrainControllerTest {
     @Test
     void getTrainByStationTest_NomalCase1() throws Exception {
         //列車取得のサービスモック定義
-        when(trainService.getTrainByStation("00000000","00000001",any(Date.class))).thenReturn(List.of(mockTrain0));
+        when(trainService.getTrainByStation("00000000","00000001",departureDate)).thenReturn(List.of(mockTrain0));
 
         mockMvc.perform(get("/trains").param("start","00000000").param("end","00000001").param("date","2026-06-03")).andExpect(status().isOk());
-        verify(trainService.getTrainByStation("00000000","00000001",departureDate));
+        verify(trainService).getTrainByStation("00000000","00000001",LocalDate.of(2026,6,3));
     }
     /**
-     * 出発駅・到着駅・出発日に一致する列車を返却する*
+     * パラメータが足りない場合は不正なリクエストとしてレスポンスを返さない*
      */
     @Test
     void getTrainByStationTest_ErrorCase1() throws Exception {

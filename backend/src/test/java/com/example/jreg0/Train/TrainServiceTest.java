@@ -1,16 +1,12 @@
 package com.example.jreg0.Train;
 
-import com.example.jreg0.route.RouteEntity;
 import com.example.jreg0.schedule.ScheduleEntity;
-import com.example.jreg0.schedule.ScheduleRepository;
-import com.example.jreg0.station.StationEntity;
 import com.example.jreg0.stopstation.StopStationEntity;
 import com.example.jreg0.stopstation.StopStationIdEntity;
 import com.example.jreg0.stopstation.StopStationRepository;
 import com.example.jreg0.train.TrainEntity;
 import com.example.jreg0.train.TrainRepository;
 import com.example.jreg0.train.TrainService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,14 +54,14 @@ public class TrainServiceTest {
         mockSchedule0.setDepartureTime(new Time(15, 00, 00));
         mockSchedule0.setArrivalTime(new Time(15, 10, 00));
         mockSchedule0.setDepartureTrack(1);
-        mockSchedule0.setDepartureDate(new Date(2026, 6, 3));
+        mockSchedule0.setDepartureDate(LocalDate.of(2026, 6, 3));
 
         mockSchedule1.setId("00000001");
         mockSchedule1.setStationId("00000001");
         mockSchedule1.setDepartureTime(new Time(15, 15, 00));
         mockSchedule1.setArrivalTime(new Time(15, 25, 00));
         mockSchedule1.setDepartureTrack(1);
-        mockSchedule1.setDepartureDate(new Date(2026, 6, 3));
+        mockSchedule1.setDepartureDate(LocalDate.of(2026, 6, 3));
 
         //列車のデータセット
         mockTrain0.setId("00000000");
@@ -103,7 +99,7 @@ public class TrainServiceTest {
         //列車のリポジトリモック定義
         when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0));
 
-        List<TrainEntity> result = trainService.getTrainByStation("00000000", "00000001", new Date(2026, 6, 3));
+        List<TrainEntity> result = trainService.getTrainByStation("00000000", "00000001", LocalDate.of(2026, 6, 3));
 
         assertEquals(1, result.size());
         assertEquals(mockTrain0.getId(), result.getFirst().getId());
@@ -123,9 +119,9 @@ public class TrainServiceTest {
         //列車のリポジトリモック定義
         when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0));
 
-        List<TrainEntity> result1 = trainService.getTrainByStation("00000000", "00000001", new Date(2026, 6, 4));
+        List<TrainEntity> result1 = trainService.getTrainByStation("00000000", "00000001", LocalDate.of(2026, 6, 4));
 
-        List<TrainEntity> result2 = trainService.getTrainByStation("00000001", "00000000", new Date(2026, 6, 3));
+        List<TrainEntity> result2 = trainService.getTrainByStation("00000001", "00000000", LocalDate.of(2026, 6, 3));
 
         assertEquals(0, result1.size());
         assertEquals(0, result2.size());

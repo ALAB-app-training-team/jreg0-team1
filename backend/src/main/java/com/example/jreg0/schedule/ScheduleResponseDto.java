@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,5 @@ public class ScheduleResponseDto {
     private Time departureTime;
     private Time arrivalTime;
     private Integer departureTrack;
-    private Date departureDate;
+    private LocalDate departureDate;
 }

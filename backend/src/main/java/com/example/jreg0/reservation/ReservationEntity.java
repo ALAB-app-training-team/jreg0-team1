@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -23,10 +23,10 @@ public class ReservationEntity {
     private String seatId;
 
     @Column(name = "reservation_date")
-    private Date reservationDate;
+    private LocalDate reservationDate;
 
     @Column(name = "departure_date")
-    private Date departureDate;
+    private LocalDate departureDate;
 
     @Column(name = "train_id")
     private String trainId;
