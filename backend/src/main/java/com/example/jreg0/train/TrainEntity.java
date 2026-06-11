@@ -29,7 +29,6 @@ public class TrainEntity {
     @Column(name = "formation")
     private Integer formation;
 
-    @OneToMany(mappedBy = "train")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "train")
     private List<ScheduleEntity> schedules;
 }
-
