@@ -21,4 +21,6 @@ public class ReservationDetailResponseDto {
     private String arrivalStationName;
     private Time arrivalTime;
     private Integer departureTrack;
+    private String trainName;
+    private String trainNickname;
 }
