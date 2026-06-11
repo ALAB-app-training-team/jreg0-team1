@@ -1,7 +1,5 @@
 export type Detail = {
     id: string,
-    trainName: string,
-    trainNickName: string,
     reservationDate: string,
     departureDate: string,
     seatLocation: string,
@@ -12,4 +10,6 @@ export type Detail = {
     arrivalStationName: string,
     arrivalTime: string,
     departureTrack: number,
+    trainName: string,
+    trainNickname: string,
 };

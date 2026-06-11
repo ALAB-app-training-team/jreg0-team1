@@ -5,29 +5,12 @@ import ENDPOINT from "@/constants/Endpoint";
 import fetcher from "@/api/fetcher";
 
 function ReservationDetail() {
-     const testData: Detail = {
-    id: "testId",
-    trainName: "hayabusa-0",
-    trainNickName: "はやぶさ",
-    reservationDate: "2026-06-03",
-    departureDate: "2026-06-03",
-    seatLocation: "13C",
-    carNumber: 9,
-    seatType: "Gran",
-    departureStationName: "東京",
-    departureTime: "06:08",
-    arrivalStationName: "上野",
-    arrivalTime: "06:13",
-    departureTrack: 20,
-    };  // テスト
     const { id } = useParams();
     const navigate = useNavigate();
 
     let { data: details, error } = useSWR<Detail>(
         id ? ENDPOINT.DETAILS(id) : null, fetcher
     );
-    if(!details) details = testData;
-    const departureDate = new Date(details.departureDate);
 
     if(!id || error) return <h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>
     if(!details) return <h1>Now Loading...</h1>
@@ -39,40 +22,23 @@ function ReservationDetail() {
                     onClick={()=> navigate("/reservationComplete", {state: {reservationId: id}})}>
                     <span className="material-symbols-outlined">arrow_back</span>  戻る
                 </button>
-                <h1>
-                    予約確認
-                </h1>
+                <h1>予約確認</h1>
+
                 <div className="flex flex-col border border-primary/20 rounded-2xl p-8">
-                    <h1>
-                        {details.trainNickName}
-                    </h1>
-                    <h3>
-                        {details.trainName.split("-")[1]}号
-                    </h3>
+                    <h1>{details.trainNickname}</h1>
+                    <h3>{details.trainName.split("-")[1]}号</h3>
                 </div>
                 <div className="flex flex-col border border-primary/20 rounded-2xl p-8 gap-6">
                     <div className="flex">
                         <div className="flex flex-col grow-2">
-                            <h5>
-                                出発
-                            </h5>
-                            <h1>
-                                {details.departureTime}
-                            </h1>
-                            <h3>
-                                {details.departureStationName}
-                            </h3>
+                            <h5>出発</h5>
+                            <h1>{details.departureTime}</h1>
+                            <h3>{details.departureStationName}</h3>
                         </div>
                         <div className="flex flex-col grow-2">
-                            <h5>
-                                到着
-                            </h5>
-                            <h1>
-                                {details.arrivalTime}
-                            </h1>
-                            <h3>
-                                {details.arrivalStationName}
-                            </h3>
+                            <h5>到着</h5>
+                            <h1>{details.arrivalTime}</h1>
+                            <h3>{details.arrivalStationName}</h3>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -82,9 +48,9 @@ function ReservationDetail() {
                         </div>
                         <div className="flex gap-2">
                             <span className="material-symbols-outlined">schedule</span>
-                            {departureDate.getFullYear()}年
-                            {departureDate.getMonth()+1}月
-                            {departureDate.getDate()}日
+                            {details.departureDate.split("-")[0]}年
+                            {Number(details.departureDate.split("-")[1])}月
+                            {Number(details.departureDate.split("-")[2])}日
                         </div>
                     </div>
                     <div className="flex flex-col self-start gap-2">
