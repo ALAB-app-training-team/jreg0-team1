@@ -29,15 +29,10 @@ public class TrainControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockitoBean
     private TrainService trainService;
 
     private LocalDate departureDate;
-
-    private TrainEntity trainEntity;
 
     // モックの設定
     List<ScheduleEntity> mockScheduleList = new ArrayList<ScheduleEntity>();
