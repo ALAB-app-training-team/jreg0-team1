@@ -31,7 +31,9 @@ public class ReservationController {
                 reservationDetailResponse.getScheduleByDepartureStation().getDepartureTime(),
                 reservationDetailResponse.getArrivalStation().getStationName(),
                 reservationDetailResponse.getScheduleByArrivalStation().getArrivalTime(),
-                reservationDetailResponse.getScheduleByDepartureStation().getDepartureTrack()
+                reservationDetailResponse.getScheduleByDepartureStation().getDepartureTrack(),
+                reservationDetailResponse.getTrain().getTrainName(),
+                reservationDetailResponse.getTrain().getTrainNickname()
         );
         return ResponseEntity.ok(reservationDetailResponseDto);
     }

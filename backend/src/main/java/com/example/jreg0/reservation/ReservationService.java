@@ -7,6 +7,8 @@ import com.example.jreg0.seat.SeatEntity;
 import com.example.jreg0.seat.SeatRepository;
 import com.example.jreg0.station.StationEntity;
 import com.example.jreg0.station.StationRepository;
+import com.example.jreg0.train.TrainEntity;
+import com.example.jreg0.train.TrainRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,22 +22,22 @@ public class ReservationService {
     private final ReservationRepository _reservationRepository;
     private final SeatRepository _seatRepository;
     private final StationRepository _stationRepository;
-    private final CarRepository _carRepository;
     private final ScheduleRepository _scheduleRepository;
+    private final TrainRepository _trainRepository;
 
     @Autowired
     public ReservationService(
             ReservationRepository reservationRepository,
             SeatRepository seatRepository,
             StationRepository stationRepository,
-            CarRepository carRepository,
-            ScheduleRepository scheduleRepository
+            ScheduleRepository scheduleRepository,
+            TrainRepository trainRepository
     ) {
         _reservationRepository = reservationRepository;
         _seatRepository = seatRepository;
         _stationRepository = stationRepository;
-        _carRepository = carRepository;
         _scheduleRepository = scheduleRepository;
+        _trainRepository = trainRepository;
     }
 
     /**
@@ -63,10 +65,13 @@ public class ReservationService {
         Optional<ReservationEntity> optionalReservation = _reservationRepository.findById(reservationId);
         ReservationEntity reservation = optionalReservation.orElseThrow(() -> new EntityNotFoundException("予約が存在しません"));
 
+        Optional<TrainEntity> optionalTrain = _trainRepository.findById(reservation.getTrainId());
+        TrainEntity train = optionalTrain.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(列車)"));
+
         Optional<StationEntity> optionalDepartureStation = _stationRepository.findById(reservation.getDepartureStationId());
-        StationEntity departureStation = optionalDepartureStation.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(列車)"));
+        StationEntity departureStation = optionalDepartureStation.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(駅)"));
         Optional<StationEntity> optionalArrivalStation = _stationRepository.findById(reservation.getArrivalStationId());
-        StationEntity arrivalStation = optionalArrivalStation.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(列車)"));
+        StationEntity arrivalStation = optionalArrivalStation.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(駅)"));
 
         Optional<SeatEntity> optionalSeat = _seatRepository.findById(reservation.getSeatId());
         SeatEntity seat = optionalSeat.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(座席・号車)"));
@@ -83,7 +88,8 @@ public class ReservationService {
                 seat,
                 seat.getCar(),
                 departureSchedule,
-                arrivalSchedule
+                arrivalSchedule,
+                train
         );
         return reservationDetailResponse;
     }
