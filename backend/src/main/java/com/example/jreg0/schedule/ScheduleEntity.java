@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -29,7 +29,7 @@ public class ScheduleEntity {
     private Integer departureTrack;
 
     @Column(name = "departure_date",columnDefinition = "DATE")
-    private Date departureDate;
+    private LocalDate departureDate;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)

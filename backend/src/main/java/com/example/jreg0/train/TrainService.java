@@ -5,6 +5,7 @@ import com.example.jreg0.stopstation.StopStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,10 +32,10 @@ public class TrainService {
      * @param departureDate 出発日
      * @return 出発駅、到着駅、出発日が一致する列車一覧
      * */
-    public List<TrainEntity> getTrainByStation(String departureStationId, String arrivalStationId, Date departureDate) {
+    public List<TrainEntity> getTrainByStation(String departureStationId, String arrivalStationId, LocalDate departureDate) {
         List<String> routeSet = getRouteIds(departureStationId, arrivalStationId);
         List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
-        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().before(departureDate) && !schedule.getDepartureDate().after(departureDate)).toList()));
+        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().isBefore(departureDate) && !schedule.getDepartureDate().isAfter(departureDate)).toList()));
         trainList = filterByDepartureStation(departureStationId,trainList);
 
         return trainList;
