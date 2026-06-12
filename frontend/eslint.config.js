@@ -63,6 +63,7 @@ export default defineConfig([
             ],
             // ネストの深さ
             'max-depth': ['error', { max: 3 }],
+            complexity: ['error', { max: 10 }],
 
             'react/jsx-closing-tag-location': 'error',
             'react/jsx-curly-spacing': 'error',
@@ -81,7 +82,7 @@ export default defineConfig([
         settings: {
             react: { version: 'detect' },
         },
-        extends: ['js/recommended'],
+        extends: ['js/recommended', '@typescript-eslint/recommended'],
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
