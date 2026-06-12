@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ReservationInfo from '@/features/details/ReservationInfo';
 import ReservationComplete from '@/features/reservations/ReservationComplete';
 import TrainSearchResult from '@/features/searches/TrainSearchResult';
+import DeleteAllReservation from './features/manages/DeleteAllReservation';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         element={<ReservationComplete />}
                     />
                     <Route path="/details/:id" element={<ReservationInfo />} />
+                    <Route path="/delete-all-reservation" element={<DeleteAllReservation />} />
                 </Routes>
             </BrowserRouter>
         </>
