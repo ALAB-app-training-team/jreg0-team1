@@ -124,19 +124,4 @@ public class ReservationControllerTest {
         mockMvc.perform(post("/reservations").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockRequest))).andExpect(status().isCreated());
         verify(reservationService).registerReservation(any());
     }
-
-    private ReservationEntity convertToReservationEntity(ReservationRequestDto reservationDto) {
-        ReservationEntity entity = new ReservationEntity();
-        entity.setSeatId(reservationDto.getSeatId());
-        entity.setReservationDate(reservationDto.getReservationDate());
-        entity.setTrainId(reservationDto.getTrainId());
-        entity.setDepartureStationId(reservationDto.getDepartureStationId());
-        entity.setArrivalStationId(reservationDto.getArrivalStationId());
-        entity.setPaymentMethod(reservationDto.getPaymentMethod());
-        entity.setPaymentStatus(reservationDto.getPaymentStatus());
-        entity.setFee(reservationDto.getFee());
-        entity.setAccountId(reservationDto.getAccountId());
-
-        return entity;
-    }
 }
