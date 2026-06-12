@@ -49,6 +49,12 @@ public class ReservationController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> DeleteAllReservations(){
+        _reservationService.deleteAllReservations();
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * 予約リクエストDto → 予約Entityの変換を行う
      *

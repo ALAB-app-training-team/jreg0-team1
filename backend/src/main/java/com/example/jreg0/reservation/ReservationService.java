@@ -93,4 +93,12 @@ public class ReservationService {
         );
         return reservationDetailResponse;
     }
+
+    /**
+     * 予約を全削除するメソッド
+     */
+    @Transactional
+    public void deleteAllReservations(){
+        _reservationRepository.deleteAll();
+    }
 }
