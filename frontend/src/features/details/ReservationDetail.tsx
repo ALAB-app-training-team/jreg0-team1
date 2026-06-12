@@ -3,6 +3,7 @@ import useSWR from "swr";
 import type { Detail } from "@/features/details/types/Detail";
 import ENDPOINT from "@/constants/Endpoint";
 import fetcher from "@/api/fetcher";
+import Error from "@/components/layout/Error"
 
 function ReservationDetail() {
     const { id } = useParams();
@@ -12,7 +13,7 @@ function ReservationDetail() {
         id ? ENDPOINT.DETAILS(id) : null, fetcher
     );
 
-    if(!id || error) return <h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>
+    if(!id || error) return <Error />
     if(!details) return <h1>Now Loading...</h1>
 
     return (
