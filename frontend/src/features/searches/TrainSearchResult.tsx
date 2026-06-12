@@ -5,6 +5,7 @@ import ENDPOINT from "@/constants/Endpoint";
 import type { Train } from "@/features/searches/types/Train";
 import TrainSelectItem from "@/features/searches/TrainSelectItem";
 import TrainNoResults from "@/features/searches/TrainNotResults";
+import Error from "@/components/layout/Error"
 
 function TrainSearchResult(){
     const TOKYO_STATION_ID = "00000000";
@@ -22,7 +23,7 @@ function TrainSearchResult(){
     }
 
     if(error){
-        return (<h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>)
+        return <Error />
     }
 
     return (
