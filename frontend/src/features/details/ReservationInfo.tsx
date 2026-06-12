@@ -32,9 +32,6 @@ function ReservationInfo() {
                     </div>
                     <QRCodeSVG value={"jreg0-" + details.id} size={200} level="H" title="QRCode" imageSettings={{src:favicon, height:56, width:56, excavate: false}}/>
                     <h5>予約番号<br/>{details.id}</h5>
-                    <button>
-
-                    </button>
                 </div>
                 <div className="flex flex-col border border-primary/20 rounded-2xl p-8 gap-6">
                     <div className="flex">
