@@ -122,7 +122,7 @@ public class ReservationControllerTest {
         //予約登録のサービスモック定義
         when(reservationService.registerReservation(convertToReservationEntity(mockRequest))).thenReturn(Id);
 
-        mockMvc.perform(post("/reservations").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockRequest))).andDo(print()).andExpect(status().isCreated());
+        mockMvc.perform(post("/reservations").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockRequest))).andExpect(status().isCreated());
         verify(reservationService).registerReservation(convertToReservationEntity(mockRequest));
     }
 
