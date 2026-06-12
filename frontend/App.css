@@ -35,4 +35,7 @@
     padding: 1rem;
     border-radius: 0.5rem;
   }
+  .contained_btn:hover {
+    background-color: color-mix(in oklab, var(--color-primary) 80%, transparent)
+  }
 }
