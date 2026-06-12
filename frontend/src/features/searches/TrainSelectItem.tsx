@@ -7,13 +7,15 @@ import { httpMethod } from "@/types/HttpMethod";
 type TrainSelectItemProps = {
     train: Train,
     departureStationId: string,
-    arrivalStationId: string
+    arrivalStationId: string,
+    departureDate: string,
 };
 
 function TrainSelectItem({
     train,
     departureStationId,
     arrivalStationId,
+    departureDate
 }:TrainSelectItemProps){
     const trainNumber: string = train.trainName.split("-")[1];
     const departureTime = train.schedules.find(s => s.stationId === departureStationId)?.departureTime.slice(0,5);
@@ -26,6 +28,7 @@ function TrainSelectItem({
         const reserveToPost: Partial<Reservation> = {
             seatId: "",
             reservationDate: new Date().toISOString().split("T")[0],
+            departureDate: departureDate,
             trainId: train.id,
             departureStationId: departureStationId,
             arrivalStationId: arrivalStationId,

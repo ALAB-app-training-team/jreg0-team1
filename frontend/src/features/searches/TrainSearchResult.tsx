@@ -5,6 +5,7 @@ import ENDPOINT from "@/constants/Endpoint";
 import type { Train } from "@/features/searches/types/Train";
 import TrainSelectItem from "@/features/searches/TrainSelectItem";
 import TrainNoResults from "@/features/searches/TrainNotResults";
+import Error from "@/components/layout/Error"
 
 function TrainSearchResult(){
     const TOKYO_STATION_ID = "00000000";
@@ -22,11 +23,11 @@ function TrainSearchResult(){
     }
 
     if(error){
-        return (<h1>エラーが発生しました。しばらくしてから再度お試しください。</h1>)
+        return <Error />
     }
 
     return (
-    <div className="p-4 flex flex-col gap-4">
+    <div className="p-4 flex flex-col gap-4 max-w-4xl mx-auto">
         <h1>
             東京→上野
         </h1>
@@ -59,7 +60,8 @@ function TrainSearchResult(){
                 key={train.id}
                 train={train}
                 departureStationId={TOKYO_STATION_ID}
-                arrivalStationId={UENO_STATION_ID}/>
+                arrivalStationId={UENO_STATION_ID}
+                departureDate={date}/>
             ))
             : <TrainNoResults
             handleNextDateSearch={handleNextDateSearch}/>
