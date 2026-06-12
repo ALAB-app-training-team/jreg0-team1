@@ -158,7 +158,7 @@ public class ReservationServiceTest {
      * 予約Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase1() {
+    void checkReservationDetailTest_ErrorCase_一致するレコードがない場合はEntityNotFoundExceptionを返す() {
         //各種リポジトリモック定義
         when(reservationRepository.findById(Id)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
