@@ -4,6 +4,9 @@ import type { ReservationDetail } from "@/features/details/types/ReservationDeta
 import ENDPOINT from "@/constants/Endpoint";
 import fetcher from "@/api/fetcher";
 import Error from "@/components/layout/Error"
+import { QRCodeSVG } from "qrcode.react";
+import { useState } from "react";
+import favicon from "@/assets/favicon.png"
 
 function ReservationInfo() {
     const { id } = useParams();
@@ -23,9 +26,16 @@ function ReservationInfo() {
                     onClick={()=> navigate("/")}>
                     <span className="material-symbols-outlined">arrow_back</span>検索画面に戻る
                 </button>
-                <div className="flex flex-col border border-primary/20 rounded-2xl p-8 text-center">
-                    <h1>{details.trainNickname}</h1>
-                    <h3>{details.trainName.split("-")[1]}号</h3>
+                <div className="flex flex-col border border-primary/20 rounded-2xl p-8 text-center items-center gap-4">
+                    <div>
+                        <h1>{details.trainNickname}</h1>
+                        <h3>{details.trainName.split("-")[1]}号</h3>
+                    </div>
+                    <QRCodeSVG value={"jreg0-" + details.id} size={200} level="H" title="QRCode" imageSettings={{src:favicon, height:56, width:56, excavate: false}}/>
+                    <h5>予約番号<br/>{details.id}</h5>
+                    <button>
+
+                    </button>
                 </div>
                 <div className="flex flex-col border border-primary/20 rounded-2xl p-8 gap-6">
                     <div className="flex">
