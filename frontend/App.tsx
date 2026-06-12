@@ -3,7 +3,7 @@ import "material-symbols";
 import "./App.css";
 import TrainSearchResult from "@/features/searches/TrainSearchResult";
 import ReservationComplete from "@/features/reservations/ReservationComplete";
-import ReservationDetail from "@/features/details/ReservationDetail";
+import ReservationInfo from "@/features/details/ReservationInfo";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TrainSearchResult />} />
           <Route path="/reservationComplete" element={<ReservationComplete />} />
-          <Route path="/details/:id" element={<ReservationDetail />} />
+          <Route path="/details/:id" element={<ReservationInfo />} />
         </Routes>
       </BrowserRouter>
     </>

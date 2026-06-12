@@ -1,15 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import useSWR from "swr";
-import type { Detail } from "@/features/details/types/Detail";
+import type { ReservationDetail } from "@/features/details/types/ReservationDetail";
 import ENDPOINT from "@/constants/Endpoint";
 import fetcher from "@/api/fetcher";
 import Error from "@/components/layout/Error"
 
-function ReservationDetail() {
+function ReservationInfo() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    let { data: details, error } = useSWR<Detail>(
+    let { data: details, error } = useSWR<ReservationDetail>(
         id ? ENDPOINT.DETAILS(id) : null, fetcher
     );
 
@@ -64,4 +64,4 @@ function ReservationDetail() {
     )
 }
 
-export default ReservationDetail;
+export default ReservationInfo;

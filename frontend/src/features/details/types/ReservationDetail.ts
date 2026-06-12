@@ -1,4 +1,4 @@
-export type Detail = {
+export type ReservationDetail = {
     id: string,
     reservationDate: string,
     departureDate: string,
