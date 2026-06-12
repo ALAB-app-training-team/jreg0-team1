@@ -5,7 +5,6 @@ import ENDPOINT from "@/constants/Endpoint";
 import fetcher from "@/api/fetcher";
 import Error from "@/components/layout/Error"
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
 import favicon from "@/assets/favicon.png"
 
 function ReservationInfo() {
