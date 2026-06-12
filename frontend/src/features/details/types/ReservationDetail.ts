@@ -1,15 +1,15 @@
 export type ReservationDetail = {
-    id: string,
-    reservationDate: string,
-    departureDate: string,
-    seatLocation: string,
-    carNumber: number,
-    seatType: string,
-    departureStationName: string,
-    departureTime: string,
-    arrivalStationName: string,
-    arrivalTime: string,
-    departureTrack: number,
-    trainName: string,
-    trainNickname: string,
+    id: string;
+    reservationDate: string;
+    departureDate: string;
+    seatLocation: string;
+    carNumber: number;
+    seatType: string;
+    departureStationName: string;
+    departureTime: string;
+    arrivalStationName: string;
+    arrivalTime: string;
+    departureTrack: number;
+    trainName: string;
+    trainNickname: string;
 };
