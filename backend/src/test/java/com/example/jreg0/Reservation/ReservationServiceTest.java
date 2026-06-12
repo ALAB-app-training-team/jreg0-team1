@@ -48,8 +48,6 @@ public class ReservationServiceTest {
     private ReservationService reservationService;
 
     // モックの設定
-    List<ScheduleEntity> mockScheduleList = new ArrayList<ScheduleEntity>();
-
     SeatEntity mockSeatforRegister = new SeatEntity();
     SeatEntity mockSeatforGet = new SeatEntity();
 
@@ -109,7 +107,7 @@ public class ReservationServiceTest {
      *予約登録処理を行い、UUIDを生成して返却する*
      */
     @Test
-    void registerReservationTest_NomalCase1() {
+    void registerReservationTest_NomalCase_予約登録処理を実施しUUIDを生成して返却() {
 
         ReservationEntity savedReservation = new ReservationEntity();
 
@@ -133,7 +131,7 @@ public class ReservationServiceTest {
      * 予約Idに一致する予約データを取得する*
      */
     @Test
-    void checkReservationDetailTest_NomalCase1() {
+    void checkReservationDetailTest_NomalCase_予約IDに一致する予約データを取得する() {
         //各種リポジトリモック定義
         when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));

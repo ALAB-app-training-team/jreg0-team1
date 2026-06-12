@@ -75,7 +75,7 @@ public class TrainControllerTest {
      * 出発駅・到着駅・出発日に一致する列車を返却する*
      */
     @Test
-    void getTrainByStationTest_NomalCase1() throws Exception {
+    void getTrainByStationTest_NomalCase_引数に一致する列車を返却する() throws Exception {
         //列車取得のサービスモック定義
         when(trainService.getTrainByStation("00000000","00000001",departureDate)).thenReturn(List.of(mockTrain0));
 
@@ -86,7 +86,7 @@ public class TrainControllerTest {
      * パラメータが足りない場合は不正なリクエストとしてレスポンスを返さない*
      */
     @Test
-    void getTrainByStationTest_ErrorCase1() throws Exception {
+    void getTrainByStationTest_ErrorCase_パラメータが足りない場合レスポンスなし() throws Exception {
         mockMvc.perform(get("/trains").param("start","00000000").param("end","00000001")).andExpect(status().isBadRequest());
     }
 
