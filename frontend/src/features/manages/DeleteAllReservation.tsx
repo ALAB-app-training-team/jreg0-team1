@@ -1,11 +1,32 @@
+import ENDPOINT from "@/constants/Endpoint"
+import Error from "@/components/layout/Error";
+import { useNavigate } from "react-router-dom";
 
 
 function DeleteAllReservation() {
+    const navigate = useNavigate();
     const handleDeleteAll = async() => {
+        const response = await fetch(ENDPOINT.RESERVATIONS,{
+            method: "DELETE"
+        });
+        if (response.ok){
+            return (
+                <div className="flex place-items-center">
+                    <h1 className="text-center">
+                        削除しました
+                    </h1>
+                    <button className="contained_btn" onClick={()=> navigate("/")}>
+                        検索画面に戻る
+                    </button>
+                </div>
+            )
+        } else {
+            return <Error />
+        }
     }
 
     return (
-        <button className="contained_btn" onClick={()=>handleDeleteAll()}>
+        <button className="flex contained_btn place-self-center bg-logout hover:bg-logout/50" onClick={()=>handleDeleteAll()}>
             予約を全削除
         </button>
     )
