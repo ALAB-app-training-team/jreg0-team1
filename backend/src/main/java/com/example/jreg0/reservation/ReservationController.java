@@ -51,8 +51,12 @@ public class ReservationController {
 
     @DeleteMapping
     public ResponseEntity<Void> DeleteAllReservations(){
-        _reservationService.deleteAllReservations();
-        return ResponseEntity.noContent().build();
+        try{
+            _reservationService.deleteAllReservations();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**
