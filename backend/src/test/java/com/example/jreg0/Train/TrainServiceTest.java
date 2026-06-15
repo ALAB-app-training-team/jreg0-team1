@@ -90,7 +90,7 @@ public class TrainServiceTest {
      * 出発駅・到着駅・出発日に一致する列車が存在する場合該当列車を取得する。*
      */
     @Test
-    void getTrainByStationTest_NomalCase1() {
+    void getTrainByStationTest_NomalCase_引数に一致する列車が存在する場合は該当列車を取得() {
         //停車駅のリポジトリモック定義
         when(stopStationRepository.findByIdStationId("00000000")).thenReturn(List.of(mockStopStation0));
 
@@ -110,7 +110,7 @@ public class TrainServiceTest {
      * 出発駅・到着駅・出発日に一致する列車が存在しない場合結果は0件になる*
      */
     @Test
-    void getTrainByStationTest_NomalCase2() {
+    void getTrainByStationTest_NomalCase_一致する列車が存在しない場合結果が0件() {
         //停車駅のリポジトリモック定義
         when(stopStationRepository.findByIdStationId("00000000")).thenReturn(List.of(mockStopStation0));
 
