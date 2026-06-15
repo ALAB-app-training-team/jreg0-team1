@@ -14,7 +14,6 @@ jobs:
     frontend:
         name: Frontend (lint/test/build)
         runs-on: ubuntu-latest
-        if: ${{ hashFiles('frontend/package-lock.json') != '' }}
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -41,7 +40,6 @@ jobs:
     backend:
         name: Backend (test/build)
         runs-on: ubuntu-latest
-        if: ${{ hashFiles('backend/gradlew') != '' }}
         steps:
             - uses: actions/checkout@v4
             - name: Set up Java
