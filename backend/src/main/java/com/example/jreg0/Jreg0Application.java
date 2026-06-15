@@ -19,7 +19,7 @@ public class Jreg0Application {
 	 * @return OK
 	 * */
 	@GetMapping("/")
-	public String HealthCheck(){
+	public String checkHealth(){
 		return "Ok";
 	}
 }

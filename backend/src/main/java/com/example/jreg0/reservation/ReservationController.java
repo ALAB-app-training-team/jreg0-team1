@@ -18,7 +18,7 @@ public class ReservationController {
     }
 
     @GetMapping(value = "{id}")
-    public  ResponseEntity<ReservationDetailResponseDto> GetReservationDetailById(@PathVariable("id") String id){
+    public  ResponseEntity<ReservationDetailResponseDto> getReservationDetailById(@PathVariable("id") String id){
         ReservationDetailResponse reservationDetailResponse = _reservationService.checkReservationDetail(id);
         ReservationDetailResponseDto reservationDetailResponseDto = new ReservationDetailResponseDto(
                 reservationDetailResponse.getReservation().getId(),
@@ -39,11 +39,21 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<String> ReserveSeat(@RequestBody ReservationRequestDto reservation) {
+    public ResponseEntity<String> reserveSeat(@RequestBody ReservationRequestDto reservation) {
         try {
             String reservationId = String.valueOf(_reservationService.registerReservation(convertToReservationEntity(reservation)));
             URI location = new URI( "/reservations/"+ reservationId);
             return ResponseEntity.created(location).body(reservationId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllReservations(){
+        try{
+            _reservationService.deleteAllReservations();
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

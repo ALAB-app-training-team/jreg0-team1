@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,7 +104,7 @@ public class ReservationControllerTest {
      * Idが一致する予約情報を取得する*
      */
     @Test
-    void getReservationDetailByIdTest_NomalCase_予約IDが一致する予約情報を取得する() throws Exception {
+    void getReservationDetailByIdTest_NormalCase_予約IDが一致する予約情報を取得する() throws Exception {
         //予約取得のサービスモック定義
         when(reservationService.checkReservationDetail(Id.toString())).thenReturn(mockResponse);
 
@@ -117,11 +116,17 @@ public class ReservationControllerTest {
      * 予約情報を登録する*
      */
     @Test
-    void reserveSeatTest_NomalCase_予約情報を登録する() throws Exception {
+    void reserveSeatTest_NormalCase_予約情報を登録する() throws Exception {
         //予約登録のサービスモック定義
         when(reservationService.registerReservation(any())).thenReturn(Id);
 
         mockMvc.perform(post("/reservations").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockRequest))).andExpect(status().isCreated());
         verify(reservationService).registerReservation(any());
+    }
+
+    @Test
+    void deleteAllReservations_NormalCase_予約情報を全削除する() throws Exception {
+        mockMvc.perform(delete("/reservations")).andExpect(status().isNoContent());
+        verify(reservationService).deleteAllReservations();
     }
 }
