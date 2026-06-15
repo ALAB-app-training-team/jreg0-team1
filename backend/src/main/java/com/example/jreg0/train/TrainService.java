@@ -37,8 +37,7 @@ public class TrainService {
         List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
         trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().isBefore(departureDate) && !schedule.getDepartureDate().isAfter(departureDate)).toList()));
         trainList = filterByDepartureStation(departureStationId,trainList);
-
-        return trainList;
+        return sortByDepartureStation(departureStationId,trainList);
     }
 
     /**
@@ -66,5 +65,16 @@ public class TrainService {
             ScheduleEntity earliestSchedule = train.getSchedules().stream().filter(schedule -> schedule.getDepartureTime() != null).min(Comparator.comparing(ScheduleEntity::getDepartureTime)).orElse(null);
             return earliestSchedule != null && departureStationId.equals(earliestSchedule.getStationId());
         }).toList();
+    }
+
+    /**
+     * 出発時間が速い順でソートする
+     *
+     * @param departureStationId 出発駅
+     * @param trainList 列車一覧
+     * @return 出発駅が一致する列車一覧
+     * */
+    private List<TrainEntity> sortByDepartureStation(String departureStationId, List<TrainEntity> trainList) {
+        return trainList.stream().sorted(Comparator.comparing(trainEntity -> trainEntity.getSchedules().stream().filter(scheduleEntity -> Objects.equals(scheduleEntity.getStationId(), departureStationId)).findFirst().map(ScheduleEntity::getDepartureTime).orElse(null),Comparator.nullsLast(Comparator.naturalOrder()))).toList();
     }
 }
