@@ -158,9 +158,66 @@ public class ReservationServiceTest {
      * 予約Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase_一致するレコードがない場合はEntityNotFoundExceptionを返す() {
-        //各種リポジトリモック定義
+    void checkReservationDetailTest_ErrorCase_予約IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+        //リポジトリモック定義
         when(reservationRepository.findById(Id)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        assertAll(() -> assertEquals("予約が存在しません",exception.getMessage()));
+    }
+
+    /**
+     * 列車Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
+     */
+    @Test
+    void checkReservationDetailTest_ErrorCase_列車IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+        //リポジトリモック定義
+        when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
+        when(trainRepository.findById("00000000")).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        assertAll(() -> assertEquals("予約に紐づくデータが存在しません(列車)",exception.getMessage()));
+    }
+
+    /**
+     * 駅Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
+     */
+    @Test
+    void checkReservationDetailTest_ErrorCase_駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+        //リポジトリモック定義
+        when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
+        when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
+        when(stationRepository.findById("00000000")).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        assertAll(() -> assertEquals("予約に紐づくデータが存在しません(駅)",exception.getMessage()));
+    }
+
+    /**
+     * 座席Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
+     */
+    @Test
+    void checkReservationDetailTest_ErrorCase_座席IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+        //リポジトリモック定義
+        when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
+        when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
+        when(stationRepository.findById("00000000")).thenReturn(Optional.of(mockDepartureStation));
+        when(stationRepository.findById("00000001")).thenReturn(Optional.of(mockArrivalStation));
+        when(seatRepository.findById("1A")).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        assertAll(() -> assertEquals("予約に紐づくデータが存在しません(座席・号車)",exception.getMessage()));
+    }
+
+    /**
+     * 時刻表取得時に列車Idと駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す*
+     */
+    @Test
+    void checkReservationDetailTest_ErrorCase_時刻表取得時に列車IDと駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+        //リポジトリモック定義
+        when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
+        when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
+        when(stationRepository.findById("00000000")).thenReturn(Optional.of(mockDepartureStation));
+        when(stationRepository.findById("00000001")).thenReturn(Optional.of(mockArrivalStation));
+        when(seatRepository.findById("1A")).thenReturn(Optional.of(mockSeatforGet));
+        when(scheduleRepository.findByTrainIdAndStationId("00000000","00000000")).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
+        assertAll(() -> assertEquals("予約に紐づくデータが存在しません(時刻表)",exception.getMessage()));
     }
 }
