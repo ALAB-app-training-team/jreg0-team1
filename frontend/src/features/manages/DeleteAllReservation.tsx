@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Error from '@/components/layout/Error';
 import ENDPOINT from '@/constants/Endpoint';
+import { httpMethod } from '@/types/HttpMethod';
 
 function DeleteAllReservation() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ function DeleteAllReservation() {
     const handleDeleteAll = async () => {
         try {
             const response = await fetch(ENDPOINT.RESERVATIONS, {
-                method: 'DELETE',
+                method: httpMethod.DELETE,
             });
             setStatus(response.ok ? 'done' : 'error');
         } catch {
