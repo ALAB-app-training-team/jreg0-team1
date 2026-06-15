@@ -107,7 +107,7 @@ public class ReservationServiceTest {
      *予約登録処理を行い、UUIDを生成して返却する*
      */
     @Test
-    void registerReservationTest_NomalCase_予約登録処理を実施しUUIDを生成して返却() {
+    void registerReservationTest_NormalCase_予約登録処理を実施しUUIDを生成して返却() {
 
         ReservationEntity savedReservation = new ReservationEntity();
 
@@ -131,7 +131,7 @@ public class ReservationServiceTest {
      * 予約Idに一致する予約データを取得する*
      */
     @Test
-    void checkReservationDetailTest_NomalCase_予約IDに一致する予約データを取得する() {
+    void checkReservationDetailTest_NormalCase_予約IDに一致する予約データを取得する() {
         //各種リポジトリモック定義
         when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
@@ -163,5 +163,4 @@ public class ReservationServiceTest {
         when(reservationRepository.findById(Id)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
     }
-
 }

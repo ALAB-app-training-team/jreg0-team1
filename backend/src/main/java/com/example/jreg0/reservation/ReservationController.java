@@ -49,6 +49,16 @@ public class ReservationController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> DeleteAllReservations(){
+        try{
+            _reservationService.deleteAllReservations();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     /**
      * 予約リクエストDto → 予約Entityの変換を行う
      *
