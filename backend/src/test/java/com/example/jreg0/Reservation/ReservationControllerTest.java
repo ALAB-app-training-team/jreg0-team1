@@ -127,5 +127,6 @@ public class ReservationControllerTest {
     @Test
     void deleteAllReservations_NormalCase_予約情報を全削除する() throws Exception {
         mockMvc.perform(delete("/reservations")).andExpect(status().isNoContent());
+        verify(reservationService).deleteAllReservations();
     }
 }
