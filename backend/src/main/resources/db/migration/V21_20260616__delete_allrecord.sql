@@ -1,16 +1,16 @@
 DELETE FROM reservation;
 
-DELETE FROM car;
-
-DELETE FROM seat;
+DELETE FROM stopstation;
 
 DELETE FROM schedule;
 
+DELETE FROM station;
+
+DELETE FROM seat;
+
+DELETE FROM car;
+
 DELETE FROM train;
 
-DELETE FROM stopstation;
-
 DELETE FROM route;
-
-DELETE FROM station;
 
