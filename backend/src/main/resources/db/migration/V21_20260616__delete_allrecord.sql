@@ -13,3 +13,4 @@ DELETE FROM stopstation;
 DELETE FROM route;
 
 DELETE FROM station;
+
