@@ -1,5 +1,4 @@
 package com.example.jreg0.train;
-
 import com.example.jreg0.schedule.ScheduleResponseDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -17,16 +14,16 @@ import java.util.stream.Collectors;
 public class TrainController {
     private final TrainService _trainService;
 
-    public TrainController(TrainService trainService) {
+    public TrainController(TrainService trainService){
         this._trainService = trainService;
     }
 
     @GetMapping
     public List<TrainResponseDto> getTrains(
-            @RequestParam(name = "start") String departureStationId,
-            @RequestParam(name = "end") String arrivalStationId,
-            @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate) {
-        List<TrainEntity> trainEntities = this._trainService.getTrainByStation(departureStationId, arrivalStationId, departureDate);
+            @RequestParam(name="start") String boardingStationId,
+            @RequestParam(name="end") String destinationStationId,
+            @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date departure_date){
+        List<TrainEntity> trainEntities = this._trainService.getTrainByStation(boardingStationId,destinationStationId,departure_date);
 
         return trainEntities.stream().map(this::convertToTrainResponseDto).collect(Collectors.toList());
     }
@@ -36,8 +33,7 @@ public class TrainController {
      *
      * @param train Entityの列車
      * @return DTOの列車
-     *
-     */
+     * */
     private TrainResponseDto convertToTrainResponseDto(TrainEntity train) {
 
         List<ScheduleResponseDto> scheduleResponseDtos = new ArrayList<>(train.getSchedules().stream().map(s ->
