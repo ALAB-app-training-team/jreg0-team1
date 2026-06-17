@@ -2,7 +2,7 @@ INSERT INTO train(id, train_number, train_name, route_id, train_nickname, format
 values ('HYB001', '3001B', 'hayabusa-1', 'THK01','はやぶさ', 10),
        ('HYB002', '1002B', 'hayabusa-2', 'THK01','はやぶさ', 10),
        ('HYB003', '3003B', 'hayabusa-3', 'THK01','はやぶさ', 10),
-       ('HYB004', '5B', 'hayabusa-4', 'THK01','はやぶさ', 10),
+       ('HYB004', '4B', 'hayabusa-4', 'THK01','はやぶさ', 10),
        ('HYB005', '5B', 'hayabusa-5', 'THK01','はやぶさ', 10),
        ('HYB006', '3006B', 'hayabusa-6', 'THK01','はやぶさ', 10),
        ('HYB007', '3007B', 'hayabusa-7', 'THK01','はやぶさ', 10),
