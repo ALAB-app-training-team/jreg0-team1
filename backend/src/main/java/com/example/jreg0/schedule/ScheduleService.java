@@ -7,10 +7,10 @@ import java.util.List;
 
 @Service
 public class ScheduleService {
-    private ScheduleRepository _scheduleRepository;
+    private final ScheduleRepository _scheduleRepository;
 
     @Autowired
-    public void ScheduleRepository(ScheduleRepository scheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository) {
         this._scheduleRepository = scheduleRepository;
     }
 

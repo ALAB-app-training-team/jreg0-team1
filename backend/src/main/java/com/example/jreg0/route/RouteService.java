@@ -7,10 +7,10 @@ import java.util.List;
 
 @Service
 public class RouteService {
-    private RouteRepository _routeRepository;
+    private final RouteRepository _routeRepository;
 
     @Autowired
-    public void RouteRepository(RouteRepository routeRepository) {
+    public RouteService(RouteRepository routeRepository) {
         this._routeRepository = routeRepository;
     }
 

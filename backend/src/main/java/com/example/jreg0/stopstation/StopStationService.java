@@ -7,10 +7,10 @@ import java.util.List;
 
 @Service
 public class StopStationService {
-    private StopStationRepository _stopStationRepository;
+    private final StopStationRepository _stopStationRepository;
 
     @Autowired
-    public void StopStationRepository(StopStationRepository stopstationRepository) {
+    public StopStationService(StopStationRepository stopstationRepository) {
         this._stopStationRepository = stopstationRepository;
     }
 

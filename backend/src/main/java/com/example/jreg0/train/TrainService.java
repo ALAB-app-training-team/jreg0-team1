@@ -35,7 +35,7 @@ public class TrainService {
     public List<TrainEntity> getTrainByStation(String departureStationId, String arrivalStationId, LocalDate departureDate) {
         List<String> routeSet = getRouteIds(departureStationId, arrivalStationId);
         List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
-        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().isBefore(departureDate) && !schedule.getDepartureDate().isAfter(departureDate)).toList()));
+        trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().isBefore(departureDate) && !schedule.getDepartureDate().isAfter(departureDate) && (schedule.getStationId() == departureStationId || schedule.getStationId() == arrivalStationId)).toList()));
         trainList = filterByDepartureStation(departureStationId,trainList);
         return sortByDepartureStation(departureStationId,trainList);
     }
@@ -62,6 +62,9 @@ public class TrainService {
      * */
     private List<TrainEntity> filterByDepartureStation(String departureStationId, List<TrainEntity> trainList) {
         return trainList.stream().filter(train -> {
+            if(train.getSchedules().size() != 2){
+                return false;
+            }
             ScheduleEntity earliestSchedule = train.getSchedules().stream().filter(schedule -> schedule.getDepartureTime() != null).min(Comparator.comparing(ScheduleEntity::getDepartureTime)).orElse(null);
             return earliestSchedule != null && departureStationId.equals(earliestSchedule.getStationId());
         }).toList();

@@ -34,12 +34,16 @@ public class TrainServiceTest {
     private TrainService trainService;
 
     // モックの設定
-    List<ScheduleEntity> mockScheduleList = new ArrayList<ScheduleEntity>();
+    List<ScheduleEntity> mockScheduleList0 = new ArrayList<ScheduleEntity>();
+    List<ScheduleEntity> mockScheduleList1 = new ArrayList<ScheduleEntity>();
 
     ScheduleEntity mockSchedule0 = new ScheduleEntity();
     ScheduleEntity mockSchedule1 = new ScheduleEntity();
+    ScheduleEntity mockSchedule2 = new ScheduleEntity();
+    ScheduleEntity mockSchedule3 = new ScheduleEntity();
 
     TrainEntity mockTrain0 = new TrainEntity();
+    TrainEntity mockTrain1 = new TrainEntity();
 
     StopStationEntity mockStopStation0 = new StopStationEntity();
     StopStationEntity mockStopStation1 = new StopStationEntity();
@@ -51,17 +55,31 @@ public class TrainServiceTest {
         //スケジュールのデータセット
         mockSchedule0.setId("00000000");
         mockSchedule0.setStationId("00000000");
-        mockSchedule0.setDepartureTime(new Time(15, 00, 00));
-        mockSchedule0.setArrivalTime(new Time(15, 10, 00));
+        mockSchedule0.setDepartureTime(new Time(15, 10, 00));
+        mockSchedule0.setArrivalTime(new Time(15, 00, 00));
         mockSchedule0.setDepartureTrack(1);
         mockSchedule0.setDepartureDate(LocalDate.of(2026, 6, 3));
 
         mockSchedule1.setId("00000001");
         mockSchedule1.setStationId("00000001");
-        mockSchedule1.setDepartureTime(new Time(15, 15, 00));
-        mockSchedule1.setArrivalTime(new Time(15, 25, 00));
+        mockSchedule1.setDepartureTime(new Time(15, 25, 00));
+        mockSchedule1.setArrivalTime(new Time(15, 15, 00));
         mockSchedule1.setDepartureTrack(1);
         mockSchedule1.setDepartureDate(LocalDate.of(2026, 6, 3));
+
+        mockSchedule2.setId("00000002");
+        mockSchedule2.setStationId("00000000");
+        mockSchedule2.setDepartureTime(new Time(15, 10, 00));
+        mockSchedule2.setArrivalTime(new Time(15, 00, 00));
+        mockSchedule2.setDepartureTrack(1);
+        mockSchedule2.setDepartureDate(LocalDate.of(2026, 6, 3));
+
+        mockSchedule3.setId("00000003");
+        mockSchedule3.setStationId("00000002");
+        mockSchedule3.setDepartureTime(new Time(15, 25, 00));
+        mockSchedule3.setArrivalTime(new Time(15, 15, 00));
+        mockSchedule3.setDepartureTrack(1);
+        mockSchedule3.setDepartureDate(LocalDate.of(2026, 6, 3));
 
         //列車のデータセット
         mockTrain0.setId("00000000");
@@ -71,11 +89,24 @@ public class TrainServiceTest {
         mockTrain0.setTrainNickname("はやぶさ");
         mockTrain0.setFormation(12);
 
+        mockTrain1.setId("00000001");
+        mockTrain1.setTrainNumber("0001");
+        mockTrain1.setTrainName("hayabusa-1");
+        mockTrain1.setRouteId("00000000");
+        mockTrain1.setTrainNickname("はやぶさ");
+        mockTrain1.setFormation(10);
+
         mockSchedule0.setTrain(mockTrain0);
         mockSchedule1.setTrain(mockTrain0);
-        mockScheduleList.add(mockSchedule0);
-        mockScheduleList.add(mockSchedule1);
-        mockTrain0.setSchedules(mockScheduleList);
+        mockScheduleList0.add(mockSchedule0);
+        mockScheduleList0.add(mockSchedule1);
+        mockTrain0.setSchedules(mockScheduleList0);
+
+        mockSchedule2.setTrain(mockTrain1);
+        mockSchedule3.setTrain(mockTrain1);
+        mockScheduleList1.add(mockSchedule2);
+        mockScheduleList1.add(mockSchedule3);
+        mockTrain1.setSchedules(mockScheduleList1);
 
         //停車駅のデータセット
         mockStopStationId0.setRouteId("00000000");
@@ -90,27 +121,25 @@ public class TrainServiceTest {
      * 出発駅・到着駅・出発日に一致する列車が存在する場合該当列車を取得する。*
      */
     @Test
-    void getTrainByStationTest_NomalCase_引数に一致する列車が存在する場合は該当列車を取得() {
+    void getTrainByStationTest_NormalCase_引数に一致する列車が存在する場合は該当列車を取得() {
         //停車駅のリポジトリモック定義
         when(stopStationRepository.findByIdStationId("00000000")).thenReturn(List.of(mockStopStation0));
-
         when(stopStationRepository.findByIdStationId("00000001")).thenReturn(List.of(mockStopStation1));
 
         //列車のリポジトリモック定義
-        when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0));
+        when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0, mockTrain1));
 
         List<TrainEntity> result = trainService.getTrainByStation("00000000", "00000001", LocalDate.of(2026, 6, 3));
 
         assertEquals(1, result.size());
         assertEquals(mockTrain0.getId(), result.getFirst().getId());
-
     }
 
     /**
      * 出発駅・到着駅・出発日に一致する列車が存在しない場合結果は0件になる*
      */
     @Test
-    void getTrainByStationTest_NomalCase_一致する列車が存在しない場合結果が0件() {
+    void getTrainByStationTest_NormalCase_一致する列車が存在しない場合結果が0件() {
         //停車駅のリポジトリモック定義
         when(stopStationRepository.findByIdStationId("00000000")).thenReturn(List.of(mockStopStation0));
 
