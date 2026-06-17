@@ -12,9 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StationController.class)
@@ -37,7 +39,9 @@ public class StationControllerTest {
     void getStations_NormalCase_すべての駅を返却する() throws Exception {
         when(stationService.getAll()).thenReturn(List.of(mockStation));
 
-        mockMvc.perform(get("/stations")).andExpect(status().isOk());
+        mockMvc.perform(get("/stations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(mockStation.getId()));
         verify(stationService).getAll();
     }
 }
