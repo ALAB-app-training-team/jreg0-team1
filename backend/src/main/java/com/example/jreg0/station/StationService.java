@@ -10,7 +10,7 @@ public class StationService {
     private StationRepository _stationRepository;
 
     @Autowired
-    public void StationRepository(StationRepository stationRepository) {
+    public StationService(StationRepository stationRepository) {
         this._stationRepository = stationRepository;
     }
 
