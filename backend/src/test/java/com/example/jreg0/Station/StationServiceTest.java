@@ -85,7 +85,7 @@ public class StationServiceTest {
         when(stationRepository.findAllById(List.of(stationId, "TKY01"))).thenReturn(List.of(mockStation, mockStationOnSameRoute));
 
         List<StationEntity> stationEntities = stationService.getStationsOnSameRouteById(stationId);
-        assertEquals(List.of(mockStation, mockStationOnSameRoute), stationEntities);
+        assertEquals(List.of(mockStationOnSameRoute), stationEntities);
         verify(stopStationRepository).findByIdStationId(stationId);
         verify(stopStationRepository).findByIdRouteId("THK01");
         verify(stationRepository).findAllById(List.of(stationId, "TKY01"));

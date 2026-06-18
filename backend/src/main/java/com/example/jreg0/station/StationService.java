@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -25,7 +26,7 @@ public class StationService {
     public List<StationEntity> getStationsOnSameRouteById(String stationId) {
         List<String> routeIdList = _stopStationRepository.findByIdStationId(stationId).stream().map(stopstation -> stopstation.getId().getRouteId()).toList();
         List<String> stationIdList = routeIdList.stream().flatMap(routeId -> _stopStationRepository.findByIdRouteId(routeId).stream().map(stopStationEntity -> stopStationEntity.getId().getStationId())).distinct().toList();
-        List<StationEntity> stationEntityList = _stationRepository.findAllById(stationIdList);
+        List<StationEntity> stationEntityList = _stationRepository.findAllById(stationIdList).stream().filter(stationEntity -> !Objects.equals(stationEntity.getId(), stationId)).toList();
         return stationEntityList;
     }
 }

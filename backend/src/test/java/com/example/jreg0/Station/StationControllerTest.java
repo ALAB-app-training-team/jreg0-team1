@@ -48,7 +48,7 @@ public class StationControllerTest {
     void getStationsOnSameRouteById_NormalCase_駅Idと一致した経路内の駅取得() throws  Exception {
         when(stationService.getStationsOnSameRouteById(mockStation.getId())).thenReturn(List.of(mockStation));
 
-        mockMvc.perform(get("/stations/"+mockStation.getId()+"/routes/stations"))
+        mockMvc.perform(get("/stations/"+mockStation.getId()+"/reachable-stations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(mockStation.getId()));
         verify(stationService).getStationsOnSameRouteById(mockStation.getId());

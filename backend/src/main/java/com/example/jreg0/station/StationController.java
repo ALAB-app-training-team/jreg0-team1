@@ -25,7 +25,7 @@ public class StationController {
         return stationEntities;
     }
 
-    @GetMapping("{id}/routes/stations")
+    @GetMapping("{id}/reachable-stations")
     public List<StationEntity> getStationsOnSameRouteById(@PathVariable String id){
         List<StationEntity> stationEntities = _stationService.getStationsOnSameRouteById(id);
 
