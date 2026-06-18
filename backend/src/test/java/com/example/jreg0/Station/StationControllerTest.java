@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,5 +42,15 @@ public class StationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(mockStation.getId()));
         verify(stationService).getAll();
+    }
+
+    @Test
+    void getStationsOnSameRouteById_NormalCase_駅Idと一致した経路内の駅取得() throws  Exception {
+        when(stationService.getStationsOnSameRouteById(mockStation.getId())).thenReturn(List.of(mockStation));
+
+        mockMvc.perform(get("/stations/"+mockStation.getId()+"/routes/stations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(mockStation.getId()));
+        verify(stationService).getStationsOnSameRouteById(mockStation.getId());
     }
 }

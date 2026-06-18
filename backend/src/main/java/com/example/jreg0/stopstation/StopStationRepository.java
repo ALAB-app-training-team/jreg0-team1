@@ -10,5 +10,6 @@ import java.util.List;
 public interface StopStationRepository extends JpaRepository<StopStationEntity, StopStationIdEntity> {
 
     List<StopStationEntity> findByIdStationId(String stationId);
+    List<StopStationEntity> findByIdRouteId(String routeId);
 }
 
