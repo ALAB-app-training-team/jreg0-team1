@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -11,8 +11,6 @@ import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 
 function TrainSearchResult() {
-    // const TOKYO_STATION_ID = '00000000';
-    // const UENO_STATION_ID = '00000001';
     const [date, setDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
@@ -27,7 +25,27 @@ function TrainSearchResult() {
         ENDPOINT.STATIONS,
         fetcher,
     );
+    const [displayStation, setDisplayStation] = useState<{
+        departureStation: Station;
+        arrivalStation: Station;
+    }>({
+        departureStation: { id: '', stationName: '' },
+        arrivalStation: { id: '', stationName: '' },
+    });
 
+    useEffect(() => {
+        if (stations && stations.length > 0) {
+            setDisplayStation({
+                departureStation:
+                    stations.find(
+                        (sta) => sta.id == searchDepartureStationId,
+                    ) ?? stations[0],
+                arrivalStation:
+                    stations.find((sta) => sta.id == searchArrivalStationId) ??
+                    stations[0],
+            });
+        }
+    });
     const {
         data: trains,
         trigger,
@@ -119,38 +137,28 @@ function TrainSearchResult() {
                 <div className="ml-auto shrink-0 place-self-end">
                     <button
                         className="contained_btn flex items-center"
-                        onClick={() => trigger()}
+                        onClick={() => {
+                            trigger();
+                        }}
                         disabled={ismutating}
                     >
                         <span className="material-symbols-outlined">
                             search
                         </span>
-                        日付指定
+                        検索
                     </button>
                 </div>
             </div>
             <div className="flex">
-                {trains &&
-                    searchDepartureStationId &&
-                    searchArrivalStationId && (
-                        <h1>
-                            {
-                                stations.find(
-                                    (station) =>
-                                        station.id == searchDepartureStationId,
-                                )?.stationName
-                            }
-                            <span className="material-symbols-outlined">
-                                arrow_forward
-                            </span>
-                            {
-                                stations.find(
-                                    (station) =>
-                                        station.id == searchArrivalStationId,
-                                )?.stationName
-                            }
-                        </h1>
-                    )}
+                {trains && displayStation && (
+                    <h1>
+                        {displayStation.departureStation.stationName}
+                        <span className="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+                        {displayStation.arrivalStation.stationName}
+                    </h1>
+                )}
             </div>
             <div className="flex justify-end">
                 <h5>{trains ? trains.length : 0}件の列車が見つかりました</h5>
@@ -160,8 +168,8 @@ function TrainSearchResult() {
                     <TrainSelectItem
                         key={train.id}
                         train={train}
-                        departureStationId={searchDepartureStationId}
-                        arrivalStationId={searchArrivalStationId}
+                        departureStation={displayStation.departureStation}
+                        arrivalStation={displayStation.arrivalStation}
                         departureDate={date}
                     />
                 ))

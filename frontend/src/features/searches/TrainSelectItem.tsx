@@ -1,29 +1,30 @@
 import { useNavigate } from 'react-router-dom';
 
 import { type Reservation } from '@/features/reservations/types/Reservation';
+import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 import usePostReservation from '@/hooks/usePostReservation';
 import { httpMethod } from '@/types/HttpMethod';
 
 type TrainSelectItemProps = {
     train: Train;
-    departureStationId: string;
-    arrivalStationId: string;
+    departureStation: Station;
+    arrivalStation: Station;
     departureDate: string;
 };
 
 function TrainSelectItem({
     train,
-    departureStationId,
-    arrivalStationId,
+    departureStation,
+    arrivalStation,
     departureDate,
 }: TrainSelectItemProps) {
     const trainNumber: string = train.trainName.split('-')[1];
     const departureTime = train.schedules
-        .find((s) => s.stationId === departureStationId)
+        .find((s) => s.stationId === departureStation.id)
         ?.departureTime.slice(0, 5);
     const arrivalTime = train.schedules
-        .find((s) => s.stationId === arrivalStationId)
+        .find((s) => s.stationId === arrivalStation.id)
         ?.arrivalTime.slice(0, 5);
     const { trigger: postTrigger } = usePostReservation();
     const navigate = useNavigate();
@@ -34,8 +35,8 @@ function TrainSelectItem({
             reservationDate: new Date().toISOString().split('T')[0],
             departureDate: departureDate,
             trainId: train.id,
-            departureStationId: departureStationId,
-            arrivalStationId: arrivalStationId,
+            departureStationId: departureStation.id,
+            arrivalStationId: arrivalStation.id,
             paymentMethod: '',
             paymentStatus: '',
             fee: 2600,
@@ -62,12 +63,12 @@ function TrainSelectItem({
             </div>
             <div className="flex-col">
                 <h1>{departureTime}</h1>
-                <h5>東京</h5>
+                <h5>{departureStation.stationName}</h5>
             </div>
             <div className="bg-primary/20 h-1 grow" />
             <div className="flex-col">
                 <h1>{arrivalTime}</h1>
-                <h5>上野</h5>
+                <h5>{arrivalStation.stationName}</h5>
             </div>
             <button className="contained_btn" onClick={handleReserveSeat}>
                 席を予約する
