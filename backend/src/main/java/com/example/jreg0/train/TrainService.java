@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 public class TrainService {
     private final TrainRepository _trainRepository;
     private final StopStationRepository _stopStationRepository;
+    //日付検索可能範囲
+    private static final int SEARCHABLE_MONTHES = 1;
 
     @Autowired
     public TrainService(TrainRepository trainRepository, StopStationRepository stopStationRepository) {
@@ -33,6 +35,7 @@ public class TrainService {
      * @return 出発駅、到着駅、出発日が一致する列車一覧
      * */
     public List<TrainEntity> getTrainByStation(String departureStationId, String arrivalStationId, LocalDate departureDate) {
+        validationDepartureDate(departureDate);
         List<String> routeSet = getRouteIds(departureStationId, arrivalStationId);
         List<TrainEntity> trainList = routeSet.stream().map(_trainRepository::findByRouteId).flatMap(Collection::stream).collect(Collectors.toList());
         trainList.forEach(train -> train.setSchedules(train.getSchedules().stream().filter(schedule -> !schedule.getDepartureDate().isBefore(departureDate) && !schedule.getDepartureDate().isAfter(departureDate) && (schedule.getStationId().equals(departureStationId) || schedule.getStationId().equals(arrivalStationId))).toList()));
@@ -79,5 +82,22 @@ public class TrainService {
      * */
     private List<TrainEntity> sortByDepartureStation(String departureStationId, List<TrainEntity> trainList) {
         return trainList.stream().sorted(Comparator.comparing(trainEntity -> trainEntity.getSchedules().stream().filter(scheduleEntity -> Objects.equals(scheduleEntity.getStationId(), departureStationId)).findFirst().map(ScheduleEntity::getDepartureTime).orElse(null),Comparator.nullsLast(Comparator.naturalOrder()))).toList();
+    }
+
+    /**
+     * 出発日が検索可能期間かチェックする
+     * 乗車日1ヶ月前に同じ日付がない場合は、同月の1日より発売開始となる。
+     * 例）3/29、3/30、3/31、4/1は一律で3/1から販売開始
+     *
+     * @param departureDate 出発日
+     * @throws IllegalArgumentException 出発日が検索可能期間外の場合
+     * */
+    private void validationDepartureDate(LocalDate departureDate) {
+        LocalDate today = LocalDate.now();
+        LocalDate maxDate = today.plusMonths(SEARCHABLE_MONTHES);
+
+        if(departureDate.isBefore(today) || departureDate.isAfter(maxDate)){
+            throw new IllegalArgumentException("出発日は本日から１か月以内の日付を指定してください");
+        }
     }
 }

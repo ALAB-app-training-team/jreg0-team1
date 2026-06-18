@@ -20,6 +20,7 @@ import java.util.List;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -34,6 +35,9 @@ public class TrainControllerTest {
 
     private LocalDate departureDate;
 
+    private LocalDate nonExistDepartureDate;
+
+
     // モックの設定
     List<ScheduleEntity> mockScheduleList = new ArrayList<ScheduleEntity>();
 
@@ -45,6 +49,7 @@ public class TrainControllerTest {
     @BeforeEach
     void setup() {
         departureDate = LocalDate.of(2026, 6, 3);
+        nonExistDepartureDate = LocalDate.of(1000,1,1);
         //スケジュールのデータセット
         mockSchedule0.setId("00000000");
         mockSchedule0.setStationId("00000000");
@@ -88,6 +93,16 @@ public class TrainControllerTest {
     @Test
     void getTrainByStationTest_ErrorCase_パラメータが足りない場合レスポンスなし() throws Exception {
         mockMvc.perform(get("/trains").param("start","00000000").param("end","00000001")).andExpect(status().isBadRequest());
+    }
+    /**
+     * 出発日が検索可能範囲以外の場合はisBadrequestになる*
+     */
+    @Test
+    void getTrainByStationTest_ErrorCase_() throws Exception {
+        //列車取得のサービスモック定義
+        when(trainService.getTrainByStation("00000000","00000001",nonExistDepartureDate)).thenThrow(new IllegalArgumentException("出発日は本日から１か月以内の日付を指定してください"));
+        mockMvc.perform(get("/trains").param("start","00000000").param("end","00000001").param("date",nonExistDepartureDate.toString())).andExpect(status().isBadRequest()).andExpect(content().string("出発日は本日から１か月以内の日付を指定してください"));
+        verify(trainService).getTrainByStation("00000000","00000001",nonExistDepartureDate);
     }
 
 }
