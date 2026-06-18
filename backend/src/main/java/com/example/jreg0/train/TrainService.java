@@ -86,6 +86,8 @@ public class TrainService {
 
     /**
      * 出発日が検索可能期間かチェックする
+     * 乗車日1ヶ月前に同じ日付がない場合は、同月の1日より発売開始となる。
+     * 例）3/29、3/30、3/31、4/1は一律で3/1から販売開始
      *
      * @param departureDate 出発日
      * @throws IllegalArgumentException 出発日が検索可能期間外の場合
