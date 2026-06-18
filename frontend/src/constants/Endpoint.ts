@@ -10,6 +10,7 @@ const ENDPOINT = {
     RESERVATIONS: `${BASE_URL}/reservations`,
     DETAILS: (reservationId: string) =>
         `${BASE_URL}/reservations/${reservationId}`,
+    STATIONS: `${BASE_URL}/stations`,
 };
 
 export default ENDPOINT;
