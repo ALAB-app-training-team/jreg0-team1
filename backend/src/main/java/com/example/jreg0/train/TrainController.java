@@ -3,10 +3,8 @@ import com.example.jreg0.schedule.ScheduleResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -28,8 +26,12 @@ public class TrainController {
             @RequestParam(name="end") String arrivalStationId,
             @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate){
         List<TrainEntity> trainEntities = this._trainService.getTrainByStation(departureStationId,arrivalStationId,departureDate);
-
         return trainEntities.stream().map(this::convertToTrainResponseDto).collect(Collectors.toList());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleInvalidDeoar(IllegalArgumentException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     /**
