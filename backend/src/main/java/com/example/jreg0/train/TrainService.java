@@ -3,7 +3,6 @@ package com.example.jreg0.train;
 import com.example.jreg0.schedule.ScheduleEntity;
 import com.example.jreg0.stopstation.StopStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

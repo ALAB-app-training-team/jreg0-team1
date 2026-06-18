@@ -7,20 +7,17 @@ import com.example.jreg0.stopstation.StopStationRepository;
 import com.example.jreg0.train.TrainEntity;
 import com.example.jreg0.train.TrainRepository;
 import com.example.jreg0.train.TrainService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cglib.core.Local;
 
 import java.sql.Time;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

@@ -1,7 +1,6 @@
 package com.example.jreg0.train;
 import com.example.jreg0.schedule.ScheduleResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
