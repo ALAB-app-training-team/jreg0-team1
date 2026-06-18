@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +32,9 @@ public class TrainServiceTest {
 
     @InjectMocks
     private TrainService trainService;
+
+    private LocalDate today = LocalDate.now();
+
 
     // モックの設定
     List<ScheduleEntity> mockScheduleList0 = new ArrayList<ScheduleEntity>();
@@ -58,28 +61,28 @@ public class TrainServiceTest {
         mockSchedule0.setDepartureTime(new Time(15, 10, 00));
         mockSchedule0.setArrivalTime(new Time(15, 00, 00));
         mockSchedule0.setDepartureTrack(1);
-        mockSchedule0.setDepartureDate(LocalDate.of(2026, 6, 3));
+        mockSchedule0.setDepartureDate(today);
 
         mockSchedule1.setId("00000001");
         mockSchedule1.setStationId("00000001");
         mockSchedule1.setDepartureTime(new Time(15, 25, 00));
         mockSchedule1.setArrivalTime(new Time(15, 15, 00));
         mockSchedule1.setDepartureTrack(1);
-        mockSchedule1.setDepartureDate(LocalDate.of(2026, 6, 3));
+        mockSchedule1.setDepartureDate(today);
 
         mockSchedule2.setId("00000002");
         mockSchedule2.setStationId("00000000");
         mockSchedule2.setDepartureTime(new Time(15, 10, 00));
         mockSchedule2.setArrivalTime(new Time(15, 00, 00));
         mockSchedule2.setDepartureTrack(1);
-        mockSchedule2.setDepartureDate(LocalDate.of(2026, 6, 3));
+        mockSchedule2.setDepartureDate(today);
 
         mockSchedule3.setId("00000003");
         mockSchedule3.setStationId("00000002");
         mockSchedule3.setDepartureTime(new Time(15, 25, 00));
         mockSchedule3.setArrivalTime(new Time(15, 15, 00));
         mockSchedule3.setDepartureTrack(1);
-        mockSchedule3.setDepartureDate(LocalDate.of(2026, 6, 3));
+        mockSchedule3.setDepartureDate(today);
 
         //列車のデータセット
         mockTrain0.setId("00000000");
@@ -129,7 +132,7 @@ public class TrainServiceTest {
         //列車のリポジトリモック定義
         when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0, mockTrain1));
 
-        List<TrainEntity> result = trainService.getTrainByStation("00000000", "00000001", LocalDate.of(2026, 6, 3));
+        List<TrainEntity> result = trainService.getTrainByStation("00000000", "00000001", today);
 
         assertEquals(1, result.size());
         assertEquals(mockTrain0.getId(), result.getFirst().getId());
@@ -147,13 +150,23 @@ public class TrainServiceTest {
 
         //列車のリポジトリモック定義
         when(trainRepository.findByRouteId("00000000")).thenReturn(List.of(mockTrain0));
+        List<TrainEntity> result1 = trainService.getTrainByStation("00000000", "00000001", today.plusDays(1));
 
-        List<TrainEntity> result1 = trainService.getTrainByStation("00000000", "00000001", LocalDate.of(2026, 6, 4));
-
-        List<TrainEntity> result2 = trainService.getTrainByStation("00000001", "00000000", LocalDate.of(2026, 6, 3));
+        List<TrainEntity> result2 = trainService.getTrainByStation("00000001", "00000000", today);
 
         assertEquals(0, result1.size());
         assertEquals(0, result2.size());
+    }
+
+    /**
+     * １か月よりも先の日付の場合はIllegalArgumentExceptionを返す
+     */
+    @Test
+    void getTrainByStationTest_ErrorCase_１か月よりも先の日付の場合はIllegalArgumentExceptionを返す() {
+        //リポジトリモック定義
+        LocalDate today = LocalDate.now();
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,()->trainService.getTrainByStation("00000000","00000000",today.plusMonths(1).plusDays(1)));
+        assertAll(() -> assertEquals("出発日は本日から１か月以内の日付を指定してください",exception.getMessage()));
     }
 
 }
