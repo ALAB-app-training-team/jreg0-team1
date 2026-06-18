@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -25,27 +25,7 @@ function TrainSearchResult() {
         ENDPOINT.STATIONS,
         fetcher,
     );
-    const [displayStation, setDisplayStation] = useState<{
-        departureStation: Station;
-        arrivalStation: Station;
-    }>({
-        departureStation: { id: '', stationName: '' },
-        arrivalStation: { id: '', stationName: '' },
-    });
 
-    useEffect(() => {
-        if (stations && stations.length > 0) {
-            setDisplayStation({
-                departureStation:
-                    stations.find(
-                        (sta) => sta.id == searchDepartureStationId,
-                    ) ?? stations[0],
-                arrivalStation:
-                    stations.find((sta) => sta.id == searchArrivalStationId) ??
-                    stations[0],
-            });
-        }
-    });
     const {
         data: trains,
         trigger,
@@ -149,17 +129,6 @@ function TrainSearchResult() {
                     </button>
                 </div>
             </div>
-            <div className="flex">
-                {trains && displayStation && (
-                    <h1>
-                        {displayStation.departureStation.stationName}
-                        <span className="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                        {displayStation.arrivalStation.stationName}
-                    </h1>
-                )}
-            </div>
             <div className="flex justify-end">
                 <h5>{trains ? trains.length : 0}件の列車が見つかりました</h5>
             </div>
@@ -168,8 +137,16 @@ function TrainSearchResult() {
                     <TrainSelectItem
                         key={train.id}
                         train={train}
-                        departureStation={displayStation.departureStation}
-                        arrivalStation={displayStation.arrivalStation}
+                        departureStation={
+                            stations.find(
+                                (sta) => sta.id == searchDepartureStationId,
+                            ) ?? stations[0]
+                        }
+                        arrivalStation={
+                            stations.find(
+                                (sta) => sta.id == searchArrivalStationId,
+                            ) ?? stations[0]
+                        }
                         departureDate={date}
                     />
                 ))
