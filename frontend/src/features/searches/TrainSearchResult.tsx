@@ -22,12 +22,34 @@ function TrainSearchResult() {
         fetcher,
     );
 
+    const [dateValidateError, setDateValidateError] = useState<string>();
+
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 1);
         const nextDateToString = nextDate.toISOString().split('T')[0];
         setDate(nextDateToString);
         setSearchDate(nextDateToString);
+    };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDate(e.target.value);
+
+        const selectedDate = new Date(e.target.value);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const maxDate = new Date(today);
+        maxDate.setMonth(maxDate.getMonth() + 1);
+        if (selectedDate < today || selectedDate > maxDate) {
+            setDateValidateError(
+                '出発日は本日から1か月以内の日付を指定してください',
+            );
+            return;
+        }
+        setDateValidateError('');
+        setSearchDate(e.target.value);
     };
 
     if (error) {
@@ -45,9 +67,15 @@ function TrainSearchResult() {
                         type="date"
                         title="日付を選択してください"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={handleDateChange}
                         required
                     />
+
+                    {dateValidateError && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {dateValidateError}
+                        </p>
+                    )}
                 </div>
                 <button
                     className="contained_btn flex items-center"
