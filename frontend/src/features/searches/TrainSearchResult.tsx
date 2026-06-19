@@ -9,8 +9,8 @@ import TrainSelectItem from '@/features/searches/TrainSelectItem';
 import type { Train } from '@/features/searches/types/Train';
 
 function TrainSearchResult() {
-    const TOKYO_STATION_ID = '00000000';
-    const UENO_STATION_ID = '00000001';
+    const TOKYO_STATION_ID = 'TKY01';
+    const UENO_STATION_ID = 'UEN02';
     const [date, setDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
@@ -22,6 +22,8 @@ function TrainSearchResult() {
         fetcher,
     );
 
+    const [dateValidateError,setDateValidateError] = useState<string>();
+
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 1);
@@ -29,6 +31,24 @@ function TrainSearchResult() {
         setDate(nextDateToString);
         setSearchDate(nextDateToString);
     };
+
+    const handleDateChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+        setDate(e.target.value);
+
+        const selectedDate = new Date(e.target.value);
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const maxDate = new Date(today);
+        maxDate.setMonth(maxDate.getMonth()+1);
+        if(selectedDate < today || selectedDate > maxDate){
+            setDateValidateError("出発日は本日から1か月以内の日付を指定してください");
+            return;
+        }
+        setDateValidateError("");
+        setSearchDate(e.target.value);
+    }
 
     if (error) {
         return <Error />;
@@ -45,9 +65,15 @@ function TrainSearchResult() {
                         type="date"
                         title="日付を選択してください"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={handleDateChange}
                         required
                     />
+
+                    {dateValidateError && (
+                        <p className='mt-1 text-sm text-red-600'>
+                            {dateValidateError}
+                        </p>
+                    )}
                 </div>
                 <button
                     className="contained_btn flex items-center"
