@@ -22,7 +22,7 @@ function TrainSearchResult() {
         fetcher,
     );
 
-    const [dateValidateError,setDateValidateError] = useState<string>();
+    const [dateValidateError, setDateValidateError] = useState<string>();
 
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
@@ -32,23 +32,25 @@ function TrainSearchResult() {
         setSearchDate(nextDateToString);
     };
 
-    const handleDateChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDate(e.target.value);
 
         const selectedDate = new Date(e.target.value);
 
         const today = new Date();
-        today.setHours(0,0,0,0);
+        today.setHours(0, 0, 0, 0);
 
         const maxDate = new Date(today);
-        maxDate.setMonth(maxDate.getMonth()+1);
-        if(selectedDate < today || selectedDate > maxDate){
-            setDateValidateError("出発日は本日から1か月以内の日付を指定してください");
+        maxDate.setMonth(maxDate.getMonth() + 1);
+        if (selectedDate < today || selectedDate > maxDate) {
+            setDateValidateError(
+                '出発日は本日から1か月以内の日付を指定してください',
+            );
             return;
         }
-        setDateValidateError("");
+        setDateValidateError('');
         setSearchDate(e.target.value);
-    }
+    };
 
     if (error) {
         return <Error />;
@@ -70,7 +72,7 @@ function TrainSearchResult() {
                     />
 
                     {dateValidateError && (
-                        <p className='mt-1 text-sm text-red-600'>
+                        <p className="mt-1 text-sm text-red-600">
                             {dateValidateError}
                         </p>
                     )}
