@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 
 import fetcher from '@/api/fetcher';
 import Error from '@/components/layout/Error';
@@ -17,21 +16,31 @@ function TrainSearchResult() {
     const [searchDate, setSearchDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
-    const [searchDepartureStationId, setSearchDepaertureStationId] =
+    const [searchDepartureStationId, setSearchDepartureStationId] =
         useState<string>('');
-    const [searchArrivalStationId, setSelectedArrivalStationId] =
+    const [searchArrivalStationId, setSearchArrivalStationId] =
         useState<string>('');
+
     const { data: stations, error: stationError } = useSWR<Station[]>(
         ENDPOINT.STATIONS,
         fetcher,
     );
+    const { data: departureStations = stations } = useSWR<Station[]>(
+        searchArrivalStationId
+            ? ENDPOINT.REACHABLE_STATIONS(searchArrivalStationId)
+            : null,
+        fetcher,
+    );
+    const { data: arrivalStations = stations } = useSWR<Station[]>(
+        searchDepartureStationId
+            ? ENDPOINT.REACHABLE_STATIONS(searchDepartureStationId)
+            : null,
+        fetcher,
+    );
+    const [searchTime, setSearchTime] = useState<string>('');
+    const [dateValidateError, setDateValidateError] = useState<string>();
 
-    const {
-        data: trains,
-        trigger,
-        isMutating: ismutating,
-        error: trainError,
-    } = useSWRMutation<Train[]>(
+    const { data: trains, error: trainError } = useSWR<Train[]>(
         ENDPOINT.TRAINS(
             searchDepartureStationId,
             searchArrivalStationId,
@@ -39,8 +48,6 @@ function TrainSearchResult() {
         ),
         fetcher,
     );
-
-    const [dateValidateError, setDateValidateError] = useState<string>();
 
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
@@ -70,25 +77,37 @@ function TrainSearchResult() {
         setSearchDate(e.target.value);
     };
 
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDate(e.target.value);
-
-        const selectedDate = new Date(e.target.value);
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const maxDate = new Date(today);
-        maxDate.setMonth(maxDate.getMonth() + 1);
-        if (selectedDate < today || selectedDate > maxDate) {
-            setDateValidateError(
-                '出発日は本日から1か月以内の日付を指定してください',
-            );
-            return;
-        }
-        setDateValidateError('');
-        setSearchDate(e.target.value);
+    const handleDepartureStationChenge = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setSearchDepartureStationId(e.target.value);
     };
+
+    const handleArrivalStationChenge = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setSearchArrivalStationId(e.target.value);
+    };
+
+    const handleTimeChenge = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTime(e.target.value);
+        console.log(e.target.value);
+    };
+
+    const filteredTrains = useMemo(() => {
+        if (!searchTime) {
+            return trains;
+        }
+        return trains?.filter((train) => {
+            const departureSchedule = train.schedules.find(
+                (schedule) => schedule.stationId === searchDepartureStationId,
+            );
+            if (!departureSchedule?.departureTime) {
+                return false;
+            }
+            return departureSchedule.departureTime >= searchTime;
+        });
+    }, [trains, searchDepartureStationId, searchArrivalStationId, searchTime]);
 
     if (stationError || trainError || !stations) {
         return <Error />;
@@ -103,31 +122,38 @@ function TrainSearchResult() {
                             <h5>乗車駅</h5>
                             <select
                                 className="border-primary/20 rounded-lg border bg-white px-4 py-2"
-                                onChange={(e) =>
-                                    setSearchDepaertureStationId(e.target.value)
-                                }
-                                defaultValue={stations[0].id}
+                                onChange={handleDepartureStationChenge}
+                                value={searchDepartureStationId}
                             >
-                                {stations.map((station) => (
-                                    <option key={station.id} value={station.id}>
-                                        {station.stationName}
-                                    </option>
-                                ))}
+                                {(departureStations ?? stations)?.map(
+                                    (station) => (
+                                        <option
+                                            key={station.id}
+                                            value={station.id}
+                                        >
+                                            {station.stationName}
+                                        </option>
+                                    ),
+                                )}
                             </select>
                         </div>
                         <div className="flex w-full flex-col">
                             <h5>降車駅</h5>
                             <select
                                 className="border-primary/20 rounded-lg border bg-white px-4 py-2"
-                                onChange={(e) =>
-                                    setSelectedArrivalStationId(e.target.value)
-                                }
+                                onChange={handleArrivalStationChenge}
+                                value={searchArrivalStationId}
                             >
-                                {stations.map((station) => (
-                                    <option key={station.id} value={station.id}>
-                                        {station.stationName}
-                                    </option>
-                                ))}
+                                {(arrivalStations ?? stations)?.map(
+                                    (station) => (
+                                        <option
+                                            key={station.id}
+                                            value={station.id}
+                                        >
+                                            {station.stationName}
+                                        </option>
+                                    ),
+                                )}
                             </select>
                         </div>
                     </div>
@@ -139,9 +165,15 @@ function TrainSearchResult() {
                                 type="date"
                                 title="日付を選択してください"
                                 value={date}
-                                onChange={(e) => setDate(e.target.value)}
+                                onChange={handleDateChange}
                                 required
                             />
+
+                            {dateValidateError && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {dateValidateError}
+                                </p>
+                            )}
                         </div>
                         <div className="flex w-full flex-col">
                             <h5>出発時刻</h5>
@@ -149,33 +181,22 @@ function TrainSearchResult() {
                                 className="border-primary/20 rounded-lg border bg-white px-4 py-2"
                                 type="Time"
                                 title="時刻を選択してください"
-                                // value={}
-                                // onChange={}
+                                value={searchTime}
+                                onChange={handleTimeChenge}
                                 required
                             />
                         </div>
                     </div>
                 </div>
-                <div className="ml-auto shrink-0 place-self-end">
-                    <button
-                        className="contained_btn flex items-center"
-                        onClick={() => {
-                            trigger();
-                        }}
-                        disabled={ismutating}
-                    >
-                        <span className="material-symbols-outlined">
-                            search
-                        </span>
-                        検索
-                    </button>
-                </div>
             </div>
             <div className="flex justify-end">
-                <h5>{trains ? trains.length : 0}件の列車が見つかりました</h5>
+                <h5>
+                    {filteredTrains ? filteredTrains.length : 0}
+                    件の列車が見つかりました
+                </h5>
             </div>
-            {trains && trains.length > 0 ? (
-                trains.map((train) => (
+            {filteredTrains && filteredTrains.length > 0 ? (
+                filteredTrains.map((train) => (
                     <TrainSelectItem
                         key={train.id}
                         train={train}
