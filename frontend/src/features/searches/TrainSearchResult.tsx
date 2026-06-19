@@ -9,8 +9,8 @@ import TrainSelectItem from '@/features/searches/TrainSelectItem';
 import type { Train } from '@/features/searches/types/Train';
 
 function TrainSearchResult() {
-    const TOKYO_STATION_ID = 'TKY01';
-    const UENO_STATION_ID = 'UEN02';
+    const TOKYO_STATION_ID = '00000000';
+    const UENO_STATION_ID = '00000001';
     const [date, setDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
