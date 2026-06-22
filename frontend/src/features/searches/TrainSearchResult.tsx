@@ -124,6 +124,8 @@ function TrainSearchResult() {
                                 onChange={handleDepartureStationChenge}
                                 value={searchDepartureStationId}
                             >
+                                <option hidden>乗車駅を選択してください</option>
+                                e
                                 {(departureStations ?? stations)?.map(
                                     (station) => (
                                         <option
@@ -143,6 +145,8 @@ function TrainSearchResult() {
                                 onChange={handleArrivalStationChenge}
                                 value={searchArrivalStationId}
                             >
+                                <option hidden>降車駅を選択してください</option>
+
                                 {(arrivalStations ?? stations)?.map(
                                     (station) => (
                                         <option
