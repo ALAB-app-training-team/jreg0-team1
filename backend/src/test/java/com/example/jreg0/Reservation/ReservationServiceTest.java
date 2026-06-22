@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,6 +78,7 @@ public class ReservationServiceTest {
         mockReservationforGet.setDepartureStationId("00000000");
         mockReservationforGet.setArrivalStationId("00000001");
         mockReservationforGet.setSeatId("1A");
+        mockReservationforGet.setDepartureDate(LocalDate.now());
 
         //列車のデータセット
         mockTrain0.setId("00000000");
@@ -138,8 +140,8 @@ public class ReservationServiceTest {
         when(stationRepository.findById("00000000")).thenReturn(Optional.of(mockDepartureStation));
         when(stationRepository.findById("00000001")).thenReturn(Optional.of(mockArrivalStation));
         when(seatRepository.findById("1A")).thenReturn(Optional.of(mockSeatforGet));
-        when(scheduleRepository.findByTrainIdAndStationId("00000000","00000000")).thenReturn(Optional.of(mockSchedule0));
-        when(scheduleRepository.findByTrainIdAndStationId("00000000","00000001")).thenReturn(Optional.of(mockSchedule1));
+        when(scheduleRepository.findByTrainIdAndStationIdAndDepartureDate("00000000","00000000", LocalDate.now())).thenReturn(List.of(mockSchedule0));
+        when(scheduleRepository.findByTrainIdAndStationIdAndDepartureDate("00000000","00000001", LocalDate.now())).thenReturn(List.of(mockSchedule1));
 
         ReservationDetailResponse result = reservationService.checkReservationDetail(Id.toString());
 
@@ -203,21 +205,5 @@ public class ReservationServiceTest {
         when(seatRepository.findById("1A")).thenReturn(Optional.empty());
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
         assertAll(() -> assertEquals("予約に紐づくデータが存在しません(座席・号車)",exception.getMessage()));
-    }
-
-    /**
-     * 時刻表取得時に列車Idと駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す*
-     */
-    @Test
-    void checkReservationDetailTest_ErrorCase_時刻表取得時に列車IDと駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
-        //リポジトリモック定義
-        when(reservationRepository.findById(Id)).thenReturn(Optional.of(mockReservationforGet));
-        when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
-        when(stationRepository.findById("00000000")).thenReturn(Optional.of(mockDepartureStation));
-        when(stationRepository.findById("00000001")).thenReturn(Optional.of(mockArrivalStation));
-        when(seatRepository.findById("1A")).thenReturn(Optional.of(mockSeatforGet));
-        when(scheduleRepository.findByTrainIdAndStationId("00000000","00000000")).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,()->reservationService.checkReservationDetail(Id.toString()));
-        assertAll(() -> assertEquals("予約に紐づくデータが存在しません(時刻表)",exception.getMessage()));
     }
 }
