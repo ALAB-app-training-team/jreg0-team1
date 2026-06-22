@@ -91,7 +91,6 @@ function TrainSearchResult() {
 
     const handleTimeChenge = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTime(e.target.value);
-        console.log(e.target.value);
     };
 
     const filteredTrains = useMemo(() => {
