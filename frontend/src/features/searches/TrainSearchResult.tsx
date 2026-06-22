@@ -96,6 +96,9 @@ function TrainSearchResult() {
     };
 
     const filteredTrains = useMemo(() => {
+        if (dateValidateError) {
+            return [];
+        }
         if (!searchTime) {
             return trains;
         }
@@ -108,7 +111,13 @@ function TrainSearchResult() {
             }
             return departureSchedule.departureTime >= searchTime;
         });
-    }, [trains, searchDepartureStationId, searchArrivalStationId, searchTime]);
+    }, [
+        trains,
+        searchDepartureStationId,
+        searchArrivalStationId,
+        searchTime,
+        dateValidateError,
+    ]);
 
     if (stationError || trainError || !stations) {
         return <Error />;
