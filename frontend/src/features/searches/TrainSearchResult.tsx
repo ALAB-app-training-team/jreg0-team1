@@ -41,11 +41,13 @@ function TrainSearchResult() {
     const [dateValidateError, setDateValidateError] = useState<string>();
 
     const { data: trains, error: trainError } = useSWR<Train[]>(
-        ENDPOINT.TRAINS(
-            searchDepartureStationId,
-            searchArrivalStationId,
-            searchDate,
-        ),
+        dateValidateError
+            ? null
+            : ENDPOINT.TRAINS(
+                  searchDepartureStationId,
+                  searchArrivalStationId,
+                  searchDate,
+              ),
         fetcher,
     );
 
