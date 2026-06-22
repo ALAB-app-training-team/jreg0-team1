@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import useSWR from 'swr';
 
 import fetcher from '@/api/fetcher';
@@ -6,23 +6,50 @@ import Error from '@/components/layout/Error';
 import ENDPOINT from '@/constants/Endpoint';
 import TrainNoResults from '@/features/searches/TrainNotResults';
 import TrainSelectItem from '@/features/searches/TrainSelectItem';
+import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 
 function TrainSearchResult() {
-    const TOKYO_STATION_ID = '00000000';
-    const UENO_STATION_ID = '00000001';
     const [date, setDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
     const [searchDate, setSearchDate] = useState<string>(
         new Date().toISOString().split('T')[0],
     );
-    const { data: trains, error } = useSWR<Train[]>(
-        ENDPOINT.TRAINS(TOKYO_STATION_ID, UENO_STATION_ID, searchDate),
+    const [searchDepartureStationId, setSearchDepartureStationId] =
+        useState<string>('');
+    const [searchArrivalStationId, setSearchArrivalStationId] =
+        useState<string>('');
+
+    const { data: stations, error: stationError } = useSWR<Station[]>(
+        ENDPOINT.STATIONS,
         fetcher,
     );
-
+    const { data: departureStations = stations } = useSWR<Station[]>(
+        searchArrivalStationId
+            ? ENDPOINT.REACHABLE_STATIONS(searchArrivalStationId)
+            : null,
+        fetcher,
+    );
+    const { data: arrivalStations = stations } = useSWR<Station[]>(
+        searchDepartureStationId
+            ? ENDPOINT.REACHABLE_STATIONS(searchDepartureStationId)
+            : null,
+        fetcher,
+    );
+    const [searchTime, setSearchTime] = useState<string>('');
     const [dateValidateError, setDateValidateError] = useState<string>();
+
+    const { data: trains, error: trainError } = useSWR<Train[]>(
+        dateValidateError
+            ? null
+            : ENDPOINT.TRAINS(
+                  searchDepartureStationId,
+                  searchArrivalStationId,
+                  searchDate,
+              ),
+        fetcher,
+    );
 
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
@@ -52,49 +79,151 @@ function TrainSearchResult() {
         setSearchDate(e.target.value);
     };
 
-    if (error) {
+    const handleDepartureStationChenge = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setSearchDepartureStationId(e.target.value);
+    };
+
+    const handleArrivalStationChenge = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setSearchArrivalStationId(e.target.value);
+    };
+
+    const handleTimeChenge = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTime(e.target.value);
+    };
+
+    const filteredTrains = useMemo(() => {
+        if (dateValidateError) {
+            return [];
+        }
+        if (!searchTime) {
+            return trains;
+        }
+        return trains?.filter((train) => {
+            const departureSchedule = train.schedules.find(
+                (schedule) => schedule.stationId === searchDepartureStationId,
+            );
+            if (!departureSchedule?.departureTime) {
+                return false;
+            }
+            return departureSchedule.departureTime >= searchTime;
+        });
+    }, [
+        trains,
+        searchDepartureStationId,
+        searchArrivalStationId,
+        searchTime,
+        dateValidateError,
+    ]);
+
+    if (stationError || trainError || !stations) {
         return <Error />;
     }
 
     return (
         <div className="mx-auto flex max-w-4xl flex-col gap-4 p-4">
-            <h1>東京→上野</h1>
-            <div className="bg-primary/10 flex justify-between rounded-2xl p-4">
-                <div>
-                    <h5>出発日</h5>
-                    <input
-                        className="border-primary/20 rounded-lg border bg-white px-4 py-2"
-                        type="date"
-                        title="日付を選択してください"
-                        value={date}
-                        onChange={handleDateChange}
-                        required
-                    />
+            <div className="bg-primary/10 flex gap-4 rounded-2xl p-4">
+                <div className="flex w-full flex-col gap-4">
+                    <div className="flex gap-4">
+                        <div className="flex w-full flex-col">
+                            <h5>乗車駅</h5>
+                            <select
+                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                onChange={handleDepartureStationChenge}
+                                value={searchDepartureStationId}
+                            >
+                                <option hidden>乗車駅を選択してください</option>
 
-                    {dateValidateError && (
-                        <p className="mt-1 text-sm text-red-600">
-                            {dateValidateError}
-                        </p>
-                    )}
+                                {(departureStations ?? stations)?.map(
+                                    (station) => (
+                                        <option
+                                            key={station.id}
+                                            value={station.id}
+                                        >
+                                            {station.stationName}
+                                        </option>
+                                    ),
+                                )}
+                            </select>
+                        </div>
+                        <div className="flex w-full flex-col">
+                            <h5>降車駅</h5>
+                            <select
+                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                onChange={handleArrivalStationChenge}
+                                value={searchArrivalStationId}
+                            >
+                                <option hidden>降車駅を選択してください</option>
+
+                                {(arrivalStations ?? stations)?.map(
+                                    (station) => (
+                                        <option
+                                            key={station.id}
+                                            value={station.id}
+                                        >
+                                            {station.stationName}
+                                        </option>
+                                    ),
+                                )}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <div className="flex w-full flex-col">
+                            <h5>出発日</h5>
+                            <input
+                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                type="date"
+                                title="日付を選択してください"
+                                value={date}
+                                onChange={handleDateChange}
+                                required
+                            />
+
+                            {dateValidateError && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {dateValidateError}
+                                </p>
+                            )}
+                        </div>
+                        <div className="flex w-full flex-col">
+                            <h5>出発時刻</h5>
+                            <input
+                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                type="Time"
+                                title="時刻を選択してください"
+                                value={searchTime}
+                                onChange={handleTimeChenge}
+                                required
+                            />
+                        </div>
+                    </div>
                 </div>
-                <button
-                    className="contained_btn flex items-center"
-                    onClick={() => setSearchDate(date)}
-                >
-                    <span className="material-symbols-outlined">search</span>
-                    日付指定
-                </button>
             </div>
             <div className="flex justify-end">
-                <h5>{trains ? trains.length : 0}件の列車が見つかりました</h5>
+                <h5>
+                    {filteredTrains ? filteredTrains.length : 0}
+                    件の列車が見つかりました
+                </h5>
             </div>
-            {trains && trains.length > 0 ? (
-                trains.map((train) => (
+            {filteredTrains && filteredTrains.length > 0 ? (
+                filteredTrains.map((train) => (
                     <TrainSelectItem
                         key={train.id}
                         train={train}
-                        departureStationId={TOKYO_STATION_ID}
-                        arrivalStationId={UENO_STATION_ID}
+                        departureStation={
+                            stations.find(
+                                (sta) => sta.id == searchDepartureStationId,
+                            ) ?? stations[0]
+                        }
+                        arrivalStation={
+                            stations.find(
+                                (sta) => sta.id == searchArrivalStationId,
+                            ) ?? stations[0]
+                        }
                         departureDate={date}
                     />
                 ))

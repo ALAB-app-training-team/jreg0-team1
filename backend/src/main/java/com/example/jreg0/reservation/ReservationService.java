@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,10 +77,10 @@ public class ReservationService {
         Optional<SeatEntity> optionalSeat = _seatRepository.findById(reservation.getSeatId());
         SeatEntity seat = optionalSeat.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(座席・号車)"));
 
-        Optional<ScheduleEntity> optionalDepartureSchedule = _scheduleRepository.findByTrainIdAndStationId(reservation.getTrainId(), departureStation.getId());
-        ScheduleEntity departureSchedule = optionalDepartureSchedule.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(時刻表)"));
-        Optional<ScheduleEntity> optionalArrivalSchedule = _scheduleRepository.findByTrainIdAndStationId(reservation.getTrainId(), arrivalStation.getId());
-        ScheduleEntity arrivalSchedule = optionalArrivalSchedule.orElseThrow(() -> new EntityNotFoundException("予約に紐づくデータが存在しません(時刻表)"));
+        List<ScheduleEntity> optionalDepartureSchedule = _scheduleRepository.findByTrainIdAndStationIdAndDepartureDate(reservation.getTrainId(), departureStation.getId(), reservation.getDepartureDate());
+        ScheduleEntity departureSchedule = optionalDepartureSchedule.getFirst();
+        List<ScheduleEntity> optionalArrivalSchedule = _scheduleRepository.findByTrainIdAndStationIdAndDepartureDate(reservation.getTrainId(), arrivalStation.getId(), reservation.getDepartureDate());
+        ScheduleEntity arrivalSchedule = optionalArrivalSchedule.getFirst();
 
         ReservationDetailResponse reservationDetailResponse = new ReservationDetailResponse(
                 reservation,
