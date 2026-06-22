@@ -41,11 +41,13 @@ function TrainSearchResult() {
     const [dateValidateError, setDateValidateError] = useState<string>();
 
     const { data: trains, error: trainError } = useSWR<Train[]>(
-        ENDPOINT.TRAINS(
-            searchDepartureStationId,
-            searchArrivalStationId,
-            searchDate,
-        ),
+        dateValidateError
+            ? null
+            : ENDPOINT.TRAINS(
+                  searchDepartureStationId,
+                  searchArrivalStationId,
+                  searchDate,
+              ),
         fetcher,
     );
 
@@ -94,6 +96,9 @@ function TrainSearchResult() {
     };
 
     const filteredTrains = useMemo(() => {
+        if (dateValidateError) {
+            return [];
+        }
         if (!searchTime) {
             return trains;
         }
@@ -106,7 +111,13 @@ function TrainSearchResult() {
             }
             return departureSchedule.departureTime >= searchTime;
         });
-    }, [trains, searchDepartureStationId, searchArrivalStationId, searchTime]);
+    }, [
+        trains,
+        searchDepartureStationId,
+        searchArrivalStationId,
+        searchTime,
+        dateValidateError,
+    ]);
 
     if (stationError || trainError || !stations) {
         return <Error />;
