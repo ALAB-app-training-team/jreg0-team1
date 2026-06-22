@@ -125,7 +125,7 @@ function TrainSearchResult() {
                                 value={searchDepartureStationId}
                             >
                                 <option hidden>乗車駅を選択してください</option>
-                                e
+
                                 {(departureStations ?? stations)?.map(
                                     (station) => (
                                         <option
