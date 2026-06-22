@@ -13,6 +13,7 @@ const ENDPOINT = {
     STATIONS: `${BASE_URL}/stations`,
     REACHABLE_STATIONS: (stationId: string) =>
         `${BASE_URL}/stations/${stationId}/reachable-stations`,
+    CAR_SEATMAP: (trainId: string) => `${BASE_URL}/cars/trains/${trainId}`,
 };
 
 export default ENDPOINT;
