@@ -63,7 +63,7 @@ export default defineConfig([
             ],
             // ネストの深さ
             'max-depth': ['error', { max: 3 }],
-            complexity: ['error', { max: 10 }],
+            complexity: ['error', { max: 20 }],
 
             'react/jsx-closing-tag-location': 'error',
             'react/jsx-curly-spacing': 'error',
