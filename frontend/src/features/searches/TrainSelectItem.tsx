@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { type Reservation } from '@/features/reservations/types/Reservation';
+import { type Reservation } from '@/features/purchases/types/Reservation';
 import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 import usePostReservation from '@/hooks/usePostReservation';
