@@ -7,7 +7,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import DeleteAllReservation from '@/features/manages/DeleteAllReservation';
 import ReservationComplete from '@/features/purchases/ReservationComplete';
 import ReservationInfo from '@/features/reservations/ReservationInfo';
-import ReservationList from '@/features/reservations/ResevationList';
+import ReservationList from '@/features/reservations/ReservationList';
 import TrainSearchResult from '@/features/searches/TrainSearchResult';
 
 function App() {
