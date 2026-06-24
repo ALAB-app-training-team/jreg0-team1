@@ -1,4 +1,4 @@
-import type { ReservationForSend } from '@/features/reservations/types/Reservation';
+import type { ReservationForSend } from '@/features/purchases/types/Reservation';
 
 const reservationSender = (
     url: string,
