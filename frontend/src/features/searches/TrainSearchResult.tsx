@@ -55,7 +55,7 @@ function TrainSearchResult() {
         const date = new Date(
             today.getFullYear(),
             today.getMonth() + 1,
-            today.getDate() - 1,
+            today.getDate(),
         );
         return dateStr(date);
     };
@@ -72,6 +72,7 @@ function TrainSearchResult() {
         setDate(e.target.value);
 
         const selectedDate = new Date(e.target.value);
+        selectedDate.setHours(0, 0, 0, 0);
         if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
             setDateValidateError('出発日を入力してください');
             return;
