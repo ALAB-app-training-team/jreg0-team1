@@ -15,25 +15,27 @@ function Header() {
             <img
                 src={logo}
                 alt="jreg0のロゴ"
-                className="h-20"
+                className="h-20 cursor-pointer"
                 onClick={() => navigate('/')}
             />
 
             <div className="flex items-center gap-8">
                 <button
-                    className={`flex gap-2 ${getButtonClass('/')} p-1`}
+                    className={`hover:bg-primary/20 flex cursor-pointer gap-2 ${getButtonClass('/')} rounded-lg p-1`}
                     onClick={() => navigate('/')}
+                    type="button"
                 >
                     <span className="material-symbols-outlined">search</span>
                     新幹線をさがす
                 </button>
                 <button
-                    className={`flex gap-2 ${getButtonClass('/details/019ef75a-a6f0-798b-88cf-b1db9a320103')} p-1`}
+                    className={`hover:bg-primary/20 flex cursor-pointer gap-2 ${getButtonClass('/details/019ef75a-a6f0-798b-88cf-b1db9a320103')} rounded-lg p-1`}
                     onClick={() =>
                         navigate(
                             '/details/019ef75a-a6f0-798b-88cf-b1db9a320103',
                         )
                     }
+                    type="button"
                 >
                     <span className="material-symbols-outlined">
                         confirmation_number
