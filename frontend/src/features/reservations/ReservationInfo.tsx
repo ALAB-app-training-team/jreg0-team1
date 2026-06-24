@@ -6,7 +6,7 @@ import fetcher from '@/api/fetcher';
 import favicon from '@/assets/favicon.png';
 import Error from '@/components/layout/Error';
 import ENDPOINT from '@/constants/Endpoint';
-import type { ReservationDetail } from '@/features/details/types/ReservationDetail';
+import type { ReservationDetail } from '@/features/reservations/types/ReservationDetail';
 
 function ReservationInfo() {
     const { id } = useParams();

@@ -63,6 +63,10 @@ function TrainSearchResult() {
         setDate(e.target.value);
 
         const selectedDate = new Date(e.target.value);
+        if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
+            setDateValidateError('出発日を入力してください');
+            return;
+        }
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -134,6 +138,7 @@ function TrainSearchResult() {
                                 className="border-primary/20 rounded-lg border bg-white px-4 py-2"
                                 onChange={handleDepartureStationChenge}
                                 value={searchDepartureStationId}
+                                title="乗車駅を選択してください"
                             >
                                 <option hidden>乗車駅を選択してください</option>
 
@@ -155,6 +160,7 @@ function TrainSearchResult() {
                                 className="border-primary/20 rounded-lg border bg-white px-4 py-2"
                                 onChange={handleArrivalStationChenge}
                                 value={searchArrivalStationId}
+                                title="降車駅を選択してください"
                             >
                                 <option hidden>降車駅を選択してください</option>
 
