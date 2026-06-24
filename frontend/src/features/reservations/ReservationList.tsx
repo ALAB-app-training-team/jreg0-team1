@@ -36,6 +36,21 @@ function ReservationList() {
             trainName: 'hayabusa-210',
             trainNickname: 'はやぶさ',
         },
+        {
+            id: '00000001',
+            reservationDate: '2026-06-20',
+            departureDate: '2026-06-24',
+            seatLocation: '1A',
+            carNumber: 1,
+            seatType: '01',
+            departureStationName: '東京',
+            departureTime: '12:00:00',
+            arrivalStationName: '仙台',
+            arrivalTime: '13:05:00',
+            departureTrack: 4,
+            trainName: 'hayabusa-210',
+            trainNickname: 'はやぶさ',
+        },
     ];
 
     //const { data: reservations, error: reservationError } = useSWR<
@@ -64,7 +79,6 @@ function ReservationList() {
         <>
             <div className="mx-auto flex max-w-4xl flex-col gap-8 p-4">
                 <h1 className="text-4xl font-bold">予約確認</h1>
-                {now.toString()}
                 <div className="bg-primary/8 flex gap-6 rounded-3xl p-2">
                     <div className="flex w-full items-center">
                         <button
