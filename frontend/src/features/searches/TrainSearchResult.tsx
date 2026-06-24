@@ -51,6 +51,16 @@ function TrainSearchResult() {
         fetcher,
     );
 
+    const maxDate = () => {
+        const today = new Date();
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth() + 1,
+            today.getDate() - 1,
+        );
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 1);
@@ -187,6 +197,8 @@ function TrainSearchResult() {
                                 value={date}
                                 onChange={handleDateChange}
                                 required
+                                min={new Date().toISOString().split('T')[0]}
+                                max={maxDate()}
                             />
 
                             {dateValidateError && (
