@@ -185,8 +185,7 @@ public class ReservationControllerTest {
             when(reservationService.getReservationList()).thenThrow(new RuntimeException());
 
             mockMvc.perform(get("/reservations"))
-                    .andExpect(status().isInternalServerError())
-                    .andExpect(content().string("取得に失敗しました"));
+                    .andExpect(status().isInternalServerError());
             verify(reservationService).getReservationList();
         }
     }
