@@ -58,9 +58,7 @@ function ReservationList() {
     //>(ENDPOINT.RESERVATIONS, fetcher);
 
     const now = new Date();
-    now.setHours(0);
-    now.setMinutes(0);
-    now.setSeconds(0);
+    now.setHours(0, 0, 0, 0);
 
     const activeReservations = reservations?.filter((reservation) => {
         const departureDate = new Date(reservation.departureDate);
