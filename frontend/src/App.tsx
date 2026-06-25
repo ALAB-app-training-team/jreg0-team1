@@ -4,9 +4,9 @@ import '@/App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import MainLayout from '@/components/layout/MainLayout';
-import ReservationInfo from '@/features/details/ReservationInfo';
 import DeleteAllReservation from '@/features/manages/DeleteAllReservation';
-import ReservationComplete from '@/features/reservations/ReservationComplete';
+import ReservationComplete from '@/features/purchases/ReservationComplete';
+import ReservationInfo from '@/features/reservations/ReservationInfo';
 import TrainSearchResult from '@/features/searches/TrainSearchResult';
 
 function App() {
