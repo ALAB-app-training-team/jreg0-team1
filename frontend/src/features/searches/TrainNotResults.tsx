@@ -2,9 +2,13 @@ type TrainNoResultsProps = {
     handleNextDateSearch:
         | React.MouseEventHandler<HTMLButtonElement>
         | undefined;
+    isDisableNextDaySearchButton: boolean;
 };
 
-function TrainNoResults({ handleNextDateSearch }: TrainNoResultsProps) {
+function TrainNoResults({
+    handleNextDateSearch,
+    isDisableNextDaySearchButton,
+}: TrainNoResultsProps) {
     return (
         <div className="border-primary/20 flex flex-col items-center gap-4 rounded-2xl border p-8">
             <div className="bg-primary/10 flex aspect-square items-center justify-center rounded-full p-4">
@@ -17,6 +21,7 @@ function TrainNoResults({ handleNextDateSearch }: TrainNoResultsProps) {
             <button
                 className="contained_btn flex items-center gap-2"
                 onClick={handleNextDateSearch}
+                disabled={isDisableNextDaySearchButton}
             >
                 <span className="material-symbols-outlined">trending_up</span>
                 翌日の列車を検索
