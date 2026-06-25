@@ -50,7 +50,7 @@ export default defineConfig([
                     // booleanの変数の始まり方
                     selector: 'variable',
                     types: ['boolean'],
-                    format: ['camelCase'],
+                    format: ['PascalCase'],
                     prefix: ['is', 'can', 'has', 'open'],
                 },
                 {
