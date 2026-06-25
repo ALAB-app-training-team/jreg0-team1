@@ -21,8 +21,8 @@ function TrainSearchResult() {
         useState<string>('');
     const [searchArrivalStationId, setSearchArrivalStationId] =
         useState<string>('');
-    const [isDisableNextDaySearchButton, setIsDisableNextDaySearchButton] =
-        useState<boolean>(false);
+    const [activeNextDaySearchButton, setActiveNextDaySearchButton] =
+        useState<boolean>(true);
 
     const { data: stations, error: stationError } = useSWR<Station[]>(
         ENDPOINT.STATIONS,
@@ -71,13 +71,19 @@ function TrainSearchResult() {
         const nextDateToString = dateStr(nextDate);
         setDate(nextDateToString);
 
-        const previousMaxDate = new Date(
+        const maxDate = new Date(
             today.getFullYear(),
             today.getMonth() + 1,
-            today.getDate() - 1,
+            today.getDate(),
         );
-        if (previousMaxDate < nextDate) {
-            setIsDisableNextDaySearchButton(true);
+        maxDate.setHours(0, 0, 0, 0);
+
+        if (
+            maxDate.getDate() === nextDate.getDate() &&
+            maxDate.getMonth() === nextDate.getMonth() &&
+            maxDate.getFullYear() === nextDate.getFullYear()
+        ) {
+            setActiveNextDaySearchButton(false);
             setDateValidateError('');
             setSearchDate(nextDateToString);
             return;
@@ -92,35 +98,37 @@ function TrainSearchResult() {
         selectedDate.setHours(0, 0, 0, 0);
         if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
             setDateValidateError('出発日を入力してください');
-            setIsDisableNextDaySearchButton(true);
+            setActiveNextDaySearchButton(false);
             return;
         }
 
-        const previousMaxDate = new Date(
-            today.getFullYear(),
-            today.getMonth() + 1,
-            today.getDate() - 1,
-        );
-        if (previousMaxDate < selectedDate) {
-            setIsDisableNextDaySearchButton(true);
-            setDateValidateError('');
-            setSearchDate(e.target.value);
-            return;
-        }
         const maxDate = new Date(
             today.getFullYear(),
             today.getMonth() + 1,
             today.getDate(),
         );
+        maxDate.setHours(0, 0, 0, 0);
+
+        if (
+            maxDate.getDate() === selectedDate.getDate() &&
+            maxDate.getMonth() === selectedDate.getMonth() &&
+            maxDate.getFullYear() === selectedDate.getFullYear()
+        ) {
+            setActiveNextDaySearchButton(false);
+            setDateValidateError('');
+            setSearchDate(e.target.value);
+            return;
+        }
+
         if (selectedDate < today || selectedDate > maxDate) {
             setDateValidateError(
                 '出発日は本日から1か月以内の日付を指定してください',
             );
-            setIsDisableNextDaySearchButton(true);
+            setActiveNextDaySearchButton(false);
             return;
         }
         setDateValidateError('');
-        setIsDisableNextDaySearchButton(false);
+        setActiveNextDaySearchButton(true);
         setSearchDate(e.target.value);
     };
 
@@ -279,7 +287,7 @@ function TrainSearchResult() {
             ) : (
                 <TrainNoResults
                     handleNextDateSearch={handleNextDateSearch}
-                    isDisableNextDaySearchButton={isDisableNextDaySearchButton}
+                    activeNextDaySearchButton={activeNextDaySearchButton}
                 />
             )}
         </div>

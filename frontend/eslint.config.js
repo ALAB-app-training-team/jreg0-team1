@@ -51,7 +51,7 @@ export default defineConfig([
                     selector: 'variable',
                     types: ['boolean'],
                     format: ['PascalCase'],
-                    prefix: ['is', 'can', 'has', 'open'],
+                    prefix: ['is', 'can', 'has', 'open', 'active'],
                 },
                 {
                     // Arrayの変数の終わり方
