@@ -21,7 +21,7 @@ function TrainSearchResult() {
         useState<string>('');
     const [searchArrivalStationId, setSearchArrivalStationId] =
         useState<string>('');
-    const [activeNextDaySearchButton, setActiveNextDaySearchButton] =
+    const [isActiveNextDaySearchButton, setIsActiveNextDaySearchButton] =
         useState<boolean>(true);
 
     const { data: stations, error: stationError } = useSWR<Station[]>(
@@ -83,7 +83,7 @@ function TrainSearchResult() {
             maxDate.getMonth() === nextDate.getMonth() &&
             maxDate.getFullYear() === nextDate.getFullYear()
         ) {
-            setActiveNextDaySearchButton(false);
+            setIsActiveNextDaySearchButton(false);
             setDateValidateError('');
             setSearchDate(nextDateToString);
             return;
@@ -98,7 +98,7 @@ function TrainSearchResult() {
         selectedDate.setHours(0, 0, 0, 0);
         if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
             setDateValidateError('出発日を入力してください');
-            setActiveNextDaySearchButton(false);
+            setIsActiveNextDaySearchButton(false);
             return;
         }
 
@@ -114,7 +114,7 @@ function TrainSearchResult() {
             maxDate.getMonth() === selectedDate.getMonth() &&
             maxDate.getFullYear() === selectedDate.getFullYear()
         ) {
-            setActiveNextDaySearchButton(false);
+            setIsActiveNextDaySearchButton(false);
             setDateValidateError('');
             setSearchDate(e.target.value);
             return;
@@ -124,11 +124,11 @@ function TrainSearchResult() {
             setDateValidateError(
                 '出発日は本日から1か月以内の日付を指定してください',
             );
-            setActiveNextDaySearchButton(false);
+            setIsActiveNextDaySearchButton(false);
             return;
         }
         setDateValidateError('');
-        setActiveNextDaySearchButton(true);
+        setIsActiveNextDaySearchButton(true);
         setSearchDate(e.target.value);
     };
 
@@ -287,7 +287,7 @@ function TrainSearchResult() {
             ) : (
                 <TrainNoResults
                     handleNextDateSearch={handleNextDateSearch}
-                    activeNextDaySearchButton={activeNextDaySearchButton}
+                    isActiveNextDaySearchButton={isActiveNextDaySearchButton}
                 />
             )}
         </div>
