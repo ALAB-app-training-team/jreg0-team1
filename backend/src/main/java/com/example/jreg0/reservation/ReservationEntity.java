@@ -1,14 +1,15 @@
 package com.example.jreg0.reservation;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
-import org.hibernate.annotations.UuidGenerator;
+import com.example.jreg0.schedule.*;
+import com.example.jreg0.seat.*;
+import com.example.jreg0.station.*;
+import com.example.jreg0.train.*;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import java.time.*;
+import java.util.*;
 
 @Data
 @Entity
@@ -48,4 +49,37 @@ public class ReservationEntity {
 
     @Column(name = "account_id")
     private String accountId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departure_station_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StationEntity departureStation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arrival_station_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StationEntity arrivalStation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private SeatEntity seat;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "train_id", referencedColumnName = "train_id", insertable = false, updatable = false),
+            @JoinColumn(name = "departure_date", referencedColumnName = "departure_date", insertable = false, updatable = false),
+            @JoinColumn(name = "departure_station_id", referencedColumnName = "station_id", insertable = false, updatable = false)
+    })
+    private ScheduleEntity departureSchedule;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "train_id", referencedColumnName = "train_id", insertable = false, updatable = false),
+            @JoinColumn(name = "departure_date", referencedColumnName = "departure_date", insertable = false, updatable = false),
+            @JoinColumn(name = "arrival_station_id", referencedColumnName = "station_id", insertable = false, updatable = false)
+    })
+    private ScheduleEntity arrivalSchedule;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "train_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private TrainEntity train;
+
 }

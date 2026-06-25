@@ -1,11 +1,11 @@
 package com.example.jreg0.reservation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import java.net.*;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "reservations")
@@ -17,9 +17,15 @@ public class ReservationController {
         _reservationService = reservationService;
     }
 
+    @GetMapping
+    public ResponseEntity<Object> getReservationList() {
+        List<ReservationDetailResponseDto> reservationDetailResponseDtoList = _reservationService.getReservationList();
+        return ResponseEntity.ok(reservationDetailResponseDtoList);
+    }
+
     @GetMapping(value = "{id}")
-    public  ResponseEntity<ReservationDetailResponseDto> getReservationDetailById(@PathVariable("id") String id){
-        ReservationDetailResponse reservationDetailResponse = _reservationService.checkReservationDetail(id);
+    public ResponseEntity<ReservationDetailResponseDto> getReservationDetailById(@PathVariable("id") String id) {
+        ReservationDetailResponse reservationDetailResponse = _reservationService.getReservationDetail(id);
         ReservationDetailResponseDto reservationDetailResponseDto = new ReservationDetailResponseDto(
                 reservationDetailResponse.getReservation().getId(),
                 reservationDetailResponse.getReservation().getReservationDate(),
@@ -42,21 +48,17 @@ public class ReservationController {
     public ResponseEntity<String> reserveSeat(@RequestBody ReservationRequestDto reservation) {
         try {
             String reservationId = String.valueOf(_reservationService.registerReservation(convertToReservationEntity(reservation)));
-            URI location = new URI( "/reservations/"+ reservationId);
+            URI location = new URI("/reservations/" + reservationId);
             return ResponseEntity.created(location).body(reservationId);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllReservations(){
-        try{
-            _reservationService.deleteAllReservations();
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Void> deleteAllReservations() {
+        _reservationService.deleteAllReservations();
+        return ResponseEntity.noContent().build();
     }
 
     /**

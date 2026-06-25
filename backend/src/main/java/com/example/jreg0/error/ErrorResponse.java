@@ -1,7 +1,6 @@
-package com.example.jreg0;
+package com.example.jreg0.error;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
