@@ -19,12 +19,8 @@ public class ReservationController {
 
     @GetMapping
     public ResponseEntity<Object> getReservationList() {
-        try {
-            List<ReservationDetailResponseDto> reservationDetailResponseDtoList = _reservationService.getReservationList();
-            return ResponseEntity.ok(reservationDetailResponseDtoList);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("取得に失敗しました");
-        }
+        List<ReservationDetailResponseDto> reservationDetailResponseDtoList = _reservationService.getReservationList();
+        return ResponseEntity.ok(reservationDetailResponseDtoList);
     }
 
     @GetMapping(value = "{id}")
@@ -54,19 +50,15 @@ public class ReservationController {
             String reservationId = String.valueOf(_reservationService.registerReservation(convertToReservationEntity(reservation)));
             URI location = new URI("/reservations/" + reservationId);
             return ResponseEntity.created(location).body(reservationId);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAllReservations() {
-        try {
-            _reservationService.deleteAllReservations();
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        _reservationService.deleteAllReservations();
+        return ResponseEntity.noContent().build();
     }
 
     /**
