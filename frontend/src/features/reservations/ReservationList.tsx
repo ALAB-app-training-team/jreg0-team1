@@ -1,61 +1,18 @@
 import { useState } from 'react';
+import useSWR from 'swr';
 
+import fetcher from '@/api/fetcher';
+import Error from '@/components/layout/Error';
+import ENDPOINT from '@/constants/Endpoint';
 import ReservationSelectItem from '@/features/reservations/ReservationSelectItem';
+import type { ReservationDetail } from '@/features/reservations/types/ReservationDetail';
 
 function ReservationList() {
     const [selectedTab, setSelectedTab] = useState<'active' | 'past'>('active');
 
-    const reservations = [
-        {
-            id: '00000001',
-            reservationDate: '2026-06-20',
-            departureDate: '2026-06-20',
-            seatLocation: '1A',
-            carNumber: 1,
-            seatType: '01',
-            departureStationName: '東京',
-            departureTime: '10:00:00',
-            arrivalStationName: '上野',
-            arrivalTime: '10:05:00',
-            departureTrack: 2,
-            trainName: 'hayabusa-1',
-            trainNickname: 'はやぶさ',
-        },
-        {
-            id: '00000001',
-            reservationDate: '2026-06-20',
-            departureDate: '2026-06-24',
-            seatLocation: '1A',
-            carNumber: 1,
-            seatType: '01',
-            departureStationName: '東京',
-            departureTime: '12:00:00',
-            arrivalStationName: '仙台',
-            arrivalTime: '13:05:00',
-            departureTrack: 4,
-            trainName: 'hayabusa-210',
-            trainNickname: 'はやぶさ',
-        },
-        {
-            id: '00000001',
-            reservationDate: '2026-06-20',
-            departureDate: '2026-06-24',
-            seatLocation: '1A',
-            carNumber: 1,
-            seatType: '01',
-            departureStationName: '東京',
-            departureTime: '12:00:00',
-            arrivalStationName: '仙台',
-            arrivalTime: '13:05:00',
-            departureTrack: 4,
-            trainName: 'hayabusa-210',
-            trainNickname: 'はやぶさ',
-        },
-    ];
-
-    //const { data: reservations, error: reservationError } = useSWR<
-    //    ReservationDetail[]
-    //>(ENDPOINT.RESERVATIONS, fetcher);
+    const { data: reservations, error: reservationError } = useSWR<
+        ReservationDetail[]
+    >(ENDPOINT.RESERVATIONS, fetcher);
 
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -72,6 +29,10 @@ function ReservationList() {
 
     const filteredReservations =
         selectedTab === 'active' ? activeReservations : pastReservations;
+
+    if (reservationError) {
+        return <Error />;
+    }
 
     return (
         <>
@@ -108,12 +69,28 @@ function ReservationList() {
                     </div>
                 </div>
                 {filteredReservations && filteredReservations.length > 0 ? (
-                    filteredReservations.map((reservation) => (
-                        <ReservationSelectItem
-                            key={reservation.id}
-                            details={reservation}
-                        />
-                    ))
+                    filteredReservations.map(
+                        (reservation: {
+                            id: string;
+                            reservationDate: string;
+                            departureDate: string;
+                            seatLocation: string;
+                            carNumber: number;
+                            seatType: string;
+                            departureStationName: string;
+                            departureTime: string;
+                            arrivalStationName: string;
+                            arrivalTime: string;
+                            departureTrack: number;
+                            trainName: string;
+                            trainNickname: string;
+                        }) => (
+                            <ReservationSelectItem
+                                key={reservation.id}
+                                details={reservation}
+                            />
+                        ),
+                    )
                 ) : (
                     <></>
                 )}
