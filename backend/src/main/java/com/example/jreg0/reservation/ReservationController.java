@@ -20,7 +20,7 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<Object> getReservationList() {
         try {
-            List<ReservationDetailResponseDto> reservationDetailResponseDtoList = _reservationService.checkReservationList();
+            List<ReservationDetailResponseDto> reservationDetailResponseDtoList = _reservationService.getReservationList();
             return ResponseEntity.ok(reservationDetailResponseDtoList);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("取得に失敗しました");
@@ -29,7 +29,7 @@ public class ReservationController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<ReservationDetailResponseDto> getReservationDetailById(@PathVariable("id") String id) {
-        ReservationDetailResponse reservationDetailResponse = _reservationService.checkReservationDetail(id);
+        ReservationDetailResponse reservationDetailResponse = _reservationService.getReservationDetail(id);
         ReservationDetailResponseDto reservationDetailResponseDto = new ReservationDetailResponseDto(
                 reservationDetailResponse.getReservation().getId(),
                 reservationDetailResponse.getReservation().getReservationDate(),

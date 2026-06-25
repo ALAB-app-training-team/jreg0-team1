@@ -55,7 +55,7 @@ public class ReservationService {
      * @param id 予約Entityのid
      * @return ReservationDetailResponse idと一致する予約詳細
      */
-    public ReservationDetailResponse checkReservationDetail(String id) {
+    public ReservationDetailResponse getReservationDetail(String id) {
         UUID reservationId = UUID.fromString(id);
         Optional<ReservationEntity> optionalReservation = _reservationRepository.findById(reservationId);
         ReservationEntity reservation = optionalReservation.orElseThrow(() -> new EntityNotFoundException("予約が存在しません"));
@@ -102,7 +102,7 @@ public class ReservationService {
      *
      * @return List<ReservationDetailResponseDto> 予約情報の一覧すべて
      */
-    public List<ReservationDetailResponseDto> checkReservationList() {
+    public List<ReservationDetailResponseDto> getReservationList() {
         List<ReservationEntity> fetchedReservList = _reservationRepository.findAll();
         List<ReservationDetailResponseDto> dtoList = fetchedReservList.stream().map(reservation ->
                 new ReservationDetailResponseDto(

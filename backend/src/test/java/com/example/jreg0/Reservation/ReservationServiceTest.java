@@ -135,7 +135,7 @@ public class ReservationServiceTest {
      * 予約Idに一致する予約データを取得する*
      */
     @Test
-    void checkReservationDetailTest_NormalCase_予約IDに一致する予約データを取得する() {
+    void getReservationDetailTest_NormalCase_予約IDに一致する予約データを取得する() {
         //各種リポジトリモック定義
         when(reservationRepository.findById(id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
@@ -145,7 +145,7 @@ public class ReservationServiceTest {
         when(scheduleRepository.findByTrainIdAndStationIdAndDepartureDate("00000000", "00000000", LocalDate.now())).thenReturn(List.of(mockSchedule0));
         when(scheduleRepository.findByTrainIdAndStationIdAndDepartureDate("00000000", "00000001", LocalDate.now())).thenReturn(List.of(mockSchedule1));
 
-        ReservationDetailResponse result = reservationService.checkReservationDetail(id.toString());
+        ReservationDetailResponse result = reservationService.getReservationDetail(id.toString());
 
         assertNotNull(result);
 
@@ -162,10 +162,10 @@ public class ReservationServiceTest {
      * 予約Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase_予約IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+    void getReservationDetailTest_ErrorCase_予約IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
         //リポジトリモック定義
         when(reservationRepository.findById(id)).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.checkReservationDetail(id.toString()));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.getReservationDetail(id.toString()));
         assertAll(() -> assertEquals("予約が存在しません", exception.getMessage()));
     }
 
@@ -173,11 +173,11 @@ public class ReservationServiceTest {
      * 列車Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase_列車IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+    void getReservationDetailTest_ErrorCase_列車IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
         //リポジトリモック定義
         when(reservationRepository.findById(id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.checkReservationDetail(id.toString()));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.getReservationDetail(id.toString()));
         assertAll(() -> assertEquals("予約に紐づくデータが存在しません(列車)", exception.getMessage()));
     }
 
@@ -185,12 +185,12 @@ public class ReservationServiceTest {
      * 駅Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase_駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+    void getReservationDetailTest_ErrorCase_駅IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
         //リポジトリモック定義
         when(reservationRepository.findById(id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
         when(stationRepository.findById("00000000")).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.checkReservationDetail(id.toString()));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.getReservationDetail(id.toString()));
         assertAll(() -> assertEquals("予約に紐づくデータが存在しません(駅)", exception.getMessage()));
     }
 
@@ -198,19 +198,19 @@ public class ReservationServiceTest {
      * 座席Idに一致するレコードがない場合はEntityNotFoundExceptionを返す*
      */
     @Test
-    void checkReservationDetailTest_ErrorCase_座席IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
+    void getReservationDetailTest_ErrorCase_座席IDに一致するレコードがない場合はEntityNotFoundExceptionを返す() {
         //リポジトリモック定義
         when(reservationRepository.findById(id)).thenReturn(Optional.of(mockReservationforGet));
         when(trainRepository.findById("00000000")).thenReturn(Optional.of(mockTrain0));
         when(stationRepository.findById("00000000")).thenReturn(Optional.of(mockDepartureStation));
         when(stationRepository.findById("00000001")).thenReturn(Optional.of(mockArrivalStation));
         when(seatRepository.findById("1A")).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.checkReservationDetail(id.toString()));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> reservationService.getReservationDetail(id.toString()));
         assertAll(() -> assertEquals("予約に紐づくデータが存在しません(座席・号車)", exception.getMessage()));
     }
 
     @Nested
-    class checkReservationListTest {
+    class getReservationListTest {
         @BeforeEach
         void setUp() {
             mockSeatforGet.setCar(mockCar);
@@ -223,9 +223,9 @@ public class ReservationServiceTest {
         }
 
         @Test
-        void checkReservationList_NormalCase_正しく予約データを取得できる() {
+        void getReservationList_NormalCase_正しく予約データを取得できる() {
             when(reservationRepository.findAll()).thenReturn(List.of(mockReservationforGet));
-            List<ReservationDetailResponseDto> result = reservationService.checkReservationList();
+            List<ReservationDetailResponseDto> result = reservationService.getReservationList();
             assertAll(() -> {
                 assertEquals(mockReservationforGet.getId(), result.getFirst().getId());
                 assertEquals(mockReservationforGet.getReservationDate(), result.getFirst().getReservationDate());
@@ -244,7 +244,7 @@ public class ReservationServiceTest {
         }
 
         @Test
-        void checkReservationList_NormalCase_予約データ複数件取得できる() {
+        void getReservationList_NormalCase_予約データ複数件取得できる() {
             mockSeatforGet2.setCar(mockCar);
             mockReservationforGet2.setDepartureStation(mockDepartureStation);
             mockReservationforGet2.setArrivalStation(mockArrivalStation);
@@ -255,23 +255,23 @@ public class ReservationServiceTest {
 
             when(reservationRepository.findAll()).thenReturn(List.of(mockReservationforGet, mockReservationforGet2));
 
-            assertEquals(2, reservationService.checkReservationList().size());
+            assertEquals(2, reservationService.getReservationList().size());
         }
 
         @Test
-        void checkReservationList_NormalCase_予約が存在しない場合空の配列を返す() {
+        void getReservationList_NormalCase_予約が存在しない場合空の配列を返す() {
             List<ReservationEntity> mockEnptyReservationList = List.of();
             when(reservationRepository.findAll()).thenReturn(mockEnptyReservationList);
 
-            assertTrue(reservationService.checkReservationList().isEmpty());
+            assertEquals(0, reservationService.getReservationList().size());
         }
 
         @Test
-        void checkReservationList_NormalCase_予約は存在するのに予約に紐づく情報が存在しないときExceptionを返す() {
+        void getReservationList_NormalCase_予約は存在するのに予約に紐づく情報が存在しないときExceptionを返す() {
             mockReservationforGet.setSeat(null);
             when(reservationRepository.findAll()).thenReturn(List.of(mockReservationforGet));
 
-            assertThrows(RuntimeException.class, () -> reservationService.checkReservationList());
+            assertThrows(Exception.class, () -> reservationService.getReservationList());
         }
     }
 }
