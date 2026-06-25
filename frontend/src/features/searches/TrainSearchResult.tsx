@@ -10,12 +10,12 @@ import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 
 function TrainSearchResult() {
-    const [date, setDate] = useState<string>(
-        new Date().toISOString().split('T')[0],
-    );
-    const [searchDate, setSearchDate] = useState<string>(
-        new Date().toISOString().split('T')[0],
-    );
+    const today = new Date();
+    const dateStr = (date: Date) => {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+    const [date, setDate] = useState<string>(dateStr(today));
+    const [searchDate, setSearchDate] = useState<string>(dateStr(today));
     const [searchDepartureStationId, setSearchDepartureStationId] =
         useState<string>('');
     const [searchArrivalStationId, setSearchArrivalStationId] =
@@ -51,10 +51,19 @@ function TrainSearchResult() {
         fetcher,
     );
 
+    const maxDate = () => {
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth() + 1,
+            today.getDate(),
+        );
+        return dateStr(date);
+    };
+
     const handleNextDateSearch = () => {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 1);
-        const nextDateToString = nextDate.toISOString().split('T')[0];
+        const nextDateToString = dateStr(nextDate);
         setDate(nextDateToString);
         setSearchDate(nextDateToString);
     };
@@ -63,6 +72,7 @@ function TrainSearchResult() {
         setDate(e.target.value);
 
         const selectedDate = new Date(e.target.value);
+        selectedDate.setHours(0, 0, 0, 0);
         if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
             setDateValidateError('出発日を入力してください');
             return;
@@ -187,6 +197,8 @@ function TrainSearchResult() {
                                 value={date}
                                 onChange={handleDateChange}
                                 required
+                                min={dateStr(today)}
+                                max={maxDate()}
                             />
 
                             {dateValidateError && (
