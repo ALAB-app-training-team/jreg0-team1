@@ -46,3 +46,12 @@
         background-color: gray;
     }
 }
+
+@layer utilities {
+    input[type='date']::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+    }
+    input[type='time']::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+    }
+}
