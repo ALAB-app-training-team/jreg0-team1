@@ -19,7 +19,7 @@ function TrainNoResults({
                 お選びいただいた日時以降の列車が見つかりませんでした。条件を変更するか、翌日の列車を検索してください。
             </h5>
             <button
-                className="contained_btn flex cursor-pointer items-center gap-2"
+                className="contained_btn flex cursor-pointer items-center gap-2 disabled:cursor-not-allowed"
                 onClick={handleNextDateSearch}
                 disabled={!isActiveNextDaySearchButton}
             >

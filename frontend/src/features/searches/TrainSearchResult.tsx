@@ -3,6 +3,7 @@ import useSWR from 'swr';
 
 import fetcher from '@/api/fetcher';
 import Error from '@/components/layout/Error';
+import Loading from '@/components/layout/Loading';
 import ENDPOINT from '@/constants/Endpoint';
 import TrainNoResults from '@/features/searches/TrainNotResults';
 import TrainSelectItem from '@/features/searches/TrainSelectItem';
@@ -43,7 +44,11 @@ function TrainSearchResult() {
     const [searchTime, setSearchTime] = useState<string>('');
     const [dateValidateError, setDateValidateError] = useState<string>();
 
-    const { data: trains, error: trainError } = useSWR<Train[]>(
+    const {
+        data: trains,
+        error: trainError,
+        isLoading: isLoading,
+    } = useSWR<Train[]>(
         dateValidateError
             ? null
             : ENDPOINT.TRAINS(
@@ -260,35 +265,45 @@ function TrainSearchResult() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end">
-                <h5>
-                    {filteredTrains ? filteredTrains.length : 0}
-                    件の列車が見つかりました
-                </h5>
-            </div>
-            {filteredTrains && filteredTrains.length > 0 ? (
-                filteredTrains.map((train) => (
-                    <TrainSelectItem
-                        key={train.id}
-                        train={train}
-                        departureStation={
-                            stations.find(
-                                (sta) => sta.id == searchDepartureStationId,
-                            ) ?? stations[0]
-                        }
-                        arrivalStation={
-                            stations.find(
-                                (sta) => sta.id == searchArrivalStationId,
-                            ) ?? stations[0]
-                        }
-                        departureDate={date}
-                    />
-                ))
+            {isLoading ? (
+                <Loading />
             ) : (
-                <TrainNoResults
-                    handleNextDateSearch={handleNextDateSearch}
-                    isActiveNextDaySearchButton={isActiveNextDaySearchButton}
-                />
+                <>
+                    <div className="flex justify-end">
+                        <h5>
+                            {filteredTrains ? filteredTrains.length : 0}
+                            件の列車が見つかりました
+                        </h5>
+                    </div>
+                    {filteredTrains && filteredTrains.length > 0 ? (
+                        filteredTrains.map((train) => (
+                            <TrainSelectItem
+                                key={train.id}
+                                train={train}
+                                departureStation={
+                                    stations.find(
+                                        (sta) =>
+                                            sta.id == searchDepartureStationId,
+                                    ) ?? stations[0]
+                                }
+                                arrivalStation={
+                                    stations.find(
+                                        (sta) =>
+                                            sta.id == searchArrivalStationId,
+                                    ) ?? stations[0]
+                                }
+                                departureDate={date}
+                            />
+                        ))
+                    ) : (
+                        <TrainNoResults
+                            handleNextDateSearch={handleNextDateSearch}
+                            isActiveNextDaySearchButton={
+                                isActiveNextDaySearchButton
+                            }
+                        />
+                    )}
+                </>
             )}
         </div>
     );
