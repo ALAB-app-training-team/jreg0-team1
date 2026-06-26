@@ -184,7 +184,7 @@ function TrainSearchResult() {
                         <div className="flex w-full flex-col">
                             <h5>乗車駅</h5>
                             <select
-                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                className="border-primary/20 cursor-pointer rounded-lg border bg-white px-4 py-2"
                                 onChange={handleDepartureStationChenge}
                                 value={searchDepartureStationId}
                                 title="乗車駅を選択してください"
@@ -206,7 +206,7 @@ function TrainSearchResult() {
                         <div className="flex w-full flex-col">
                             <h5>降車駅</h5>
                             <select
-                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                className="border-primary/20 cursor-pointer rounded-lg border bg-white px-4 py-2"
                                 onChange={handleArrivalStationChenge}
                                 value={searchArrivalStationId}
                                 title="降車駅を選択してください"
@@ -230,7 +230,7 @@ function TrainSearchResult() {
                         <div className="flex w-full flex-col">
                             <h5>出発日</h5>
                             <input
-                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                className="border-primary/20 cursor-pointer rounded-lg border bg-white px-4 py-2"
                                 type="date"
                                 title="日付を選択してください"
                                 value={date}
@@ -249,7 +249,7 @@ function TrainSearchResult() {
                         <div className="flex w-full flex-col">
                             <h5>出発時刻</h5>
                             <input
-                                className="border-primary/20 rounded-lg border bg-white px-4 py-2"
+                                className="border-primary/20 cursor-pointer rounded-lg border bg-white px-4 py-2"
                                 type="Time"
                                 title="時刻を選択してください"
                                 value={searchTime}

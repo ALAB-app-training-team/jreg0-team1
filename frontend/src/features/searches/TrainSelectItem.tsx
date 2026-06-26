@@ -70,7 +70,10 @@ function TrainSelectItem({
                 <h1>{arrivalTime}</h1>
                 <h5>{arrivalStation.stationName}</h5>
             </div>
-            <button className="contained_btn" onClick={handleReserveSeat}>
+            <button
+                className="contained_btn cursor-pointer"
+                onClick={handleReserveSeat}
+            >
                 席を予約する
             </button>
         </div>
