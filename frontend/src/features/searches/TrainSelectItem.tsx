@@ -30,7 +30,7 @@ function TrainSelectItem({
         ?.arrivalTime.slice(0, 5);
     const { trigger: postTrigger } = usePostReservation();
     const navigate = useNavigate();
-    const [ismodalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [seatId, setSeatId] = useState<string>('');
 
     const handleReserveSeat = async () => {
@@ -82,7 +82,7 @@ function TrainSelectItem({
             </button>
             {train.id && (
                 <SeatSelectModal
-                    isOpen={ismodalOpen}
+                    isOpen={isModalOpen}
                     setIsOpen={setIsModalOpen}
                     setSeat={setSeatId}
                     trainId={train.id}
