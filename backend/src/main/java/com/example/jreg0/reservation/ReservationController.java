@@ -47,11 +47,11 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<String> reserveSeat(@RequestBody ReservationRequestDto reservation) {
         try {
-            String reservationId = String.valueOf(_reservationService.registerReservation(convertToReservationEntity(reservation)));
+            String reservationId = String.valueOf(_reservationService.registerReservation(convertFromPostRequestToReservationEntity(reservation)));
             URI location = new URI("/reservations/" + reservationId);
             return ResponseEntity.created(location).body(reservationId);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("座席の予約に失敗しました");
         }
     }
 
@@ -67,7 +67,7 @@ public class ReservationController {
      * @param reservationDto 予約リクエストDto
      * @return 予約Entity
      */
-    private ReservationEntity convertToReservationEntity(ReservationRequestDto reservationDto) {
+    private ReservationEntity convertFromPostRequestToReservationEntity(ReservationRequestDto reservationDto) {
         ReservationEntity entity = new ReservationEntity();
         entity.setSeatId(reservationDto.getSeatId());
         entity.setDepartureDate(reservationDto.getDepartureDate());
