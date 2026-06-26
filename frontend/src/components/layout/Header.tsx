@@ -29,12 +29,8 @@ function Header() {
                     新幹線をさがす
                 </button>
                 <button
-                    className={`hover:bg-primary/20 flex cursor-pointer gap-2 ${getButtonClass('/details/019ef75a-a6f0-798b-88cf-b1db9a320103')} rounded-lg p-1`}
-                    onClick={() =>
-                        navigate(
-                            '/details/019ef75a-a6f0-798b-88cf-b1db9a320103',
-                        )
-                    }
+                    className={`hover:bg-primary/20 flex cursor-pointer gap-2 ${getButtonClass('/reservationList')} rounded-lg p-1`}
+                    onClick={() => navigate('/reservationList')}
                     type="button"
                 >
                     <span className="material-symbols-outlined">
