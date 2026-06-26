@@ -12,6 +12,7 @@ function ReservationSelectItem({ details }: ReservationSelectItemProps) {
 
     const departureDate = new Date(details.departureDate);
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
 
     return (
         <div className="border-primary/20 flex flex-col gap-4 rounded-2xl border p-8">
