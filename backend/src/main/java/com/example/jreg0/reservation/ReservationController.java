@@ -50,8 +50,8 @@ public class ReservationController {
             String reservationId = String.valueOf(_reservationService.registerReservation(convertFromPostRequestToReservationEntity(reservation)));
             URI location = new URI("/reservations/" + reservationId);
             return ResponseEntity.created(location).body(reservationId);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("座席の予約に失敗しました");
+        } catch (URISyntaxException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
