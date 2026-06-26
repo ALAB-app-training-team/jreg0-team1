@@ -26,7 +26,7 @@ function ReservationInfo() {
         <>
             <div className="mx-auto flex max-w-4xl flex-col gap-4">
                 <button
-                    className="mt-4 flex gap-4 p-2 hover:text-black/50"
+                    className="mt-4 flex cursor-pointer gap-4 p-2 hover:text-black/50"
                     onClick={() => navigate('/')}
                 >
                     <span className="material-symbols-outlined">
