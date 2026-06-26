@@ -1,22 +1,16 @@
 package com.example.jreg0.reservation;
 
-import com.example.jreg0.car.CarRepository;
-import com.example.jreg0.schedule.ScheduleEntity;
-import com.example.jreg0.schedule.ScheduleRepository;
-import com.example.jreg0.seat.SeatEntity;
-import com.example.jreg0.seat.SeatRepository;
-import com.example.jreg0.station.StationEntity;
-import com.example.jreg0.station.StationRepository;
-import com.example.jreg0.train.TrainEntity;
-import com.example.jreg0.train.TrainRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.example.jreg0.schedule.*;
+import com.example.jreg0.seat.*;
+import com.example.jreg0.station.*;
+import com.example.jreg0.train.*;
+import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.*;
 
 @Service
 public class ReservationService {
@@ -61,7 +55,7 @@ public class ReservationService {
      * @param id 予約Entityのid
      * @return ReservationDetailResponse idと一致する予約詳細
      */
-    public ReservationDetailResponse checkReservationDetail(String id){
+    public ReservationDetailResponse getReservationDetail(String id) {
         UUID reservationId = UUID.fromString(id);
         Optional<ReservationEntity> optionalReservation = _reservationRepository.findById(reservationId);
         ReservationEntity reservation = optionalReservation.orElseThrow(() -> new EntityNotFoundException("予約が存在しません"));
@@ -99,7 +93,35 @@ public class ReservationService {
      * 予約を全削除するメソッド
      */
     @Transactional
-    public void deleteAllReservations(){
+    public void deleteAllReservations() {
         _reservationRepository.deleteAll();
+    }
+
+    /**
+     * 予約情報をすべて取得するメソッド
+     *
+     * @return List<ReservationDetailResponseDto> 予約情報の一覧すべて
+     */
+    public List<ReservationDetailResponseDto> getReservationList() {
+        List<ReservationEntity> fetchedReservList = _reservationRepository.findAll();
+        List<ReservationDetailResponseDto> dtoList = fetchedReservList.stream().map(reservation ->
+                new ReservationDetailResponseDto(
+                        reservation.getId(),
+                        reservation.getReservationDate(),
+                        reservation.getDepartureDate(),
+                        reservation.getSeat().getSeatLocation(),
+                        reservation.getSeat().getCar().getCarNumber(),
+                        reservation.getSeat().getCar().getSeatType(),
+                        reservation.getDepartureStation().getStationName(),
+                        reservation.getDepartureSchedule().getDepartureTime(),
+                        reservation.getArrivalStation().getStationName(),
+                        reservation.getArrivalSchedule().getArrivalTime(),
+                        reservation.getDepartureSchedule().getDepartureTrack(),
+                        reservation.getTrain().getTrainName(),
+                        reservation.getTrain().getTrainNickname()
+                )
+        ).collect(Collectors.toList());
+
+        return dtoList;
     }
 }
