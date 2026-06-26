@@ -20,6 +20,8 @@ function ReservationInfo() {
     if (!id || error) return <Error />;
     if (!details) return <h1>Now Loading...</h1>;
 
+    const [year, month, day] = details.departureDate.split('-');
+
     return (
         <>
             <div className="mx-auto flex max-w-4xl flex-col gap-4">
@@ -79,9 +81,7 @@ function ReservationInfo() {
                             <span className="material-symbols-outlined">
                                 schedule
                             </span>
-                            {details.departureDate
-                                .split('T')[0]
-                                .replaceAll('-', '/')}
+                            {year}年{parseInt(month, 10)}月{parseInt(day, 10)}日
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 self-start">

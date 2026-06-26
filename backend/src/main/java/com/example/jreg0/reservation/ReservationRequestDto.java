@@ -1,9 +1,8 @@
 package com.example.jreg0.reservation;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.time.*;
 
 @Data
 public class ReservationRequestDto {

@@ -42,4 +42,7 @@
             transparent
         );
     }
+    .contained_btn:disabled {
+        background-color: gray;
+    }
 }
