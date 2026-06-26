@@ -5,7 +5,6 @@ import logo from '@/assets/logo.png';
 function Header() {
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location);
 
     const getButtonClass = (page: string) => {
         return location.pathname === page ? 'contained_btn' : '';
