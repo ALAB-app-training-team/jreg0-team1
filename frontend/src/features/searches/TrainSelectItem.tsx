@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type Reservation } from '@/features/purchases/types/Reservation';
+import SeatSelectModal from '@/features/searches/SeatSelectModal';
 import type { Station } from '@/features/searches/types/Station';
 import type { Train } from '@/features/searches/types/Train';
 import usePostReservation from '@/hooks/usePostReservation';
@@ -28,10 +30,12 @@ function TrainSelectItem({
         ?.arrivalTime.slice(0, 5);
     const { trigger: postTrigger } = usePostReservation();
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [seatId, setSeatId] = useState<string>('');
 
     const handleReserveSeat = async () => {
         const reserveToPost: Partial<Reservation> = {
-            seatId: '',
+            seatId: seatId,
             reservationDate: new Date().toISOString().split('T')[0],
             departureDate: departureDate,
             trainId: train.id,
@@ -72,10 +76,20 @@ function TrainSelectItem({
             </div>
             <button
                 className="contained_btn cursor-pointer"
-                onClick={handleReserveSeat}
+                onClick={() => setIsModalOpen(true)}
             >
                 席を予約する
             </button>
+            {train.id && (
+                <SeatSelectModal
+                    isOpen={isModalOpen}
+                    setIsOpen={setIsModalOpen}
+                    seatId={seatId}
+                    setSeat={setSeatId}
+                    trainId={train.id}
+                    handleReserveSeat={handleReserveSeat}
+                />
+            )}
         </div>
     );
 }
