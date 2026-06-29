@@ -13,7 +13,6 @@ import java.time.*;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,10 +23,6 @@ public class StopStationListFactoryTest {
     @InjectMocks
     private StopStationListFactory factory;
 
-    @Test
-    void Hello_test() {
-        assertEquals(2, 1 + 1);
-    }
 
     private LocalDate today = LocalDate.now();
     ScheduleEntity mockSchedule0 = new ScheduleEntity();
@@ -61,11 +56,13 @@ public class StopStationListFactoryTest {
         mockSchedule1.setDepartureTime(new Time(15, 25, 00));
         mockSchedule2.setDepartureTime(new Time(15, 35, 00));
 
-        when(scheduleRepository.findByTrainIdAndDepartureDate("HYB001", today)).thenReturn(List.of(mockSchedule0, mockSchedule2, mockSchedule1, mockSchedule3));
+
     }
 
     @Test
     void create_発車時刻の昇順でリストを作成() {
+        when(scheduleRepository.findByTrainIdAndDepartureDate("HYB001", today)).thenReturn(List.of(mockSchedule0, mockSchedule2, mockSchedule1, mockSchedule3));
+
         StopStationList result = factory.create("HYB001", today);
 
         assertThat(result.getList()).containsExactly("TKY01", "UEN02", "OMY03", "SND11");

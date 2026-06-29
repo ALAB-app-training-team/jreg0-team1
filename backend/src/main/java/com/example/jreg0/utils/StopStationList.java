@@ -70,6 +70,7 @@ public class StopStationList {
         ListIterator<String> iterator = stationList.listIterator();
         while (iterator.hasNext()) {
             if (iterator.next().equals(stationId)) {
+                iterator.previous();
                 return iterator.hasPrevious()
                         ? Optional.of(iterator.previous())
                         : Optional.empty();
