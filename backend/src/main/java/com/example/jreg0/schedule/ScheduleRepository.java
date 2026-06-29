@@ -1,14 +1,15 @@
 package com.example.jreg0.schedule;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.*;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.*;
+import java.util.*;
 
 @Repository
-public interface ScheduleRepository extends JpaRepository <ScheduleEntity, String> {
+public interface ScheduleRepository extends JpaRepository<ScheduleEntity, String> {
     List<ScheduleEntity> findByTrainIdAndStationIdAndDepartureDate(String trainId, String stationId, LocalDate departureDate);
+
+    List<ScheduleEntity> findByTrainIdAndDepartureDate(String trainId, LocalDate departureDate);
 }
