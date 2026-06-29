@@ -84,6 +84,7 @@ function TrainSelectItem({
                 <SeatSelectModal
                     isOpen={isModalOpen}
                     setIsOpen={setIsModalOpen}
+                    seatId={seatId}
                     setSeat={setSeatId}
                     trainId={train.id}
                     handleReserveSeat={handleReserveSeat}
