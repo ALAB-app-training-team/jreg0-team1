@@ -67,7 +67,7 @@ function SeatSelectModal({
                             <button
                                 key={car.id}
                                 onClick={() => handleCarSelect(car.id)}
-                                className={`h-20 w-20 rounded-lg border-2 font-semibold transition ${selectedCar === car.id ? 'border-primary bg-primary/10' : 'border-gray'}`}
+                                className={`h-20 w-20 cursor-pointer rounded-lg border-2 font-semibold transition ${selectedCar === car.id ? 'border-primary bg-primary/10' : 'border-gray'}`}
                             >
                                 <p
                                     className={`${selectedCar === car.id ? 'text-primary' : 'text-black'}`}
@@ -89,22 +89,22 @@ function SeatSelectModal({
                         <button
                             key={seat.id}
                             onClick={() => handleSeatSelect(seat.id)}
-                            className={`h-14 w-14 rounded-lg border transition ${seat?.id === seatId ? 'border-primary bg-primary/10' : 'border-gray'}`}
+                            className={`h-14 w-14 cursor-pointer rounded-lg border transition ${seat?.id === seatId ? 'border-primary bg-primary/10' : 'border-gray'}`}
                         >
                             {seat.seatLocation.replace(/^\d+/, '')}
                         </button>
                     );
                 })}
             </div>
-            <div className="flex justify-end gap-4 pt-6">
+            <div className="flex cursor-pointer justify-end gap-4 pt-6">
                 <button
-                    className="outlined-btn"
+                    className="outlined-btn cursor-pointer"
                     onClick={() => setIsOpen(false)}
                 >
                     キャンセル
                 </button>
                 <button
-                    className="contained_btn"
+                    className="contained_btn contained_btndisabled:cursor-not-allowed cursor-pointer"
                     disabled={!seatId}
                     onClick={() => {
                         setIsOpen(false);

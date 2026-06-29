@@ -75,7 +75,7 @@ function TrainSelectItem({
                 <h5>{arrivalStation.stationName}</h5>
             </div>
             <button
-                className="contained_btn"
+                className="contained_btn cursor-pointer"
                 onClick={() => setIsModalOpen(true)}
             >
                 席を予約する
