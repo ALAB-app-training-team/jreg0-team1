@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import fetcher from '@/api/fetcher';
 import favicon from '@/assets/favicon.png';
 import Error from '@/components/layout/Error';
+import Loading from '@/components/layout/Loading';
 import ENDPOINT from '@/constants/Endpoint';
 import type { ReservationDetail } from '@/features/reservations/types/ReservationDetail';
 
@@ -18,7 +19,7 @@ function ReservationInfo() {
     );
 
     if (!id || error) return <Error />;
-    if (!details) return <h1>Now Loading...</h1>;
+    if (!details) return <Loading />;
 
     const [year, month, day] = details.departureDate.split('-');
 
@@ -26,7 +27,7 @@ function ReservationInfo() {
         <>
             <div className="mx-auto flex max-w-4xl flex-col gap-4">
                 <button
-                    className="mt-4 flex gap-4 p-2 hover:text-black/50"
+                    className="mt-4 flex cursor-pointer gap-4 p-2 hover:text-black/50"
                     onClick={() => navigate('/')}
                 >
                     <span className="material-symbols-outlined">
