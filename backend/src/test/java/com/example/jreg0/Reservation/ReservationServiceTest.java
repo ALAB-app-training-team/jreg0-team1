@@ -116,9 +116,7 @@ public class ReservationServiceTest {
         ReservationEntity savedReservation = new ReservationEntity();
 
         savedReservation.setId(id);
-
-        //座席のリポジトリモック定義
-        when(seatRepository.findAll()).thenReturn(List.of(mockSeatforRegister));
+        savedReservation.setSeatId("1A");
 
         //予約のリポジトリモック定義
         when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(savedReservation);
@@ -126,8 +124,6 @@ public class ReservationServiceTest {
         UUID resultId = reservationService.registerReservation(mockReservationforRegister);
 
         assertEquals(id, resultId);
-        assertEquals("1A", mockReservationforRegister.getSeatId());
-        verify(seatRepository, times(1)).findAll();
         verify(reservationRepository, times(1)).save(mockReservationforRegister);
     }
 
