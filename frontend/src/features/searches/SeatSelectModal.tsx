@@ -49,11 +49,6 @@ function SeatSelectModal({
     };
 
     const car = cars.find((car) => car.id === selectedCar);
-    const maxRow = Math.max(
-        ...(car?.seats.map((seat) =>
-            Number(seat.seatLocation.match(/\d+/)?.[0] ?? 0),
-        ) ?? [0]),
-    );
 
     return (
         <Modal
