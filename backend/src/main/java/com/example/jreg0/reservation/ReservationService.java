@@ -43,8 +43,6 @@ public class ReservationService {
      */
     @Transactional
     public UUID registerReservation(ReservationEntity reservation) {
-        // 今回は,座席を1Aに絞る
-        reservation.setSeatId(_seatRepository.findAll().getFirst().getId());
         ReservationEntity saved = _reservationRepository.save(reservation);
         return saved.getId();
     }

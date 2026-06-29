@@ -1,0 +1,102 @@
+import { useState } from 'react';
+import useSWR from 'swr';
+
+import fetcher from '@/api/fetcher';
+import Error from '@/components/layout/Error';
+import ENDPOINT from '@/constants/Endpoint';
+import ReservationSelectItem from '@/features/reservations/ReservationSelectItem';
+import type { ReservationDetail } from '@/features/reservations/types/ReservationDetail';
+
+function ReservationList() {
+    const [selectedTab, setSelectedTab] = useState<'active' | 'past'>('active');
+
+    const { data: reservations, error: reservationError } = useSWR<
+        ReservationDetail[]
+    >(ENDPOINT.RESERVATIONS, fetcher);
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    const activeReservations = reservations?.filter((reservation) => {
+        const departureDate = new Date(reservation.departureDate);
+        return departureDate >= now;
+    });
+
+    const pastReservations = reservations?.filter((reservation) => {
+        const departureDate = new Date(reservation.departureDate);
+        return departureDate < now;
+    });
+
+    const filteredReservations =
+        selectedTab === 'active' ? activeReservations : pastReservations;
+
+    if (reservationError) {
+        return <Error />;
+    }
+
+    return (
+        <>
+            <div className="mx-auto flex max-w-4xl flex-col gap-8 p-4">
+                <h1 className="text-4xl font-bold">予約確認</h1>
+                <div className="bg-primary/8 flex gap-6 rounded-3xl p-2">
+                    <div className="flex w-full items-center">
+                        <button
+                            onClick={() => setSelectedTab('active')}
+                            className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-3xl px-6 py-2 transition ${
+                                selectedTab === 'active'
+                                    ? 'bg-white font-semibold shadow'
+                                    : ''
+                            } `}
+                        >
+                            <span className="material-symbols-outlined">
+                                calendar_today
+                            </span>
+                            有効（{activeReservations?.length}）
+                        </button>
+                        <button
+                            onClick={() => setSelectedTab('past')}
+                            className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-3xl px-6 py-2 transition ${
+                                selectedTab === 'past'
+                                    ? 'bg-white font-semibold shadow'
+                                    : ''
+                            } `}
+                        >
+                            <span className="material-symbols-outlined">
+                                group
+                            </span>
+                            過去（{pastReservations?.length}）
+                        </button>
+                    </div>
+                </div>
+                {filteredReservations && filteredReservations.length > 0 ? (
+                    filteredReservations.map(
+                        (reservation: {
+                            id: string;
+                            reservationDate: string;
+                            departureDate: string;
+                            seatLocation: string;
+                            carNumber: number;
+                            seatType: string;
+                            departureStationName: string;
+                            departureTime: string;
+                            arrivalStationName: string;
+                            arrivalTime: string;
+                            departureTrack: number;
+                            trainName: string;
+                            trainNickname: string;
+                        }) => (
+                            <ReservationSelectItem
+                                key={reservation.id}
+                                details={reservation}
+                            />
+                        ),
+                    )
+                ) : (
+                    <></>
+                )}
+            </div>
+        </>
+    );
+}
+
+export default ReservationList;

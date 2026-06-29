@@ -8,7 +8,7 @@ function ReservationComplete() {
     return (
         <div className="mx-auto flex max-w-4xl flex-col gap-4">
             <button
-                className="mt-4 flex gap-4 p-2 hover:text-black/50"
+                className="mt-4 flex cursor-pointer gap-4 p-2 hover:text-black/50"
                 onClick={() => navigate('/')}
             >
                 <span className="material-symbols-outlined">arrow_back</span>
@@ -20,7 +20,7 @@ function ReservationComplete() {
                     <h3>予約番号：{state.reservationId}</h3>
                 </div>
                 <button
-                    className="contained_btn"
+                    className="contained_btn cursor-pointer"
                     onClick={() => navigate(`/details/${state.reservationId}`)}
                 >
                     予約情報詳細
