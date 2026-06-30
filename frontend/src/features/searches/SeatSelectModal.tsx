@@ -104,7 +104,7 @@ function SeatSelectModal({
                     キャンセル
                 </button>
                 <button
-                    className="contained_btn contained_btndisabled:cursor-not-allowed cursor-pointer"
+                    className="contained_btn contained_btndisabled:cursor-not-allowed cursor-pointer disabled:cursor-not-allowed"
                     disabled={!seatId}
                     onClick={() => {
                         setIsOpen(false);
