@@ -12,7 +12,7 @@ public class StopStationList {
     /**
      * 停車する駅IDを持つ不変Listを返すgetterメソッド
      *
-     * @return 停車する駅IDを到着順に持つLinkedList
+     * @return 停車する駅IDを到着順に持つ編集不可List
      */
     public List<String> getList() {
         return Collections.unmodifiableList(stationList);

@@ -18,6 +18,13 @@ public class StopStationListFactory {
         this.scheduleRepository = scheduleRepository;
     }
 
+    /**
+     * 列車名と日付から該当の列車が停車する駅の駅IDを持つ双方向リストを生成するメソッド
+     *
+     * @param trainId       列車Id(例: HYB001)
+     * @param departureDate 出発日
+     * @return 列車が停車する各駅の駅IDを持つLinkedList
+     */
     public StopStationList create(String trainId, LocalDate departureDate) {
         return new StopStationList(setStationList(trainId, departureDate));
     }
